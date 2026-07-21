@@ -57,7 +57,6 @@ export function Navbar() {
                 aria-haspopup="true"
                 aria-controls="services-menu"
                 onClick={() => setServicesOpen((open) => !open)}
-                onFocus={() => setServicesOpen(true)}
                 onKeyDown={(event) => {
                   if (event.key === "Escape") {
                     setServicesOpen(false);
