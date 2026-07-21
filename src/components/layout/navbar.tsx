@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { NAV_GROUPS, PRIMARY_NAV } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
@@ -47,7 +47,7 @@ export function Navbar() {
       )}
       onMouseLeave={() => setServicesOpen(false)}
     >
-      <motion.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: progress }} />
+      <m.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: progress }} />
       <Container>
         <nav className="flex h-20 items-center justify-between">
           <Link href="/" className="font-display text-lg font-semibold tracking-tight text-foreground">
@@ -73,13 +73,13 @@ export function Navbar() {
               </button>
               <AnimatePresence>
                 {servicesOpen ? (
-                  <motion.div
+                  <m.div
                     id="services-menu"
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute left-1/2 top-full mt-4 w-[720px] -translate-x-1/2 rounded-2xl border border-glass-border bg-secondary/95 p-8 shadow-2xl backdrop-blur-xl"
+                    className="absolute left-1/2 top-full pt-4 w-[720px] -translate-x-1/2 rounded-2xl border border-glass-border bg-secondary/95 p-8 shadow-2xl backdrop-blur-xl"
                   >
                     <div className="grid grid-cols-4 gap-6">
                       {NAV_GROUPS.map((group) => (
@@ -99,7 +99,7 @@ export function Navbar() {
                         </div>
                       ))}
                     </div>
-                  </motion.div>
+                  </m.div>
                 ) : null}
               </AnimatePresence>
             </div>
@@ -132,7 +132,7 @@ export function Navbar() {
 
       <AnimatePresence>
         {mobileOpen ? (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -172,7 +172,7 @@ export function Navbar() {
                 </MagneticButton>
               </div>
             </Container>
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
     </header>

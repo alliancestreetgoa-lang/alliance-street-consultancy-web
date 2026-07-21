@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { PointerEvent, ReactNode } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export function MagneticButton({
   }
 
   const content = (
-    <motion.span
+    <m.span
       ref={ref}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
@@ -57,7 +57,7 @@ export function MagneticButton({
       )}
     >
       {children}
-    </motion.span>
+    </m.span>
   );
 
   if (href) {

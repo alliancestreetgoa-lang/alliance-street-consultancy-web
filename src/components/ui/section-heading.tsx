@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type SectionHeadingProps = {
@@ -35,7 +35,7 @@ export function SectionHeading({
       ) : null}
       <h2 className="font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
         {words.map((word, index) => (
-          <motion.span
+          <m.span
             key={`${word}-${index}`}
             initial={{ opacity: 0, y: "0.6em", filter: "blur(8px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -44,7 +44,7 @@ export function SectionHeading({
             className="mr-[0.25em] inline-block"
           >
             {word}
-          </motion.span>
+          </m.span>
         ))}
       </h2>
       {description ? <p className="max-w-2xl text-lg text-muted-foreground">{description}</p> : null}

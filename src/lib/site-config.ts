@@ -147,6 +147,8 @@ export const COMPANY = {
   // Placeholder — real number pending from client. See
   // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
   phone: "+971 4 XXX XXXX",
+  // Placeholder — real WhatsApp number pending from client. See
+  // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
   whatsapp: "+971 5X XXX XXXX",
   address: "Business Bay, Dubai, United Arab Emirates",
 };
