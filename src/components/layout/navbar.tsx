@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { m, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -80,8 +81,9 @@ export function Navbar() {
       <m.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: progress }} />
       <Container>
         <nav className="flex h-20 items-center justify-between">
-          <Link href="/" className="font-display text-lg font-semibold tracking-tight text-foreground">
-            Alliance Street
+          <Link href="/" className="flex items-center gap-2.5">
+            <Image src="/brand/logo-mark.png" alt="" width={28} height={23} priority className="h-7 w-auto" />
+            <span className="font-display text-lg font-semibold tracking-tight text-foreground">Alliance Street</span>
           </Link>
 
           <div className="hidden lg:flex">
@@ -132,7 +134,10 @@ export function Navbar() {
               <SheetTitle className="sr-only">Site navigation</SheetTitle>
               <Container className="shrink-0">
                 <div className="flex h-20 items-center justify-between">
-                  <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
+                  <div className="flex items-center gap-2.5">
+                    <Image src="/brand/logo-mark.png" alt="" width={24} height={20} className="h-5 w-auto" />
+                    <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
+                  </div>
                   <SheetClose asChild>
                     <button type="button" className="text-foreground" aria-label="Close menu">
                       <X size={24} />

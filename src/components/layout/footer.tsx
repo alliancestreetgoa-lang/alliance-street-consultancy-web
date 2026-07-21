@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { COMPANY, FOOTER_LINK_COLUMNS } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
@@ -7,7 +8,10 @@ export function Footer() {
     <footer className="border-t border-glass-border bg-secondary/40">
       <Container className="grid gap-12 py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-4">
-          <span className="font-display text-lg font-semibold text-foreground">{COMPANY.name}</span>
+          <div className="flex items-center gap-2.5">
+            <Image src="/brand/logo-mark.png" alt="" width={24} height={20} className="h-5 w-auto" />
+            <span className="font-display text-lg font-semibold text-foreground">{COMPANY.name}</span>
+          </div>
           <p className="max-w-xs text-sm text-muted-foreground">
             UAE and UK company formation, tax, accounting, and advisory — built for founders who
             don&apos;t have time to get it wrong.
