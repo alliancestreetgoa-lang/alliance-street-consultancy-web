@@ -11,15 +11,17 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
     });
 
+    let frameId: number;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      frameId = requestAnimationFrame(raf);
     }
 
-    const frame = requestAnimationFrame(raf);
+    frameId = requestAnimationFrame(raf);
 
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(frameId);
       lenis.destroy();
     };
   }, []);
