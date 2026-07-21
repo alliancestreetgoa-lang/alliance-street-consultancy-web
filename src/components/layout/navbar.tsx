@@ -33,6 +33,12 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
+  function handleServicesMouseEnter() {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+      setServicesOpen(true);
+    }
+  }
+
   return (
     <header
       className={cn(
@@ -49,7 +55,7 @@ export function Navbar() {
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
-            <div className="relative" onMouseEnter={() => setServicesOpen(true)}>
+            <div className="relative" onMouseEnter={handleServicesMouseEnter}>
               <button
                 type="button"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
