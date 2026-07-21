@@ -7,10 +7,10 @@
 **Constraints/Existing:** Same stack and design system as About/Case Studies (Next.js 16.2.10 App Router, existing tokens/primitives, `BookConsultationCTA` reused on every page). All 20 service slugs, categories, titles, and one-line descriptions are already fixed by `NAV_GROUPS` in `src/lib/site-config.ts` — do not invent new slugs, reuse those exactly. `lib/utils.ts` has `cn()`; no new dependencies needed.
 **Assumptions:** No real per-service long-form copy, industry list, or pricing figures exist yet (same situation as Case Studies) — service detail pages get realistic, non-fabricated "what's included" / "who it's for" copy derived from the service's own name and existing one-line description, not invented client outcomes or numbers. Pricing page describes the engagement/quote process rather than inventing tier prices (avoids the fabricated-numbers trap explicitly called out in design.md's Recipe 1 pricing section). Knowledge Centre has no real articles yet, so it ships as a designed empty state per design.md ("empty states are designed, not defaulted") rather than fake blog posts with invented authors/dates. Contact form is client-validated only, submission not wired to a backend — same deferred-backend pattern already used by Newsletter, and will be visibly stated, not silently swallowed.
 **Done when:**
-- [ ] All 27 previously-404 routes return 200 and render with zero console errors
-- [ ] `/services` lists all 4 categories with all 20 services linked, and every mega-menu/footer service link now resolves instead of 404
-- [ ] Each service detail page shows category, title, what's included, who it's for, and ends in the shared CTA
-- [ ] At 375px width: no horizontal scroll on any new page; at 1440px: content matches the established container/grid rhythm
-- [ ] `npm run build` completes with no type or lint errors, including the 20 static params for the dynamic service route
-- [ ] Contact page's form either visibly shows a "not wired yet" state on submit, or the mailto fallback works — never silently swallows input
+- [x] All 27 previously-404 routes return 200 and render with zero console errors
+- [x] `/services` lists all 4 categories with all 20 services linked, and every mega-menu/footer service link now resolves instead of 404
+- [x] Each service detail page shows category, title, what's included, who it's for, and ends in the shared CTA
+- [x] At 375px width: no horizontal scroll on any new page; at 1440px: content matches the established container/grid rhythm
+- [x] `npm run build` completes with no type or lint errors, including the 20 static params for the dynamic service route
+- [x] Contact page's form either visibly shows a "not wired yet" state on submit, or the mailto fallback works — never silently swallows input
 **Out of scope:** Real pricing figures, real published Knowledge Centre articles, a working backend for the contact form, CMS-driven content, industry-specific landing pages beyond one `/industries` overview.
