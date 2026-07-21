@@ -75,7 +75,7 @@ export function ContactSection() {
                   aria-invalid={errors.name ? "true" : "false"}
                   aria-describedby="contact-name-error"
                   className={cn(
-                    "w-full rounded-xl border border-glass-border bg-white/5 px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none",
+                    "w-full rounded-xl border border-glass-border bg-foreground/5 px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none",
                     errors.name && "border-destructive"
                   )}
                   {...register("name")}
@@ -96,7 +96,7 @@ export function ContactSection() {
                   aria-invalid={errors.email ? "true" : "false"}
                   aria-describedby="contact-email-error"
                   className={cn(
-                    "w-full rounded-xl border border-glass-border bg-white/5 px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none",
+                    "w-full rounded-xl border border-glass-border bg-foreground/5 px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none",
                     errors.email && "border-destructive"
                   )}
                   {...register("email")}
@@ -117,7 +117,7 @@ export function ContactSection() {
                   aria-invalid={errors.message ? "true" : "false"}
                   aria-describedby="contact-message-error"
                   className={cn(
-                    "w-full rounded-xl border border-glass-border bg-white/5 px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none",
+                    "w-full rounded-xl border border-glass-border bg-foreground/5 px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none",
                     errors.message && "border-destructive"
                   )}
                   {...register("message")}

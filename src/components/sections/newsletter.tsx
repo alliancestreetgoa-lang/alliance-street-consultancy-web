@@ -60,7 +60,7 @@ export function Newsletter() {
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby="newsletter-email-error"
                 className={cn(
-                  "w-full rounded-full border border-glass-border bg-white/5 px-5 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none",
+                  "w-full rounded-full border border-glass-border bg-foreground/5 px-5 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none",
                   errors.email && "border-destructive"
                 )}
                 {...register("email")}

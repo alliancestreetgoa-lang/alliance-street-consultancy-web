@@ -16,7 +16,7 @@ type MagneticButtonProps = {
 
 const VARIANT_CLASSES: Record<NonNullable<MagneticButtonProps["variant"]>, string> = {
   primary: "bg-primary text-primary-foreground shadow-glow hover:brightness-110",
-  secondary: "border border-glass-border bg-white/5 text-foreground hover:bg-white/10",
+  secondary: "border border-glass-border bg-foreground/5 text-foreground hover:bg-foreground/10",
   ghost: "text-foreground hover:text-primary",
 };
 
