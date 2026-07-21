@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import { NAV_GROUPS, PRIMARY_NAV } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { useLenis } from "@/components/providers/smooth-scroll-provider";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -16,6 +17,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
+  const lenis = useLenis();
 
   useEffect(() => {
     function onScroll() {
@@ -27,11 +29,19 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
     document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (mobileOpen) {
+      lenis?.stop();
+    } else {
+      lenis?.start();
+    }
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
+      lenis?.start();
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, lenis]);
 
   function handleServicesMouseEnter() {
     if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
@@ -136,16 +146,18 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-xl lg:hidden"
           >
-            <Container>
+            <Container className="shrink-0">
               <div className="flex h-20 items-center justify-between">
                 <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
                 <button type="button" className="text-foreground" onClick={() => setMobileOpen(false)} aria-label="Close menu">
                   <X size={24} />
                 </button>
               </div>
-              <div className="flex flex-col gap-6 py-8">
+            </Container>
+            <Container className="flex-1 overflow-y-auto">
+              <div className="flex flex-col gap-6 pb-8">
                 {NAV_GROUPS.map((group) => (
                   <div key={group.title} className="flex flex-col gap-3">
                     <span className="text-xs font-semibold uppercase tracking-widest text-primary">{group.title}</span>
