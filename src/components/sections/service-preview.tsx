@@ -32,7 +32,7 @@ export function ServicePreview() {
     <section className="py-24 sm:py-32">
       <Container className="flex flex-col gap-16">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
-          <SectionHeading eyebrow="Services" title="Where clients start with us." />
+          <SectionHeading eyebrow="Services" title="Where clients start with us." align="center" />
           <MagneticButton href="/services" variant="ghost">
             View All Services
           </MagneticButton>

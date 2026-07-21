@@ -50,9 +50,15 @@ export function Newsletter() {
             noValidate
           >
             <div className="flex-1">
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
               <input
+                id="newsletter-email"
                 type="email"
                 placeholder="you@company.com"
+                aria-invalid={errors.email ? "true" : "false"}
+                aria-describedby="newsletter-email-error"
                 className={cn(
                   "w-full rounded-full border border-glass-border bg-white/5 px-5 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none",
                   errors.email && "border-destructive"
@@ -60,7 +66,13 @@ export function Newsletter() {
                 {...register("email")}
               />
               {errors.email ? (
-                <p className="mt-2 text-left text-xs text-destructive">{errors.email.message}</p>
+                <p
+                  id="newsletter-email-error"
+                  role="alert"
+                  className="mt-2 text-left text-xs text-destructive"
+                >
+                  {errors.email.message}
+                </p>
               ) : null}
             </div>
             <MagneticButton variant="primary" onClick={handleSubmit(onSubmit)} className="shrink-0">
