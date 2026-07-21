@@ -42,7 +42,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
   return (
     <div ref={ref} aria-hidden className={cn("absolute inset-0 -z-10 overflow-hidden", className)}>
       <m.div
-        className="absolute -left-1/4 -top-1/4 h-[60vw] w-[60vw] rounded-full bg-primary/25 blur-[120px]"
+        className="absolute -left-1/4 -top-1/4 h-[60vw] w-[60vw] rounded-full bg-primary/8 blur-[120px]"
         animate={shouldReduceMotion ? undefined : { x: [0, 40, -20, 0], y: [0, -30, 20, 0] }}
         transition={{
           duration: shouldReduceMotion ? 0 : 22,
@@ -51,7 +51,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
         }}
       />
       <m.div
-        className="absolute -bottom-1/4 -right-1/4 h-[50vw] w-[50vw] rounded-full bg-primary/15 blur-[140px]"
+        className="absolute -bottom-1/4 -right-1/4 h-[50vw] w-[50vw] rounded-full bg-primary/6 blur-[140px]"
         animate={shouldReduceMotion ? undefined : { x: [0, -30, 20, 0], y: [0, 20, -30, 0] }}
         transition={{
           duration: shouldReduceMotion ? 0 : 26,
@@ -63,7 +63,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
         className="absolute inset-0 transition-opacity duration-300"
         style={{
           opacity: glow.active ? 1 : 0,
-          background: `radial-gradient(600px circle at ${glow.x}% ${glow.y}%, rgba(193,18,31,0.18), transparent 70%)`,
+          background: `radial-gradient(600px circle at ${glow.x}% ${glow.y}%, rgba(193,18,31,0.08), transparent 70%)`,
         }}
       />
     </div>
