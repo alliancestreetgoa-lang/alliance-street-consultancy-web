@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { NAV_GROUPS, PRIMARY_NAV, type NavLink } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
@@ -17,6 +17,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useLenis } from "@/components/providers/smooth-scroll-provider";
 import { cn } from "@/lib/utils";
 
@@ -121,64 +122,56 @@ export function Navbar() {
             <MagneticButton href="/book-consultation">Book Consultation</MagneticButton>
           </div>
 
-          <button
-            type="button"
-            className="text-foreground lg:hidden"
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu size={24} />
-          </button>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button type="button" className="text-foreground lg:hidden" aria-label="Open menu">
+                <Menu size={24} />
+              </button>
+            </SheetTrigger>
+            <SheetContent className="lg:hidden">
+              <SheetTitle className="sr-only">Site navigation</SheetTitle>
+              <Container className="shrink-0">
+                <div className="flex h-20 items-center justify-between">
+                  <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
+                  <SheetClose asChild>
+                    <button type="button" className="text-foreground" aria-label="Close menu">
+                      <X size={24} />
+                    </button>
+                  </SheetClose>
+                </div>
+              </Container>
+              <Container className="flex-1 overflow-y-auto">
+                <div className="flex flex-col gap-6 pb-8">
+                  {NAV_GROUPS.map((group) => (
+                    <div key={group.title} className="flex flex-col gap-3">
+                      <span className="text-xs font-semibold uppercase tracking-widest text-primary">{group.title}</span>
+                      <ul className="flex flex-col gap-2">
+                        {group.links.map((link) => (
+                          <li key={link.href}>
+                            <Link href={link.href} className="text-base text-foreground/90" onClick={() => setMobileOpen(false)}>
+                              {link.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                  <div className="flex flex-col gap-3 border-t border-glass-border pt-6">
+                    {PRIMARY_NAV.map((link) => (
+                      <Link key={link.href} href={link.href} className="text-base text-foreground/90" onClick={() => setMobileOpen(false)}>
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                  <MagneticButton href="/book-consultation" onClick={() => setMobileOpen(false)}>
+                    Book Consultation
+                  </MagneticButton>
+                </div>
+              </Container>
+            </SheetContent>
+          </Sheet>
         </nav>
       </Container>
-
-      <AnimatePresence>
-        {mobileOpen ? (
-          <m.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-xl lg:hidden"
-          >
-            <Container className="shrink-0">
-              <div className="flex h-20 items-center justify-between">
-                <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
-                <button type="button" className="text-foreground" onClick={() => setMobileOpen(false)} aria-label="Close menu">
-                  <X size={24} />
-                </button>
-              </div>
-            </Container>
-            <Container className="flex-1 overflow-y-auto">
-              <div className="flex flex-col gap-6 pb-8">
-                {NAV_GROUPS.map((group) => (
-                  <div key={group.title} className="flex flex-col gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-primary">{group.title}</span>
-                    <ul className="flex flex-col gap-2">
-                      {group.links.map((link) => (
-                        <li key={link.href}>
-                          <Link href={link.href} className="text-base text-foreground/90" onClick={() => setMobileOpen(false)}>
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-                <div className="flex flex-col gap-3 border-t border-glass-border pt-6">
-                  {PRIMARY_NAV.map((link) => (
-                    <Link key={link.href} href={link.href} className="text-base text-foreground/90" onClick={() => setMobileOpen(false)}>
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-                <MagneticButton href="/book-consultation" onClick={() => setMobileOpen(false)}>
-                  Book Consultation
-                </MagneticButton>
-              </div>
-            </Container>
-          </m.div>
-        ) : null}
-      </AnimatePresence>
     </header>
   );
 }
