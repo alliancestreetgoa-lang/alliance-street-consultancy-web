@@ -39,7 +39,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --shadow-glow: 0 0 60px -12px rgba(193, 18, 31, 0.55);
-  --text-hero: clamp(2.75rem, 1rem + 6vw, 6.5rem);
+  --text-hero: clamp(2.5rem, 1rem + 5vw, 4.5rem);
   --text-hero--line-height: 1.02;
   --text-hero--letter-spacing: -0.02em;
 }

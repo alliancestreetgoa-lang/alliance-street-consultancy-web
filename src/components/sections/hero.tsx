@@ -12,13 +12,13 @@ export function Hero() {
   const words = HEADLINE.split(" ");
 
   return (
-    <section className="relative overflow-hidden py-32 sm:py-40">
+    <section className="relative overflow-hidden py-20 sm:py-28">
       <AuroraBackground />
-      <Container className="relative z-10 flex flex-col items-center gap-8 text-center">
+      <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
         <Badge className="max-w-[calc(100vw-3rem)] text-center">
           UAE & UK Company Formation, Tax & Advisory
         </Badge>
-        <h1 className="max-w-4xl text-hero font-display font-medium tracking-tight text-foreground">
+        <h1 className="max-w-5xl text-hero font-display font-medium tracking-tight text-foreground">
           {words.map((word, index) => (
             <m.span
               key={`${word}-${index}`}
