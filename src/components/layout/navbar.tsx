@@ -54,12 +54,22 @@ export function Navbar() {
                 type="button"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 aria-expanded={servicesOpen}
+                aria-haspopup="true"
+                aria-controls="services-menu"
+                onClick={() => setServicesOpen((open) => !open)}
+                onFocus={() => setServicesOpen(true)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    setServicesOpen(false);
+                  }
+                }}
               >
                 Services
               </button>
               <AnimatePresence>
                 {servicesOpen ? (
                   <motion.div
+                    id="services-menu"
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
