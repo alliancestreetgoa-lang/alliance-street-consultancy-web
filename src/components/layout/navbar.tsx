@@ -5,15 +5,41 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, m, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { NAV_GROUPS, PRIMARY_NAV } from "@/lib/site-config";
+import { NAV_GROUPS, PRIMARY_NAV, type NavLink } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import { useLenis } from "@/components/providers/smooth-scroll-provider";
 import { cn } from "@/lib/utils";
 
+function ServiceLink({ link }: { link: NavLink }) {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <Link
+          href={link.href}
+          className="block rounded-xl p-2.5 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none"
+        >
+          <span className="block text-sm font-medium text-foreground">{link.label}</span>
+          {link.description ? (
+            <span className="mt-1 block text-xs leading-snug text-muted-foreground">{link.description}</span>
+          ) : null}
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
@@ -43,19 +69,12 @@ export function Navbar() {
     };
   }, [mobileOpen, lenis]);
 
-  function handleServicesMouseEnter() {
-    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
-      setServicesOpen(true);
-    }
-  }
-
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
         scrolled ? "border-b border-glass-border bg-background/70 backdrop-blur-xl" : "bg-transparent"
       )}
-      onMouseLeave={() => setServicesOpen(false)}
     >
       <m.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: progress }} />
       <Container>
@@ -64,65 +83,38 @@ export function Navbar() {
             Alliance Street
           </Link>
 
-          <div className="hidden items-center gap-8 lg:flex">
-            <div className="relative" onMouseEnter={handleServicesMouseEnter}>
-              <button
-                type="button"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                aria-expanded={servicesOpen}
-                aria-haspopup="true"
-                aria-controls="services-menu"
-                onClick={() => setServicesOpen((open) => !open)}
-                onKeyDown={(event) => {
-                  if (event.key === "Escape") {
-                    setServicesOpen(false);
-                  }
-                }}
-              >
-                Services
-              </button>
-              <AnimatePresence>
-                {servicesOpen ? (
-                  <m.div
-                    id="services-menu"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute left-1/2 top-full pt-4 w-[720px] -translate-x-1/2 rounded-2xl border border-glass-border bg-secondary/95 p-8 shadow-2xl backdrop-blur-xl"
-                  >
-                    <div className="grid grid-cols-4 gap-6">
+          <div className="hidden lg:flex">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[760px] grid-cols-4 gap-6 p-8">
                       {NAV_GROUPS.map((group) => (
                         <div key={group.title} className="flex flex-col gap-3">
                           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
                             {group.title}
                           </span>
-                          <ul className="flex flex-col gap-2">
+                          <ul className="flex flex-col gap-1">
                             {group.links.map((link) => (
-                              <li key={link.href}>
-                                <Link href={link.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-                                  {link.label}
-                                </Link>
-                              </li>
+                              <ServiceLink key={link.href} link={link} />
                             ))}
                           </ul>
                         </div>
                       ))}
                     </div>
-                  </m.div>
-                ) : null}
-              </AnimatePresence>
-            </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
 
-            {PRIMARY_NAV.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            ))}
+                {PRIMARY_NAV.map((link) => (
+                  <NavigationMenuItem key={link.href}>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                      <Link href={link.href}>{link.label}</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
           <div className="hidden lg:block">
