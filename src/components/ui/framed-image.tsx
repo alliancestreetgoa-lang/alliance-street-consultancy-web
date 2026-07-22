@@ -19,7 +19,13 @@ export function FramedImage({
   className,
 }: FramedImageProps) {
   return (
-    <div className={cn("relative w-full overflow-hidden rounded-2xl border border-glass-border", aspectClassName, className)}>
+    <div
+      className={cn(
+        "relative w-full overflow-hidden rounded-2xl border border-glass-border shadow-card transition-shadow duration-300 hover:shadow-card-hover",
+        aspectClassName,
+        className
+      )}
+    >
       <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
       {caption ? (
         <div className="absolute bottom-0 left-0 p-5">

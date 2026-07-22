@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Container } from "@/components/ui/container";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { Card } from "@/components/ui/card";
+import { FramedImage } from "@/components/ui/framed-image";
 import { COMPANY } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -53,23 +54,16 @@ export function ContactSection() {
               WhatsApp: {COMPANY.whatsapp} <span className="text-xs text-primary/80">(placeholder)</span>
             </span>
           </div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-glass-border">
-            <Image
-              src="/brand/dubai-skyline.png"
-              alt="Dubai skyline including the Burj Khalifa and Burj Al Arab"
-              fill
-              sizes="(min-width: 1024px) 420px, 100vw"
-              className="object-cover"
-            />
-            <div className="absolute bottom-0 left-0 p-5">
-              <span className="text-xs font-semibold uppercase tracking-widest text-white/80">
-                Business Bay, Dubai
-              </span>
-            </div>
-          </div>
+          <FramedImage
+            src="/brand/dubai-skyline.png"
+            alt="Dubai skyline including the Burj Khalifa and Burj Al Arab"
+            caption="Business Bay, Dubai"
+            aspectClassName="aspect-[4/3]"
+            sizes="(min-width: 1024px) 420px, 100vw"
+          />
         </div>
 
-        <div className="rounded-2xl border border-glass-border bg-secondary/40 p-8">
+        <Card hover={false}>
           {submitted ? (
             <p className="text-primary">
               Thanks — this form isn&apos;t wired to send yet. Email{" "}
@@ -148,7 +142,7 @@ export function ContactSection() {
               </MagneticButton>
             </form>
           )}
-        </div>
+        </Card>
       </Container>
     </section>
   );

@@ -1,5 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Card } from "@/components/ui/card";
 
 const FACTORS = [
   {
@@ -32,10 +33,10 @@ export function PricingFactors() {
         />
         <div className="grid gap-8 sm:grid-cols-2">
           {FACTORS.map((factor) => (
-            <div key={factor.title} className="rounded-2xl border border-glass-border bg-secondary/40 p-8">
+            <Card key={factor.title}>
               <h3 className="font-display text-xl font-medium text-foreground">{factor.title}</h3>
               <p className="mt-3 text-muted-foreground">{factor.description}</p>
-            </div>
+            </Card>
           ))}
         </div>
         <p className="mx-auto max-w-2xl text-center text-muted-foreground">

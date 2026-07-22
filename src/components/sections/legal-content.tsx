@@ -14,7 +14,7 @@ export function LegalContent({ lastUpdated, sections }: LegalContentProps) {
   return (
     <section className="py-24 sm:py-32">
       <Container className="mx-auto flex max-w-3xl flex-col gap-12">
-        <div className="rounded-xl border border-glass-border bg-secondary/40 px-6 py-4 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-glass-border bg-secondary px-6 py-4 text-sm text-muted-foreground shadow-card">
           Last updated {lastUpdated}. This is placeholder legal copy pending review by qualified
           counsel — do not treat it as final until reviewed.
         </div>

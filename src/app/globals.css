@@ -39,6 +39,10 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --shadow-glow: 0 0 60px -12px rgba(193, 18, 31, 0.55);
+  --shadow-card: 0 1px 2px rgba(23, 19, 16, 0.04), 0 12px 32px -12px rgba(23, 19, 16, 0.12);
+  --shadow-card-hover: 0 2px 4px rgba(23, 19, 16, 0.05), 0 28px 56px -16px rgba(193, 18, 31, 0.18);
+  --shadow-button: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 10px 28px -8px rgba(193, 18, 31, 0.55);
+  --shadow-button-hover: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 16px 36px -8px rgba(193, 18, 31, 0.68);
   --text-hero: clamp(2.5rem, 1rem + 5vw, 4.5rem);
   --text-hero--line-height: 1.02;
   --text-hero--letter-spacing: -0.02em;

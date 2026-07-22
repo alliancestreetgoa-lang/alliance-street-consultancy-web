@@ -7,6 +7,7 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { FramedImage } from "@/components/ui/framed-image";
+import { Card } from "@/components/ui/card";
 import { GROUP_IMAGES, type Service } from "@/lib/services-data";
 
 type ServiceDetailProps = {
@@ -61,12 +62,12 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
               aspectClassName={GROUP_IMAGES[service.group].aspectClassName}
               sizes="(min-width: 1024px) 420px, 100vw"
             />
-            <div className="flex flex-col gap-3 rounded-2xl border border-glass-border bg-secondary/40 p-8">
+            <Card hover={false} className="flex flex-col gap-3">
               <h3 className="font-display text-lg font-medium text-foreground">Who This Is For</h3>
               <p className="text-sm text-muted-foreground">{service.whoFor}</p>
-            </div>
+            </Card>
             {related.length > 0 ? (
-              <div className="flex flex-col gap-3 rounded-2xl border border-glass-border bg-secondary/40 p-8">
+              <Card hover={false} className="flex flex-col gap-3">
                 <h3 className="font-display text-lg font-medium text-foreground">Related Services</h3>
                 <ul className="flex flex-col gap-2">
                   {related.map((item) => (
@@ -80,7 +81,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Card>
             ) : null}
           </div>
         </Container>

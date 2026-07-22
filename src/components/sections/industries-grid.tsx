@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/container";
+import { Card } from "@/components/ui/card";
 
 const INDUSTRIES = [
   {
@@ -38,10 +39,10 @@ export function IndustriesGrid() {
     <section className="py-24 sm:py-32">
       <Container className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {INDUSTRIES.map((industry) => (
-          <div key={industry.title} className="flex flex-col gap-4 rounded-2xl border border-glass-border bg-secondary/40 p-8">
+          <Card key={industry.title} className="flex flex-col gap-4">
             <h3 className="font-display text-xl font-medium text-foreground">{industry.title}</h3>
             <p className="text-sm text-muted-foreground">{industry.description}</p>
-          </div>
+          </Card>
         ))}
       </Container>
     </section>

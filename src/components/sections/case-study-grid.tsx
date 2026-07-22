@@ -1,5 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Card } from "@/components/ui/card";
 
 const CASE_STUDIES = [
   {
@@ -66,10 +67,7 @@ export function CaseStudyGrid() {
         />
         <div className="grid gap-8 lg:grid-cols-2">
           {CASE_STUDIES.map((study) => (
-            <div
-              key={study.title}
-              className="flex flex-col gap-6 rounded-2xl border border-glass-border bg-secondary/40 p-8"
-            >
+            <Card key={study.title} className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <span className="text-xs font-semibold uppercase tracking-widest text-primary">
                   {study.category}
@@ -96,7 +94,7 @@ export function CaseStudyGrid() {
                   <dd className="mt-1 text-sm text-foreground/90">{study.outcome}</dd>
                 </div>
               </dl>
-            </div>
+            </Card>
           ))}
         </div>
       </Container>

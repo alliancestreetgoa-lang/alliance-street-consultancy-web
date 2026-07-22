@@ -3,6 +3,8 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { cardClassName, cardHoverClassName } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const SERVICES = [
   {
@@ -42,7 +44,7 @@ export function ServicePreview() {
             <Link
               key={service.href}
               href={service.href}
-              className="group flex flex-col justify-between gap-6 rounded-2xl border border-glass-border bg-secondary/40 p-8 transition-colors hover:bg-secondary/70"
+              className={cn(cardClassName, cardHoverClassName, "group flex flex-col justify-between gap-6")}
             >
               <div>
                 <h3 className="font-display text-xl font-medium text-foreground">{service.title}</h3>

@@ -15,8 +15,10 @@ type MagneticButtonProps = {
 };
 
 const VARIANT_CLASSES: Record<NonNullable<MagneticButtonProps["variant"]>, string> = {
-  primary: "bg-primary text-primary-foreground shadow-glow hover:brightness-110",
-  secondary: "border border-glass-border bg-foreground/5 text-foreground hover:bg-foreground/10",
+  primary:
+    "bg-gradient-to-b from-primary to-[#9e0f1a] text-primary-foreground shadow-button hover:shadow-button-hover hover:brightness-105",
+  secondary:
+    "border border-glass-border bg-secondary text-foreground shadow-card hover:border-primary/25 hover:shadow-card-hover",
   ghost: "text-foreground hover:text-primary",
 };
 
@@ -51,12 +53,18 @@ export function MagneticButton({
       whileTap={{ scale: 0.94 }}
       transition={{ type: "spring", stiffness: 300, damping: 20, mass: 0.5 }}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-medium tracking-tight transition-colors",
+        "group relative inline-flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full px-7 py-3 text-sm font-medium tracking-tight transition-[colors,box-shadow,border-color] duration-300",
         VARIANT_CLASSES[variant],
         className
       )}
     >
-      {children}
+      <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
+      {variant !== "ghost" ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+        />
+      ) : null}
     </m.span>
   );
 

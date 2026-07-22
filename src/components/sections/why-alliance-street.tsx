@@ -1,5 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Card } from "@/components/ui/card";
 
 const DIFFERENTIATORS = [
   {
@@ -34,10 +35,10 @@ export function WhyAllianceStreet() {
         />
         <div className="grid gap-8 sm:grid-cols-2">
           {DIFFERENTIATORS.map((item) => (
-            <div key={item.title} className="rounded-2xl border border-glass-border bg-secondary/40 p-8">
+            <Card key={item.title}>
               <h3 className="font-display text-xl font-medium text-foreground">{item.title}</h3>
               <p className="mt-3 text-muted-foreground">{item.description}</p>
-            </div>
+            </Card>
           ))}
         </div>
       </Container>
