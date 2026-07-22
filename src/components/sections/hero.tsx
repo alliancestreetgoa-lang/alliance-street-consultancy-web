@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { m } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { Container } from "@/components/ui/container";
@@ -14,6 +15,10 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden py-20 sm:py-28">
       <AuroraBackground />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 z-0 h-20 overflow-hidden sm:h-28">
+        <Image src="/brand/dubai-skyline.png" alt="" fill sizes="100vw" className="object-cover object-bottom" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background to-transparent" />
+      </div>
       <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
         <Badge className="max-w-[calc(100vw-3rem)] text-center">
           UAE & UK Company Formation, Tax & Advisory
