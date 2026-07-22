@@ -8,6 +8,29 @@ export type Service = {
   whoFor: string;
 };
 
+export const GROUP_IMAGES: Record<Service["group"], { src: string; alt: string; caption: string }> = {
+  "UAE Setup": {
+    src: "/brand/dubai-skyline-photo.jpg",
+    alt: "Dubai skyline at sunset including the Burj Khalifa",
+    caption: "Dubai, UAE",
+  },
+  "UAE Tax & Compliance": {
+    src: "/brand/finance-chart.jpg",
+    alt: "Financial data on a tablet screen",
+    caption: "Filing & Compliance",
+  },
+  "UK Services": {
+    src: "/brand/architecture.jpg",
+    alt: "Modern corporate office building",
+    caption: "UK Services",
+  },
+  Advisory: {
+    src: "/brand/consultant.jpg",
+    alt: "Alliance Street advisor",
+    caption: "Advisory",
+  },
+};
+
 export const SERVICES: Service[] = [
   {
     category: "uae",

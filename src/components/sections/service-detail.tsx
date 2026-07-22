@@ -6,7 +6,8 @@ import Link from "next/link";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
-import type { Service } from "@/lib/services-data";
+import { FramedImage } from "@/components/ui/framed-image";
+import { GROUP_IMAGES, type Service } from "@/lib/services-data";
 
 type ServiceDetailProps = {
   service: Service;
@@ -53,6 +54,13 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
             </ul>
           </div>
           <div className="flex flex-col gap-8">
+            <FramedImage
+              src={GROUP_IMAGES[service.group].src}
+              alt={GROUP_IMAGES[service.group].alt}
+              caption={GROUP_IMAGES[service.group].caption}
+              aspectClassName="aspect-[4/3]"
+              sizes="(min-width: 1024px) 420px, 100vw"
+            />
             <div className="flex flex-col gap-3 rounded-2xl border border-glass-border bg-secondary/40 p-8">
               <h3 className="font-display text-lg font-medium text-foreground">Who This Is For</h3>
               <p className="text-sm text-muted-foreground">{service.whoFor}</p>
