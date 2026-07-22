@@ -13,11 +13,11 @@ export function Hero() {
   const words = HEADLINE.split(" ");
 
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28">
+    <section className="relative overflow-hidden pt-20 pb-40 sm:pt-28 sm:pb-56">
       <AuroraBackground />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 z-0 h-20 overflow-hidden sm:h-28">
+      <div aria-hidden className="absolute inset-x-0 bottom-0 z-0 h-40 overflow-hidden sm:h-56">
         <Image src="/brand/dubai-skyline.png" alt="" fill sizes="100vw" className="object-cover object-bottom" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-24" />
       </div>
       <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
         <Badge className="max-w-[calc(100vw-3rem)] text-center">
