@@ -82,7 +82,15 @@ export function Navbar() {
       <Container>
         <nav className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/brand/logo-mark.png" alt="" width={28} height={23} priority className="h-7 w-auto" />
+            <Image
+              src="/brand/logo-mark.png"
+              alt=""
+              width={28}
+              height={23}
+              priority
+              style={{ width: "auto" }}
+              className="h-7"
+            />
             <span className="font-display text-lg font-semibold tracking-tight text-foreground">Alliance Street</span>
           </Link>
 
@@ -135,7 +143,14 @@ export function Navbar() {
               <Container className="shrink-0">
                 <div className="flex h-20 items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <Image src="/brand/logo-mark.png" alt="" width={24} height={20} className="h-5 w-auto" />
+                    <Image
+                      src="/brand/logo-mark.png"
+                      alt=""
+                      width={24}
+                      height={20}
+                      style={{ width: "auto" }}
+                      className="h-5"
+                    />
                     <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
                   </div>
                   <SheetClose asChild>

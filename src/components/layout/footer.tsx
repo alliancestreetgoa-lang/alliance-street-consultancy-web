@@ -9,7 +9,14 @@ export function Footer() {
       <Container className="grid gap-12 py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2.5">
-            <Image src="/brand/logo-mark.png" alt="" width={24} height={20} className="h-5 w-auto" />
+            <Image
+              src="/brand/logo-mark.png"
+              alt=""
+              width={24}
+              height={20}
+              style={{ width: "auto" }}
+              className="h-5"
+            />
             <span className="font-display text-lg font-semibold text-foreground">{COMPANY.name}</span>
           </div>
           <p className="max-w-xs text-sm text-muted-foreground">

@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/container";
+import { FramedImage } from "@/components/ui/framed-image";
 
 const PRINCIPLES = [
   {
@@ -39,13 +40,21 @@ export function AboutStory() {
             the paperwork is filed to handle the tax, accounting, and questions that come after.
           </p>
         </div>
-        <div className="flex flex-col gap-8 rounded-2xl border border-glass-border bg-secondary/40 p-8">
-          {PRINCIPLES.map((principle) => (
-            <div key={principle.title} className="flex flex-col gap-2">
-              <h3 className="font-display text-lg font-medium text-foreground">{principle.title}</h3>
-              <p className="text-sm text-muted-foreground">{principle.description}</p>
-            </div>
-          ))}
+        <div className="flex flex-col gap-8">
+          <FramedImage
+            src="/brand/consultant.jpg"
+            alt="Alliance Street advisor"
+            aspectClassName="aspect-[4/3]"
+            sizes="(min-width: 1024px) 420px, 100vw"
+          />
+          <div className="flex flex-col gap-8 rounded-2xl border border-glass-border bg-secondary/40 p-8">
+            {PRINCIPLES.map((principle) => (
+              <div key={principle.title} className="flex flex-col gap-2">
+                <h3 className="font-display text-lg font-medium text-foreground">{principle.title}</h3>
+                <p className="text-sm text-muted-foreground">{principle.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </Container>
     </section>
