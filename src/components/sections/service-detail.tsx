@@ -58,7 +58,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
               src={GROUP_IMAGES[service.group].src}
               alt={GROUP_IMAGES[service.group].alt}
               caption={GROUP_IMAGES[service.group].caption}
-              aspectClassName="aspect-[4/3]"
+              aspectClassName={GROUP_IMAGES[service.group].aspectClassName}
               sizes="(min-width: 1024px) 420px, 100vw"
             />
             <div className="flex flex-col gap-3 rounded-2xl border border-glass-border bg-secondary/40 p-8">

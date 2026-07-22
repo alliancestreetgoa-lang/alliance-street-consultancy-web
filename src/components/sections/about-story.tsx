@@ -42,9 +42,9 @@ export function AboutStory() {
         </div>
         <div className="flex flex-col gap-8">
           <FramedImage
-            src="/brand/consultant.jpg"
+            src="/brand/advisor-portrait.png"
             alt="Alliance Street advisor"
-            aspectClassName="aspect-[4/3]"
+            aspectClassName="aspect-[3/4]"
             sizes="(min-width: 1024px) 420px, 100vw"
           />
           <div className="flex flex-col gap-8 rounded-2xl border border-glass-border bg-secondary/40 p-8">
