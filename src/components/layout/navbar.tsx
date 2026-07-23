@@ -19,6 +19,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { asset } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
 
 function ServiceLink({ link }: { link: NavLink }) {
@@ -85,7 +86,7 @@ export function Navbar() {
         <nav className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <Image
-              src="/brand/logo-mark.png"
+              src={asset("/brand/logo-mark.png")}
               alt=""
               width={34}
               height={28}
@@ -145,7 +146,7 @@ export function Navbar() {
                 <div className="flex h-20 items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <Image
-                      src="/brand/logo-mark.png"
+                      src={asset("/brand/logo-mark.png")}
                       alt=""
                       width={24}
                       height={20}

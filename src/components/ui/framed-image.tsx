@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
 
 type FramedImageProps = {
@@ -26,7 +27,7 @@ export function FramedImage({
         className
       )}
     >
-      <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+      <Image src={asset(src)} alt={alt} fill sizes={sizes} className="object-cover" />
       {caption ? (
         <div className="absolute bottom-0 left-0 p-5">
           <span className="text-xs font-semibold uppercase tracking-widest text-white/80">{caption}</span>
