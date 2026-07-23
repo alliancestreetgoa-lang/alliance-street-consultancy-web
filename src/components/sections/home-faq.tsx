@@ -6,6 +6,8 @@ import {
 } from "@/components/ui/accordion";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const FAQS = [
   {
@@ -42,23 +44,28 @@ const FAQS = [
 
 export function HomeFAQ() {
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="mx-auto flex max-w-3xl flex-col gap-16">
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <AmbientGlow className="opacity-30" />
+      <Container className="relative z-10 mx-auto flex max-w-3xl flex-col gap-16">
         <SectionHeading
           eyebrow="FAQ"
           title="Common questions, answered plainly."
           align="center"
           className="mx-auto"
         />
-        <Accordion type="single" collapsible className="w-full">
-          {FAQS.map((faq, index) => (
-            <AccordionItem key={faq.question} value={`item-${index}`}>
-              <AccordionTrigger className="text-left font-display text-lg text-foreground">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
-            </AccordionItem>
-          ))}
+        <Accordion type="single" collapsible className="w-full" asChild>
+          <Stagger>
+            {FAQS.map((faq, index) => (
+              <StaggerItem key={faq.question}>
+                <AccordionItem value={`item-${index}`}>
+                  <AccordionTrigger className="text-left font-display text-lg text-foreground">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+                </AccordionItem>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </Accordion>
       </Container>
     </section>

@@ -19,7 +19,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { useLenis } from "@/components/providers/smooth-scroll-provider";
 import { cn } from "@/lib/utils";
 
 function ServiceLink({ link }: { link: NavLink }) {
@@ -45,7 +44,6 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
-  const lenis = useLenis();
 
   useEffect(() => {
     function onScroll() {
@@ -56,20 +54,24 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Safety net: Radix's own scroll-lock cleanup runs on an animation-frame
+  // timer that browsers can indefinitely defer while a tab is backgrounded
+  // (e.g. the user switches apps mid-close on mobile). If that happens, the
+  // lock can outlive the closed menu. This never sets the lock — it only
+  // clears a stuck one after the close transition has had time to finish.
   useEffect(() => {
-    document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    if (mobileOpen) {
-      lenis?.stop();
-    } else {
-      lenis?.start();
-    }
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-      lenis?.start();
-    };
-  }, [mobileOpen, lenis]);
+    if (mobileOpen) return;
+    const timer = setTimeout(() => {
+      const stillOpen = document.querySelector('[data-slot="sheet-content"][data-state="open"]');
+      if (!stillOpen && document.body.hasAttribute("data-scroll-locked")) {
+        document.body.removeAttribute("data-scroll-locked");
+        document.body.style.removeProperty("overflow");
+        document.body.style.removeProperty("padding-right");
+        document.body.style.removeProperty("margin-right");
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [mobileOpen]);
 
   return (
     <header
@@ -85,11 +87,10 @@ export function Navbar() {
             <Image
               src="/brand/logo-mark.png"
               alt=""
-              width={28}
-              height={23}
+              width={34}
+              height={28}
               priority
-              style={{ width: "auto" }}
-              className="h-7"
+              style={{ width: "34px", height: "28px" }}
             />
             <span className="font-display text-lg font-semibold tracking-tight text-foreground">Alliance Street</span>
           </Link>
@@ -148,8 +149,7 @@ export function Navbar() {
                       alt=""
                       width={24}
                       height={20}
-                      style={{ width: "auto" }}
-                      className="h-5"
+                      style={{ width: "24px", height: "20px" }}
                     />
                     <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
                   </div>

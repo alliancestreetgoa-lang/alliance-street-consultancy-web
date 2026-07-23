@@ -1,6 +1,8 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const CASE_STUDIES = [
   {
@@ -57,17 +59,19 @@ const CASE_STUDIES = [
 
 export function CaseStudyGrid() {
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="flex flex-col gap-16">
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <AmbientGlow className="opacity-30" />
+      <Container className="relative z-10 flex flex-col gap-16">
         <SectionHeading
           eyebrow="Scenarios"
           title="Six situations we handle often."
           align="center"
           className="mx-auto"
         />
-        <div className="grid gap-8 lg:grid-cols-2">
+        <Stagger className="grid gap-8 lg:grid-cols-2">
           {CASE_STUDIES.map((study) => (
-            <Card key={study.title} className="flex flex-col gap-6">
+            <StaggerItem key={study.title}>
+            <Card variant="glass" className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <span className="text-xs font-semibold uppercase tracking-widest text-primary">
                   {study.category}
@@ -95,8 +99,9 @@ export function CaseStudyGrid() {
                 </div>
               </dl>
             </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Container>
     </section>
   );

@@ -8,6 +8,8 @@ import { Container } from "@/components/ui/container";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Card } from "@/components/ui/card";
 import { FramedImage } from "@/components/ui/framed-image";
+import { Reveal } from "@/components/ui/scroll-reveal";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { COMPANY } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -36,9 +38,10 @@ export function ContactSection() {
   }
 
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
-        <div className="flex flex-col gap-8">
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <AmbientGlow className="opacity-30" />
+      <Container className="relative z-10 grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
+        <Reveal className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">
             <span className="text-sm font-medium uppercase tracking-widest text-primary">Reach Us Directly</span>
             <p className="text-muted-foreground">{COMPANY.address}</p>
@@ -61,9 +64,10 @@ export function ContactSection() {
             aspectClassName="aspect-[4/3]"
             sizes="(min-width: 1024px) 420px, 100vw"
           />
-        </div>
+        </Reveal>
 
-        <Card hover={false}>
+        <Reveal delay={0.1}>
+        <Card variant="glass" hover={false}>
           {submitted ? (
             <p className="text-primary">
               Thanks — this form isn&apos;t wired to send yet. Email{" "}
@@ -143,6 +147,7 @@ export function ContactSection() {
             </form>
           )}
         </Card>
+        </Reveal>
       </Container>
     </section>
   );

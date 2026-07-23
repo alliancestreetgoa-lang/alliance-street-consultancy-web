@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SERVICES } from "@/lib/services-data";
 
 const GROUPS: { title: string; category: string }[] = [
@@ -12,10 +14,12 @@ const GROUPS: { title: string; category: string }[] = [
 
 export function ServicesIndex() {
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="grid gap-16 sm:grid-cols-2">
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <AmbientGlow className="opacity-30" />
+      <Container className="relative z-10">
+        <Stagger className="grid gap-16 sm:grid-cols-2">
         {GROUPS.map((group) => (
-          <div key={group.title} className="flex flex-col gap-6">
+          <StaggerItem key={group.title} className="flex flex-col gap-6">
             <span className="text-sm font-medium uppercase tracking-widest text-primary">{group.title}</span>
             <ul className="flex flex-col gap-1">
               {SERVICES.filter((service) => service.group === group.title).map((service) => (
@@ -36,8 +40,9 @@ export function ServicesIndex() {
                 </li>
               ))}
             </ul>
-          </div>
+          </StaggerItem>
         ))}
+        </Stagger>
       </Container>
     </section>
   );

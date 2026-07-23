@@ -49,6 +49,7 @@ export default function StyleGuidePage() {
           <MagneticButton variant="primary">Primary CTA</MagneticButton>
           <MagneticButton variant="secondary">Secondary CTA</MagneticButton>
           <MagneticButton variant="ghost">Ghost CTA</MagneticButton>
+          <MagneticButton variant="glass">Glass CTA</MagneticButton>
         </div>
       </section>
     </Container>

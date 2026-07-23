@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 
 const DIFFERENTIATORS = [
   {
@@ -33,14 +34,16 @@ export function WhyAllianceStreet() {
           align="center"
           className="mx-auto"
         />
-        <div className="grid gap-8 sm:grid-cols-2">
+        <Stagger className="grid gap-8 sm:grid-cols-2">
           {DIFFERENTIATORS.map((item) => (
-            <Card key={item.title}>
-              <h3 className="font-display text-xl font-medium text-foreground">{item.title}</h3>
-              <p className="mt-3 text-muted-foreground">{item.description}</p>
-            </Card>
+            <StaggerItem key={item.title}>
+              <Card variant="glass">
+                <h3 className="font-display text-xl font-medium text-foreground">{item.title}</h3>
+                <p className="mt-3 text-muted-foreground">{item.description}</p>
+              </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Container>
     </section>
   );

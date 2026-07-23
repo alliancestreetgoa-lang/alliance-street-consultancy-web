@@ -1,5 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const STEPS = [
   {
@@ -26,25 +28,26 @@ const STEPS = [
 
 export function Process() {
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="flex flex-col gap-16">
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <AmbientGlow className="opacity-30" />
+      <Container className="relative z-10 flex flex-col gap-16">
         <SectionHeading
           eyebrow="Process"
           title="How an engagement actually works."
           align="center"
           className="mx-auto"
         />
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <Stagger className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step, index) => (
-            <div key={step.title} className="flex flex-col gap-4">
+            <StaggerItem key={step.title} className="flex flex-col gap-4">
               <span className="font-display text-3xl font-medium text-primary">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="font-display text-lg font-medium text-foreground">{step.title}</h3>
               <p className="text-sm text-muted-foreground">{step.description}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Container>
     </section>
   );

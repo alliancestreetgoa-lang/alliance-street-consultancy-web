@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/scroll-reveal";
 
 const PRINCIPLES = [
   {
@@ -21,7 +22,7 @@ export function AboutStory() {
   return (
     <section className="py-24 sm:py-32">
       <Container className="grid gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
-        <div className="flex flex-col gap-6">
+        <Reveal className="flex flex-col gap-6">
           <span className="text-sm font-medium uppercase tracking-widest text-primary">
             Our Story
           </span>
@@ -40,15 +41,15 @@ export function AboutStory() {
             UAE structuring and UK compliance well enough to plan across both, and stays on after
             the paperwork is filed to handle the tax, accounting, and questions that come after.
           </p>
-        </div>
-        <div className="flex flex-col gap-8">
+        </Reveal>
+        <Reveal delay={0.1} className="flex flex-col gap-8">
           <FramedImage
             src="/brand/advisor-portrait.png"
             alt="Alliance Street advisor"
             aspectClassName="aspect-[3/4]"
             sizes="(min-width: 1024px) 420px, 100vw"
           />
-          <Card hover={false} className="flex flex-col gap-8">
+          <Card variant="glass" hover={false} className="flex flex-col gap-8">
             {PRINCIPLES.map((principle) => (
               <div key={principle.title} className="flex flex-col gap-2">
                 <h3 className="font-display text-lg font-medium text-foreground">{principle.title}</h3>
@@ -56,7 +57,7 @@ export function AboutStory() {
               </div>
             ))}
           </Card>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

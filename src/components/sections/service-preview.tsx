@@ -3,7 +3,8 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MagneticButton } from "@/components/ui/magnetic-button";
-import { cardClassName, cardHoverClassName } from "@/components/ui/card";
+import { cardGlassClassName } from "@/components/ui/card";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { cn } from "@/lib/utils";
 
 const SERVICES = [
@@ -39,24 +40,25 @@ export function ServicePreview() {
             View All Services
           </MagneticButton>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2">
+        <Stagger className="grid gap-6 sm:grid-cols-2">
           {SERVICES.map((service) => (
-            <Link
-              key={service.href}
-              href={service.href}
-              className={cn(cardClassName, cardHoverClassName, "group flex flex-col justify-between gap-6")}
-            >
-              <div>
-                <h3 className="font-display text-xl font-medium text-foreground">{service.title}</h3>
-                <p className="mt-3 text-muted-foreground">{service.description}</p>
-              </div>
-              <ArrowUpRight
-                className="h-5 w-5 text-primary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
-                aria-hidden
-              />
-            </Link>
+            <StaggerItem key={service.href}>
+              <Link
+                href={service.href}
+                className={cn(cardGlassClassName, "group flex h-full flex-col justify-between gap-6")}
+              >
+                <div>
+                  <h3 className="font-display text-xl font-medium text-foreground">{service.title}</h3>
+                  <p className="mt-3 text-muted-foreground">{service.description}</p>
+                </div>
+                <ArrowUpRight
+                  className="h-5 w-5 text-primary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+                  aria-hidden
+                />
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Container>
     </section>
   );

@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { m } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { MagneticButton } from "@/components/ui/magnetic-button";
@@ -13,17 +13,14 @@ export function Hero() {
   const words = HEADLINE.split(" ");
 
   return (
-    <section className="relative overflow-hidden pt-20 pb-40 sm:pt-28 sm:pb-56">
+    <section className="relative overflow-hidden py-20 sm:py-28">
       <AuroraBackground />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 z-0 h-40 overflow-hidden sm:h-56">
-        <Image src="/brand/dubai-skyline.png" alt="" fill sizes="100vw" className="object-cover object-bottom" />
-        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-24" />
-      </div>
+      <AmbientGlow className="opacity-60" />
       <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
         <Badge className="max-w-[calc(100vw-3rem)] text-center">
           UAE & UK Company Formation, Tax & Advisory
         </Badge>
-        <h1 className="max-w-5xl text-hero font-display font-medium tracking-tight text-foreground">
+        <h1 className="max-w-5xl text-hero font-display font-medium tracking-tight text-foreground text-glow">
           {words.map((word, index) => (
             <m.span
               key={`${word}-${index}`}
@@ -45,7 +42,7 @@ export function Hero() {
           <MagneticButton href="/book-consultation" variant="primary">
             Book a Consultation
           </MagneticButton>
-          <MagneticButton href="/services" variant="secondary">
+          <MagneticButton href="/services" variant="glass">
             View Services
           </MagneticButton>
         </div>

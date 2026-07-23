@@ -152,21 +152,3 @@ export const COMPANY = {
   whatsapp: "+971 5X XXX XXXX",
   address: "Business Bay, Dubai, United Arab Emirates",
 };
-
-export const FOOTER_LINK_COLUMNS: { title: string; links: NavLink[] }[] = [
-  {
-    title: "Services",
-    links: NAV_GROUPS.flatMap((group) => group.links.slice(0, 3)),
-  },
-  {
-    title: "Company",
-    links: PRIMARY_NAV,
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms & Conditions", href: "/terms-and-conditions" },
-    ],
-  },
-];

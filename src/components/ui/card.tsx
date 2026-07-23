@@ -3,11 +3,16 @@ import { cn } from "@/lib/utils";
 
 export const cardClassName = "rounded-2xl border border-glass-border bg-secondary p-8 shadow-card transition-all duration-300";
 export const cardHoverClassName = "hover:-translate-y-1 hover:border-primary/25 hover:shadow-card-hover";
+export const cardGlassClassName = "glass-pill rounded-2xl p-8";
 
 type CardProps = HTMLAttributes<HTMLDivElement> & {
   hover?: boolean;
+  variant?: "default" | "glass";
 };
 
-export function Card({ className, hover = true, ...props }: CardProps) {
+export function Card({ className, hover = true, variant = "default", ...props }: CardProps) {
+  if (variant === "glass") {
+    return <div className={cn(cardGlassClassName, className)} {...props} />;
+  }
   return <div className={cn(cardClassName, hover && cardHoverClassName, className)} {...props} />;
 }

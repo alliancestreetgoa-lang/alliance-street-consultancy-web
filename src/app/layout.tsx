@@ -5,7 +5,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { CinematicFooter } from "@/components/ui/motion-footer";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -35,7 +35,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <Navbar />
             <main className="flex-1 pt-20">{children}</main>
-            <Footer />
+            <CinematicFooter />
           </SmoothScrollProvider>
         </LazyMotion>
       </body>

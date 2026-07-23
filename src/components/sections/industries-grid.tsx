@@ -1,5 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
+import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const INDUSTRIES = [
   {
@@ -36,14 +38,19 @@ const INDUSTRIES = [
 
 export function IndustriesGrid() {
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {INDUSTRIES.map((industry) => (
-          <Card key={industry.title} className="flex flex-col gap-4">
-            <h3 className="font-display text-xl font-medium text-foreground">{industry.title}</h3>
-            <p className="text-sm text-muted-foreground">{industry.description}</p>
-          </Card>
-        ))}
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <AmbientGlow className="opacity-30" />
+      <Container className="relative z-10">
+        <Stagger className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {INDUSTRIES.map((industry) => (
+            <StaggerItem key={industry.title}>
+              <Card variant="glass" className="flex h-full flex-col gap-4">
+                <h3 className="font-display text-xl font-medium text-foreground">{industry.title}</h3>
+                <p className="text-sm text-muted-foreground">{industry.description}</p>
+              </Card>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </Container>
     </section>
   );

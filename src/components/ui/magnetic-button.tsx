@@ -10,7 +10,7 @@ type MagneticButtonProps = {
   href?: string;
   onClick?: () => void;
   children: ReactNode;
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "glass";
   className?: string;
 };
 
@@ -20,6 +20,7 @@ const VARIANT_CLASSES: Record<NonNullable<MagneticButtonProps["variant"]>, strin
   secondary:
     "border border-glass-border bg-secondary text-foreground shadow-card hover:border-primary/25 hover:shadow-card-hover",
   ghost: "text-foreground hover:text-primary",
+  glass: "glass-pill text-foreground font-bold",
 };
 
 export function MagneticButton({
