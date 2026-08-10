@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { asset } from "@/lib/asset-path";
+import { ParallaxImage } from "@/components/ui/parallax-image";
 import { cn } from "@/lib/utils";
 
 type FramedImageProps = {
@@ -27,7 +26,7 @@ export function FramedImage({
         className
       )}
     >
-      <Image src={asset(src)} alt={alt} fill sizes={sizes} className="object-cover" />
+      <ParallaxImage src={src} alt={alt} sizes={sizes} />
       {caption ? (
         <div className="absolute bottom-0 left-0 p-5">
           <span className="text-xs font-semibold uppercase tracking-widest text-white/80">{caption}</span>

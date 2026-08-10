@@ -15,8 +15,11 @@ type MagneticButtonProps = {
 };
 
 const VARIANT_CLASSES: Record<NonNullable<MagneticButtonProps["variant"]>, string> = {
+  // --primary-deep is the shaded end of the button gradient. It is a token, not
+  // a literal, so the button still reads correctly on the dark and red section
+  // surfaces, where `primary` itself is remapped (see globals.css).
   primary:
-    "bg-gradient-to-b from-primary to-[#9e0f1a] text-primary-foreground shadow-button hover:shadow-button-hover hover:brightness-105",
+    "bg-gradient-to-b from-primary to-[var(--primary-deep)] text-primary-foreground shadow-button hover:shadow-button-hover hover:brightness-105",
   secondary:
     "border border-glass-border bg-secondary text-foreground shadow-card hover:border-primary/25 hover:shadow-card-hover",
   ghost: "text-foreground hover:text-primary",

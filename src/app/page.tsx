@@ -6,17 +6,33 @@ import { Process } from "@/components/sections/process";
 import { HomeFAQ } from "@/components/sections/home-faq";
 import { BookConsultationCTA } from "@/components/sections/book-consultation-cta";
 import { Newsletter } from "@/components/sections/newsletter";
+import { Surface } from "@/components/ui/surface";
 
 export default function Home() {
+  // Sections alternate white → black → red down the page.
   return (
     <>
-      <Hero />
-      <WhyAllianceStreet />
-      <ServicePreview />
-      <Process />
-      <HomeFAQ />
-      <BookConsultationCTA />
-      <Newsletter />
+      <Surface tone="light">
+        <Hero />
+      </Surface>
+      <Surface tone="dark">
+        <WhyAllianceStreet />
+      </Surface>
+      <Surface tone="brand">
+        <ServicePreview />
+      </Surface>
+      <Surface tone="light">
+        <Process />
+      </Surface>
+      <Surface tone="dark">
+        <HomeFAQ />
+      </Surface>
+      <Surface tone="brand">
+        <BookConsultationCTA />
+      </Surface>
+      <Surface tone="light">
+        <Newsletter />
+      </Surface>
     </>
   );
 }

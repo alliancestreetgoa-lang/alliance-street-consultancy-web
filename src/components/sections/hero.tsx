@@ -1,39 +1,82 @@
 "use client";
 
-import { m } from "framer-motion";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
+import { DisplayHeading } from "@/components/ui/display-heading";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { asset } from "@/lib/asset-path";
+import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
 const HEADLINE = "Company formation and compliance, without the guesswork.";
 
 export function Hero() {
-  const words = HEADLINE.split(" ");
+  const sectionRef = useRef<HTMLElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // One timeline, one ScrollTrigger — two separately-triggered tweens on the
+      // same scroll range would each measure and update independently.
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // The photo sinks slowly and creeps closer; the copy leaves faster. The
+      // difference between the two rates is the parallax.
+      tl.to(backdropRef.current, { yPercent: 14, scale: 1.08, ease: "none" }, 0).to(
+        copyRef.current,
+        { yPercent: -18, opacity: 0.25, ease: "none" },
+        0
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28">
+    <section ref={sectionRef} className="relative isolate overflow-hidden py-20 sm:py-28">
+      {/* Dubai skyline at sunset — sits low in the frame so it reads as a horizon
+          under the copy; the veils above it keep the dark type legible. */}
+      <div ref={backdropRef} aria-hidden className="absolute inset-0 -z-10 will-change-transform">
+        <Image
+          src={asset("/brand/dubai-sunset-hero.jpg")}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_72%]"
+        />
+        {/* Light wash — enough to hold dark type, light enough that the photo reads. */}
+        <div className="absolute inset-0 bg-background/30" />
+        {/* Soft bed directly under the copy column so the headline never fights the skyline. */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_50%_42%,var(--background)_0%,color-mix(in_oklch,var(--background)_55%,transparent)_45%,transparent_78%)]" />
+        {/* Blend into the white navbar above and the next section below. */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+      </div>
       <AuroraBackground />
-      <AmbientGlow className="opacity-60" />
-      <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
+      <Container
+        ref={copyRef}
+        className="relative z-10 flex flex-col items-center gap-6 text-center will-change-transform"
+      >
         <Badge className="max-w-[calc(100vw-3rem)] text-center">
           UAE & UK Company Formation, Tax & Advisory
         </Badge>
-        <h1 className="max-w-5xl text-hero font-display font-medium tracking-tight text-foreground text-glow">
-          {words.map((word, index) => (
-            <m.span
-              key={`${word}-${index}`}
-              initial={{ opacity: 0, y: "0.6em", filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.6, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
-              className="mr-[0.2em] inline-block"
-            >
-              {word}
-            </m.span>
-          ))}
-        </h1>
-        <p className="max-w-2xl text-lg text-muted-foreground">
+        <DisplayHeading text={HEADLINE} className="max-w-5xl text-hero" />
+        <p className="max-w-2xl text-lg text-foreground/75">
           Alliance Street handles UAE and UK company setup, tax, accounting, and advisory under one
           roof — so you spend less time on paperwork and more time running the business you started
           it for.

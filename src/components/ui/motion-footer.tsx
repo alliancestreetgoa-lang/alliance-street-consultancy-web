@@ -3,16 +3,10 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, ArrowUpRight, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { COMPANY } from "@/lib/site-config";
-
-// Register ScrollTrigger safely for React
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
 // -------------------------------------------------------------------------
 // 1. THEME-ADAPTIVE INLINE STYLES
@@ -144,11 +138,11 @@ const MagneticButton = React.forwardRef<HTMLElement, MagneticButtonProps>(
           });
         };
 
-        element.addEventListener("mousemove", handleMouseMove as any);
+        element.addEventListener("mousemove", handleMouseMove);
         element.addEventListener("mouseleave", handleMouseLeave);
 
         return () => {
-          element.removeEventListener("mousemove", handleMouseMove as any);
+          element.removeEventListener("mousemove", handleMouseMove);
           element.removeEventListener("mouseleave", handleMouseLeave);
         };
       }, element);
@@ -158,10 +152,10 @@ const MagneticButton = React.forwardRef<HTMLElement, MagneticButtonProps>(
 
     return (
       <Component
-        ref={(node: HTMLElement) => {
-          (localRef as any).current = node;
+        ref={(node: HTMLElement | null) => {
+          localRef.current = node;
           if (typeof forwardedRef === "function") forwardedRef(node);
-          else if (forwardedRef) (forwardedRef as any).current = node;
+          else if (forwardedRef) forwardedRef.current = node;
         }}
         className={cn("cursor-pointer", className)}
         {...props}
@@ -194,28 +188,33 @@ export function CinematicFooter() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!wrapperRef.current) return;
+    // Reduced motion: the CTA and links stay at their natural opacity.
+    if (prefersReducedMotion()) return;
 
     // React strict mode compatible GSAP context cleanup
     const ctx = gsap.context(() => {
-      // Staggered Content Reveal
+      // Staggered Content Reveal. Plays on its own clock once the curtain starts
+      // lifting — a scrub tied to the wrapper's full height only reached full
+      // opacity at the very last pixel of the page, so the footer read as empty.
       gsap.fromTo(
         [headingRef.current, linksRef.current],
         { y: 50, opacity: 0 },
         {
           y: 0,
           opacity: 1,
+          duration: 0.9,
           stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: wrapperRef.current,
-            start: "top 40%",
-            end: "bottom bottom",
-            scrub: 1,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
           },
         }
       );
     }, wrapperRef);
 
+    // Refresh-on-navigation/load is handled centrally by SmoothScrollProvider.
     return () => ctx.revert();
   },[]);
 

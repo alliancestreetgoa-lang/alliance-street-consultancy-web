@@ -1,15 +1,15 @@
 "use client";
 
-import { m } from "framer-motion";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
+import { DisplayHeading } from "@/components/ui/display-heading";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
-import { Reveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { ParallaxBlock, Reveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { GROUP_IMAGES, type Service } from "@/lib/services-data";
 
 type ServiceDetailProps = {
@@ -18,8 +18,6 @@ type ServiceDetailProps = {
 };
 
 export function ServiceDetail({ service, related }: ServiceDetailProps) {
-  const words = service.title.split(" ");
-
   return (
     <>
       <section className="relative flex min-h-[40vh] items-center overflow-hidden py-20 sm:py-24">
@@ -27,19 +25,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
         <AmbientGlow className="opacity-50" />
         <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
           <Badge>{service.group}</Badge>
-          <h1 className="max-w-3xl text-4xl font-display font-medium tracking-tight text-foreground sm:text-5xl text-glow">
-            {words.map((word, index) => (
-              <m.span
-                key={`${word}-${index}`}
-                initial={{ opacity: 0, y: "0.6em", filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.6, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                className="mr-[0.2em] inline-block"
-              >
-                {word}
-              </m.span>
-            ))}
-          </h1>
+          <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl" />
           <p className="max-w-xl text-lg text-muted-foreground">{service.tagline}</p>
         </Container>
       </section>
@@ -57,7 +43,10 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
               ))}
             </Stagger>
           </Reveal>
-          <Reveal delay={0.1} className="flex flex-col gap-8">
+          {/* The sidebar drifts slightly slower than the copy column beside it,
+              which opens a little depth between the two. */}
+          <ParallaxBlock distance={-60} className="lg:mt-0">
+            <Reveal delay={0.1} className="flex flex-col gap-8">
             <FramedImage
               src={GROUP_IMAGES[service.group].src}
               alt={GROUP_IMAGES[service.group].alt}
@@ -86,7 +75,8 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                 </ul>
               </Card>
             ) : null}
-          </Reveal>
+            </Reveal>
+          </ParallaxBlock>
         </Container>
       </section>
     </>

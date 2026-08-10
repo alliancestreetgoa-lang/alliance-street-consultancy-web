@@ -57,6 +57,8 @@
   --popover-foreground: #171310;
   --primary: #c1121f;
   --primary-foreground: #ffffff;
+  /* Shaded end of the primary button gradient. */
+  --primary-deep: #9e0f1a;
   --secondary: #f6f2f0;
   --secondary-foreground: #171310;
   --muted: #f6f2f0;
@@ -160,6 +162,82 @@
       0 20px 40px -10px var(--pill-shadow-hover),
       inset 0 1px 1px var(--pill-highlight-hover);
   color: var(--foreground);
+}
+
+/* -------------------------------------------------------------------------
+   Section surfaces — the page alternates white → black → red.
+
+   Each class remaps the theme tokens for its own subtree rather than setting a
+   single background colour, so every existing token-based utility inside it
+   (text-foreground, text-muted-foreground, bg-secondary, border-glass-border,
+   text-primary, the card shadows) stays legible without per-element overrides.
+   ---------------------------------------------------------------------- */
+.surface-dark {
+  --background: #0e0c0b;
+  --foreground: #f7f5f4;
+  --card: #191614;
+  --card-foreground: #f7f5f4;
+  --secondary: #191614;
+  --secondary-foreground: #f7f5f4;
+  --muted: #191614;
+  /* Brand red at #c1121f fails contrast on near-black, so accents lift here. */
+  --muted-foreground: #a9a19b;
+  --accent: #221e1b;
+  --accent-foreground: #f7f5f4;
+  --primary: #ef4b55;
+  --primary-foreground: #17110f;
+  --primary-deep: #c1121f;
+  --border: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --input: rgba(255, 255, 255, 0.18);
+  --ring: #ef4b55;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 56px -16px rgba(239, 75, 85, 0.28);
+}
+
+.surface-brand {
+  --background: #c1121f;
+  --foreground: #ffffff;
+  --card: rgba(255, 255, 255, 0.1);
+  --card-foreground: #ffffff;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --secondary-foreground: #ffffff;
+  --muted: rgba(255, 255, 255, 0.1);
+  --muted-foreground: rgba(255, 255, 255, 0.8);
+  --accent: rgba(255, 255, 255, 0.16);
+  --accent-foreground: #ffffff;
+  /* On red, the accent role inverts: eyebrows and icons go white, and anything
+     filled with "primary" (buttons) becomes white with red text. */
+  --primary: #ffffff;
+  --primary-foreground: #c1121f;
+  /* Barely-there shading: a strong gradient under a white button on red reads
+     as a smudge rather than as depth. */
+  --primary-deep: #f1e9e9;
+  --border: rgba(255, 255, 255, 0.24);
+  --glass-border: rgba(255, 255, 255, 0.26);
+  --input: rgba(255, 255, 255, 0.3);
+  --ring: #ffffff;
+  --shadow-card: 0 1px 2px rgba(90, 8, 14, 0.25), 0 12px 32px -12px rgba(90, 8, 14, 0.45);
+  --shadow-card-hover: 0 2px 4px rgba(90, 8, 14, 0.3), 0 28px 56px -16px rgba(90, 8, 14, 0.5);
+}
+
+/* Dimensional display heading. Unlike .text-glow (which fades the lower half
+   out and goes flat over photography), this keeps a solid face and reads as a
+   lit, slightly extruded surface: a light top edge, a darker base, and a
+   stack of drop-shadows for thickness plus contact shadow. drop-shadow is used
+   rather than text-shadow because the face is a background-clip gradient — a
+   text-shadow would show straight through the transparent fill. */
+.text-3d {
+  color: var(--foreground);
+  text-shadow:
+    /* extruded side wall, lightening as it recedes */
+    0 1px 0 color-mix(in oklch, var(--foreground) 62%, white),
+    0 2px 0 color-mix(in oklch, var(--foreground) 46%, white),
+    0 3px 0 color-mix(in oklch, var(--foreground) 34%, white),
+    0 4px 0 color-mix(in oklch, var(--foreground) 24%, white),
+    /* contact shadow, then the soft cast that lifts it off the photo */
+    0 6px 10px color-mix(in oklch, var(--foreground) 22%, transparent),
+    0 18px 34px color-mix(in oklch, var(--foreground) 16%, transparent);
 }
 
 /* Metallic text glow, used on large display headings */
