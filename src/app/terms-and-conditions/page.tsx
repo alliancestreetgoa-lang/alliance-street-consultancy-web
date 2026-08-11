@@ -1,7 +1,16 @@
 // src/app/terms-and-conditions/page.tsx
+import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/page-hero";
 import { LegalContent } from "@/components/sections/legal-content";
 import { COMPANY } from "@/lib/site-config";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions",
+  description:
+    "The terms governing use of the Alliance Street Consultancy website and the basis on which we accept client engagements.",
+  alternates: { canonical: "/terms-and-conditions" },
+  openGraph: { url: "/terms-and-conditions", title: "Terms & Conditions | Alliance Street Consultancy" },
+};
 
 const SECTIONS = [
   {

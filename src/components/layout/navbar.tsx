@@ -162,14 +162,36 @@ export function Navbar() {
                 </div>
               </Container>
               <Container className="flex-1 overflow-y-auto">
+                {/* Primary pages first. The twenty service links used to sit
+                    above these, which pushed Pricing and Contact roughly 920px
+                    down inside the panel — someone opening the menu to reach
+                    Contact had to scroll the entire services taxonomy first. */}
                 <div className="flex flex-col gap-6 pb-8">
+                  <div className="flex flex-col">
+                    {PRIMARY_NAV.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="flex min-h-11 items-center text-base text-foreground/90"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
                   {NAV_GROUPS.map((group) => (
-                    <div key={group.title} className="flex flex-col gap-3">
+                    <div key={group.title} className="flex flex-col gap-1 border-t border-glass-border pt-6">
                       <span className="text-xs font-semibold uppercase tracking-widest text-primary">{group.title}</span>
-                      <ul className="flex flex-col gap-2">
+                      <ul className="flex flex-col">
                         {group.links.map((link) => (
                           <li key={link.href}>
-                            <Link href={link.href} className="text-base text-foreground/90" onClick={() => setMobileOpen(false)}>
+                            {/* min-h-11 = 44px, the standard minimum touch
+                                target. These were 20–24px tall. */}
+                            <Link
+                              href={link.href}
+                              className="flex min-h-11 items-center text-base text-foreground/90"
+                              onClick={() => setMobileOpen(false)}
+                            >
                               {link.label}
                             </Link>
                           </li>
@@ -177,13 +199,6 @@ export function Navbar() {
                       </ul>
                     </div>
                   ))}
-                  <div className="flex flex-col gap-3 border-t border-glass-border pt-6">
-                    {PRIMARY_NAV.map((link) => (
-                      <Link key={link.href} href={link.href} className="text-base text-foreground/90" onClick={() => setMobileOpen(false)}>
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
                   <MagneticButton href="/book-consultation" onClick={() => setMobileOpen(false)}>
                     Book Consultation
                   </MagneticButton>

@@ -70,9 +70,21 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
         {words.map((word, index) => (
           <Fragment key={`${word}-${index}`}>
             <m.span
-              initial={{ opacity: 0, y: "0.6em", filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.6, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
+              // `initial` is what gets rendered into the static HTML, so it must
+              // never be opacity 0: Chrome excludes fully transparent elements
+              // from Largest Contentful Paint candidacy, which meant every page
+              // whose biggest above-fold element is this heading (rather than a
+              // hero photo) could not register an LCP until the bundle had
+              // downloaded, hydrated and run this animation — 9.1s on /contact.
+              // Starting part-visible keeps the stagger while leaving the
+              // heading LCP-eligible and legible from first paint.
+              {...(shouldReduceMotion
+                ? {}
+                : {
+                    initial: { opacity: 0.4, y: "0.35em", filter: "blur(6px)" },
+                    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+                    transition: { duration: 0.5, delay: index * 0.035, ease: [0.16, 1, 0.3, 1] },
+                  })}
               className="inline-block"
             >
               {word}

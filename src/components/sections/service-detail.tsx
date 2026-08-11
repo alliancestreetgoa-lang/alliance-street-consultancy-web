@@ -33,7 +33,10 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
       <section className="py-24 sm:py-32">
         <Container className="grid gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
           <Reveal className="flex flex-col gap-6">
-            <span className="text-sm font-medium uppercase tracking-widest text-primary">What&apos;s Included</span>
+            {/* A real heading, not a styled span: this labels the page's main
+                content block, and heading structure is how both crawlers and
+                screen readers find it. Visual treatment is unchanged. */}
+            <h2 className="text-sm font-medium uppercase tracking-widest text-primary">What&apos;s Included</h2>
             <Stagger className="flex flex-col gap-4">
               {service.includes.map((item) => (
                 <StaggerItem key={item} className="flex items-start gap-3">

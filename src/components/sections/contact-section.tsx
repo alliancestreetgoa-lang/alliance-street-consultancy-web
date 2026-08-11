@@ -50,12 +50,17 @@ export function ContactSection() {
             <a href={`mailto:${COMPANY.email}`} className="text-foreground hover:text-primary">
               {COMPANY.email}
             </a>
-            <span className="text-muted-foreground">
-              {COMPANY.phone} <span className="text-xs text-primary/80">(placeholder)</span>
-            </span>
-            <span className="text-muted-foreground">
-              WhatsApp: {COMPANY.whatsapp} <span className="text-xs text-primary/80">(placeholder)</span>
-            </span>
+            <a href={`tel:${COMPANY.phoneHref}`} className="text-foreground hover:text-primary">
+              {COMPANY.phone}
+            </a>
+            {COMPANY.whatsapp && (
+              <a
+                href={`https://wa.me/${COMPANY.whatsapp.replace(/[^\d]/g, "")}`}
+                className="text-foreground hover:text-primary"
+              >
+                WhatsApp: {COMPANY.whatsapp}
+              </a>
+            )}
           </div>
           <FramedImage
             src="/brand/dubai-skyline.png"

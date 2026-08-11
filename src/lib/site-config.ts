@@ -143,12 +143,13 @@ export const PRIMARY_NAV: NavLink[] = [
 
 export const COMPANY = {
   name: "Alliance Street Consultancy",
-  email: "hello@alliancestreet.ae",
-  // Placeholder — real number pending from client. See
-  // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
-  phone: "+971 4 XXX XXXX",
-  // Placeholder — real WhatsApp number pending from client. See
-  // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
-  whatsapp: "+971 5X XXX XXXX",
+  email: "info@alliancestreet.ae",
+  phone: "+971 4 262 7928",
+  /** E.164, for `tel:` hrefs and schema.org `telephone`. */
+  phoneHref: "+97142627928",
+  // Still pending: no real WhatsApp number has been supplied. Left null rather
+  // than shown as a placeholder — the UI omits the row entirely when it's null,
+  // which is better than publishing a number that doesn't dial.
+  whatsapp: null as string | null,
   address: "Business Bay, Dubai, United Arab Emirates",
 };

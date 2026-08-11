@@ -56,6 +56,12 @@ export function Hero() {
           alt=""
           fill
           priority
+          // `priority` alone does not emit fetchpriority here: static export
+          // forces images.unoptimized, which skips the loader path that
+          // normally adds it. Set explicitly — this is the LCP element.
+          // (Kept on best-practice grounds; local Lighthouse runs were too
+          // noisy to measure a difference either way.)
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-[center_72%]"
         />
