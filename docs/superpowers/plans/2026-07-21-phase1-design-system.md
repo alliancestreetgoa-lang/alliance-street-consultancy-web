@@ -15,7 +15,7 @@
 - Color tokens: `--primary: #C1121F`, `--background: #050505`, `--secondary: #111111`, `--foreground: #FFFFFF`, `--muted-foreground: #A0A0A0`, glass border `rgba(255,255,255,.08)`. Site is permanently dark — no light-mode toggle.
 - Typography: **General Sans is not available via `next/font/google`** (confirmed during planning — it's a Fontshare font, not a Google Font, and no local font files exist in this repo). Substituting **Geist** (already wired by the shadcn `nova` preset, and literally the Vercel house font — matches the brief's "Vercel/Linear quality" aesthetic target) as the display font, paired with **Inter** for body text. This resolves the spec's "confirm font availability" open item.
 - Phone/WhatsApp: real numbers are not yet available. Use placeholder `+971 4 XXX XXXX` (phone) / `+971 5X XXX XXXX` (WhatsApp) sourced from `lib/site-config.ts`, visibly flagged as placeholder in the footer UI. Do not fabricate a real-looking number.
-- Real values already confirmed: email `hello@alliancestreet.ae`, address `Business Bay, Dubai, United Arab Emirates`.
+- Real values already confirmed: email `info@alliancestreet.ae`, address `Business Bay, Dubai, United Arab Emirates`.
 - No automated test framework exists in this repo and none is being added this phase (per the approved spec's testing bar: TypeScript strict + ESLint + `next build` + manual `/style-guide` check — there's no business logic yet to unit test). Every task's verification step is `npm run build` (which runs Next's typecheck + lint + prod build) plus, for route-level tasks, a dev-server curl smoke check.
 - Commit after every task, using the repo's existing conventions (no prior commits to match style against beyond the initial scaffold commit — use plain, descriptive messages).
 
@@ -298,7 +298,7 @@ export const PRIMARY_NAV: NavLink[] = [
 
 export const COMPANY = {
   name: "Alliance Street Consultancy",
-  email: "hello@alliancestreet.ae",
+  email: "info@alliancestreet.ae",
   // Placeholder — real number pending from client. See
   // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
   phone: "+971 4 XXX XXXX",

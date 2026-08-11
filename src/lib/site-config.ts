@@ -141,14 +141,53 @@ export const PRIMARY_NAV: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
+/**
+ * Named, credentialed authorship — the single largest E-E-A-T gap on the site.
+ *
+ * For YMYL content (tax, regulatory, financial), Google's quality guidelines
+ * treat a named expert with a verifiable credential as a primary Expertise
+ * signal. The site is currently written entirely in first-person plural with an
+ * unnamed stock portrait, which caps how far that dimension can improve.
+ *
+ * Deliberately empty. Every field below is a real, checkable claim about a real
+ * person or a regulated entity, and inventing any of them on an accounting
+ * firm's website would be straightforwardly harmful — a fabricated ACCA number
+ * or trade licence is checkable against a public register.
+ *
+ * Fill these in and the About page, footer and Organization schema pick them up
+ * automatically. Until then every consumer renders nothing.
+ */
+export type Advisor = {
+  name: string;
+  role: string;
+  /** e.g. "ACCA", "ICAEW", "CPA". Omit rather than approximate. */
+  credential?: string;
+  /** Membership number, verifiable against the body's public register. */
+  credentialNumber?: string;
+  /** LinkedIn or similar. Becomes schema.org `sameAs`. */
+  profileUrl?: string;
+  bio?: string;
+};
+
+/** TODO: populate with real people. See the note above before filling. */
+export const ADVISORS: Advisor[] = [];
+
+/**
+ * Regulatory registrations for the firm itself — UAE trade licence or free zone
+ * registration number, FTA Tax Registration Number, UK company number.
+ * Same rule: real values only, all publicly checkable.
+ */
+export const REGISTRATIONS: { label: string; value: string }[] = [];
+
 export const COMPANY = {
   name: "Alliance Street Consultancy",
-  email: "hello@alliancestreet.ae",
-  // Placeholder — real number pending from client. See
-  // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
-  phone: "+971 4 XXX XXXX",
-  // Placeholder — real WhatsApp number pending from client. See
-  // docs/superpowers/specs/2026-07-21-phase1-design-system-design.md
-  whatsapp: "+971 5X XXX XXXX",
+  email: "info@alliancestreet.ae",
+  phone: "+971 4 262 7928",
+  /** E.164, for `tel:` hrefs and schema.org `telephone`. */
+  phoneHref: "+97142627928",
+  // Still pending: no real WhatsApp number has been supplied. Left null rather
+  // than shown as a placeholder — the UI omits the row entirely when it's null,
+  // which is better than publishing a number that doesn't dial.
+  whatsapp: null as string | null,
   address: "Business Bay, Dubai, United Arab Emirates",
 };

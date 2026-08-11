@@ -1,7 +1,16 @@
 // src/app/privacy-policy/page.tsx
+import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/page-hero";
 import { LegalContent } from "@/components/sections/legal-content";
 import { COMPANY } from "@/lib/site-config";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "How Alliance Street Consultancy collects, uses and protects information submitted through this website.",
+  alternates: { canonical: "/privacy-policy" },
+  openGraph: { url: "/privacy-policy", title: "Privacy Policy | Alliance Street Consultancy" },
+};
 
 const SECTIONS = [
   {

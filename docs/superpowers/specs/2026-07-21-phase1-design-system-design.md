@@ -36,7 +36,7 @@ phases (component library, pages, CMS/integrations, SEO/perf) each get their own
 - **Navigation**: grouped mega menu, organized into columns by category — UAE Setup, UAE Tax &
   Compliance, UK Services, Advisory — scales to the ~25 service pages without dumping them flat into
   the nav.
-- **Contact info**: email `hello@alliancestreet.ae` and address "Business Bay, Dubai, United Arab
+- **Contact info**: email `info@alliancestreet.ae` and address "Business Bay, Dubai, United Arab
   Emirates" reused from the existing `alliancestreet.ae` repo (real). Phone/WhatsApp: **no real
   number exists yet** — user will provide it later. Use a clearly-marked placeholder
   (`+971 4 XXX XXXX`) in the interim, sourced from a single `lib/site-config.ts` constant so the real

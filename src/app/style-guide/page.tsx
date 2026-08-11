@@ -1,7 +1,21 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+
+// Internal design-system reference page — not public marketing content.
+// Excluded from the sitemap (src/app/sitemap.ts) and explicitly noindexed
+// here as a belt-and-suspenders measure alongside the robots.txt disallow
+// rule (src/app/robots.ts).
+export const metadata: Metadata = {
+  // Bare title — the root layout's `title.template` appends the brand.
+  title: "Style Guide (Internal)",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const SWATCHES = [
   { name: "Primary", className: "bg-primary" },

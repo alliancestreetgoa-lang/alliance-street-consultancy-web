@@ -10,7 +10,11 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const nextConfig: NextConfig = {
   output: "export",
-  images: { unoptimized: true },
+  // A custom loader, not `unoptimized: true`. Static export can't run Next's
+  // optimizer, but it can defer to a loader — which lets next/image emit a real
+  // srcset pointing at the WebP variants scripts/optimize-images.mjs builds.
+  // With `unoptimized` every device downloaded the full-size original.
+  images: { loader: "custom", loaderFile: "./src/image-loader.ts" },
   basePath,
   assetPrefix: basePath ? `${basePath}/` : "",
   turbopack: {
