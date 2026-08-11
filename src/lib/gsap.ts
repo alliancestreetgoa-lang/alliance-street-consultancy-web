@@ -6,6 +6,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // forgotten, because you need the export to use gsap at all.
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  // The site now runs a scroll trigger on most sections of most pages. Callbacks
+  // fire on every scroll tick by default; limiting them to actual state changes
+  // cuts scroll-time main-thread work, which matters here because measurement
+  // showed LCP tracking TTI — this page's constraint is JS execution, not paint.
+  ScrollTrigger.config({ limitCallbacks: true });
 }
 
 /**

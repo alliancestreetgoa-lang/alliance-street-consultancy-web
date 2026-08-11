@@ -5,6 +5,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { DisplayHeading } from "@/components/ui/display-heading";
+import { HeroEntrance } from "@/components/ui/scroll-reveal";
 
 const HEADLINE = "Real situations, and how we work them.";
 
@@ -13,14 +14,18 @@ export function CaseStudiesHero() {
     <section className="relative flex min-h-[45vh] items-center overflow-hidden py-20 sm:min-h-[55vh] sm:py-28">
       <AuroraBackground />
       <AmbientGlow className="opacity-50" />
-      <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
-        <Badge>Case Studies</Badge>
-        <DisplayHeading text={HEADLINE} className="max-w-3xl text-4xl sm:text-6xl" />
-        <p className="max-w-xl text-lg text-muted-foreground">
-          Six recurring scenarios from across UAE setup, tax, UK services, and advisory —
-          illustrative of how an engagement actually runs, not a list of named clients.
-        </p>
-      </Container>
+      <HeroEntrance className="relative z-10 w-full">
+        <Container className="flex flex-col items-center gap-6 text-center">
+          <span data-hero-item>
+            <Badge>Case Studies</Badge>
+          </span>
+          <DisplayHeading text={HEADLINE} className="max-w-3xl text-4xl sm:text-6xl" />
+          <p data-hero-item className="max-w-xl text-lg text-muted-foreground">
+            Six recurring scenarios from across UAE setup, tax, UK services, and advisory —
+            illustrative of how an engagement actually runs, not a list of named clients.
+          </p>
+        </Container>
+      </HeroEntrance>
     </section>
   );
 }

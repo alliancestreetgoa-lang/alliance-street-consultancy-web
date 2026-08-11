@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
-import { ParallaxBlock, Reveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { HeroEntrance, ParallaxBlock, Reveal, ScrubRail, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { GROUP_IMAGES, type Service } from "@/lib/services-data";
 
 type ServiceDetailProps = {
@@ -23,11 +23,17 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
       <section className="relative flex min-h-[40vh] items-center overflow-hidden py-20 sm:py-24">
         <AuroraBackground />
         <AmbientGlow className="opacity-50" />
-        <Container className="relative z-10 flex flex-col items-center gap-6 text-center">
-          <Badge>{service.group}</Badge>
-          <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl" />
-          <p className="max-w-xl text-lg text-muted-foreground">{service.tagline}</p>
-        </Container>
+        <HeroEntrance className="relative z-10 w-full">
+          <Container className="flex flex-col items-center gap-6 text-center">
+            <span data-hero-item>
+              <Badge>{service.group}</Badge>
+            </span>
+            <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl" />
+            <p data-hero-item className="max-w-xl text-lg text-muted-foreground">
+              {service.tagline}
+            </p>
+          </Container>
+        </HeroEntrance>
       </section>
 
       <section className="py-24 sm:py-32">
@@ -85,14 +91,20 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                 content block, and heading structure is how both crawlers and
                 screen readers find it. Visual treatment is unchanged. */}
             <h2 className="text-sm font-medium uppercase tracking-widest text-primary">What&apos;s Included</h2>
-            <Stagger className="flex flex-col gap-4">
-              {service.includes.map((item) => (
-                <StaggerItem key={item} className="flex items-start gap-3">
-                  <Check className="mt-1 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                  <span className="text-foreground/90">{item}</span>
-                </StaggerItem>
-              ))}
-            </Stagger>
+            {/* The rail draws downward as the list scrolls past, so the
+                checklist reads as being worked through. Scrubbed to the
+                scrollbar; the rail is absolutely positioned so it cannot
+                shift layout. */}
+            <ScrubRail>
+              <Stagger className="flex flex-col gap-4">
+                {service.includes.map((item) => (
+                  <StaggerItem key={item} className="flex items-start gap-3">
+                    <Check className="mt-1 h-5 w-5 shrink-0 text-primary" aria-hidden />
+                    <span className="text-foreground/90">{item}</span>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </ScrubRail>
           </Reveal>
           {/* The sidebar drifts slightly slower than the copy column beside it,
               which opens a little depth between the two. */}
