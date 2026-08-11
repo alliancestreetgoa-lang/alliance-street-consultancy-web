@@ -141,6 +141,44 @@ export const PRIMARY_NAV: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
+/**
+ * Named, credentialed authorship — the single largest E-E-A-T gap on the site.
+ *
+ * For YMYL content (tax, regulatory, financial), Google's quality guidelines
+ * treat a named expert with a verifiable credential as a primary Expertise
+ * signal. The site is currently written entirely in first-person plural with an
+ * unnamed stock portrait, which caps how far that dimension can improve.
+ *
+ * Deliberately empty. Every field below is a real, checkable claim about a real
+ * person or a regulated entity, and inventing any of them on an accounting
+ * firm's website would be straightforwardly harmful — a fabricated ACCA number
+ * or trade licence is checkable against a public register.
+ *
+ * Fill these in and the About page, footer and Organization schema pick them up
+ * automatically. Until then every consumer renders nothing.
+ */
+export type Advisor = {
+  name: string;
+  role: string;
+  /** e.g. "ACCA", "ICAEW", "CPA". Omit rather than approximate. */
+  credential?: string;
+  /** Membership number, verifiable against the body's public register. */
+  credentialNumber?: string;
+  /** LinkedIn or similar. Becomes schema.org `sameAs`. */
+  profileUrl?: string;
+  bio?: string;
+};
+
+/** TODO: populate with real people. See the note above before filling. */
+export const ADVISORS: Advisor[] = [];
+
+/**
+ * Regulatory registrations for the firm itself — UAE trade licence or free zone
+ * registration number, FTA Tax Registration Number, UK company number.
+ * Same rule: real values only, all publicly checkable.
+ */
+export const REGISTRATIONS: { label: string; value: string }[] = [];
+
 export const COMPANY = {
   name: "Alliance Street Consultancy",
   email: "info@alliancestreet.ae",

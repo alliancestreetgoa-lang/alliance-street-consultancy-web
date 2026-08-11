@@ -33,6 +33,54 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
       <section className="py-24 sm:py-32">
         <Container className="grid gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
           <Reveal className="flex flex-col gap-6">
+            {/*
+              The direct answer sits above "What's Included" deliberately: it is
+              the thing the visitor searched for, and the thing an AI engine can
+              lift as a self-contained answer. Sources are shown on the page
+              rather than hidden in a comment — for YMYL tax content, a visible
+              primary-source citation and a verification date are the trust
+              signal, not clutter.
+
+              Only 6 of 20 services have one. The rest render nothing here,
+              which is correct: an empty block beats an invented figure.
+            */}
+            {service.directAnswer && (
+              <div className="flex flex-col gap-4 border-l-2 border-primary/40 pl-5">
+                <h2 className="font-display text-2xl font-medium text-balance text-foreground">
+                  {service.directAnswer.question}
+                </h2>
+                <p className="text-base leading-relaxed text-foreground/90">{service.directAnswer.answer}</p>
+                <p className="text-xs text-muted-foreground">
+                  <span className="font-medium">Sources: </span>
+                  {service.directAnswer.sources.map((source, index) => (
+                    <span key={source.url}>
+                      {index > 0 && " · "}
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2 hover:text-foreground"
+                      >
+                        {source.label}
+                      </a>
+                    </span>
+                  ))}
+                  {". "}
+                  <span>
+                    Figures verified{" "}
+                    <time dateTime={service.directAnswer.verifiedOn}>
+                      {new Date(`${service.directAnswer.verifiedOn}T00:00:00Z`).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        timeZone: "UTC",
+                      })}
+                    </time>
+                    . General information, not tax advice — thresholds and deadlines change.
+                  </span>
+                </p>
+              </div>
+            )}
             {/* A real heading, not a styled span: this labels the page's main
                 content block, and heading structure is how both crawlers and
                 screen readers find it. Visual treatment is unchanged. */}

@@ -1,3 +1,28 @@
+/**
+ * A sourced, self-contained answer to the regulatory question the page's own
+ * title implies — the rate, threshold or deadline a reader actually came for.
+ *
+ * Every figure must trace to a primary source (FTA, UAE Ministry of Finance,
+ * GOV.UK). Two rules, both non-negotiable for YMYL tax content:
+ *
+ *  1. Never write a figure from memory. If it isn't in `sources`, it doesn't
+ *     go on the page.
+ *  2. `verifiedOn` is the date a human last checked the figures against those
+ *     sources. Thresholds and deadlines change by legislative amendment; a
+ *     stale date is a signal to re-check, not decoration.
+ *
+ * See docs/tax-figures-review.md for the sign-off checklist.
+ */
+export type DirectAnswer = {
+  /** Question-form heading. Matches how the query is actually typed. */
+  question: string;
+  /** 2–5 sentences. Self-contained: readable with no surrounding context. */
+  answer: string;
+  sources: { label: string; url: string }[];
+  /** ISO date, last human verification against the primary sources. */
+  verifiedOn: string;
+};
+
 export type Service = {
   category: "uae" | "uk" | "advisory";
   group: "UAE Setup" | "UAE Tax & Compliance" | "UK Services" | "Advisory";
@@ -6,6 +31,81 @@ export type Service = {
   tagline: string;
   includes: string[];
   whoFor: string;
+  /**
+   * Optional. Present only where figures have been verified against primary
+   * sources — 6 of 20 services today. The rest deliberately have none rather
+   * than plausible-sounding filler.
+   */
+  directAnswer?: DirectAnswer;
+};
+
+const FTA_CT_REGISTRATION = {
+  label: "Federal Tax Authority — Decision No. 3 of 2024, registration timeframes",
+  url: "https://tax.gov.ae/en/media.centre/news/federal.tax.authority.issues.new.decision.on.specified.timeframes.for.corporate.tax.registration.aspx",
+};
+const FTA_VAT_REGISTRATION = {
+  label: "Federal Tax Authority — VAT registration",
+  url: "https://tax.gov.ae/en/taxes/Vat/vat.topics/registration.for.vat.aspx",
+};
+const UAE_GOV_CT = {
+  label: "UAE Government portal — Corporate tax",
+  url: "https://u.ae/en/information-and-services/finance-and-investment/taxation/corporate-tax",
+};
+const MOF_CT = {
+  label: "UAE Ministry of Finance — Corporate Tax",
+  url: "https://mof.gov.ae/en/public-finance/tax/corporate-tax/",
+};
+const GOVUK_CT_RATES = { label: "GOV.UK — Corporation Tax rates", url: "https://www.gov.uk/corporation-tax-rates" };
+const GOVUK_CT_RETURNS = { label: "GOV.UK — Company Tax Returns", url: "https://www.gov.uk/company-tax-returns" };
+const GOVUK_VAT = { label: "GOV.UK — VAT registration", url: "https://www.gov.uk/vat-registration/when-to-register" };
+const GOVUK_FORMATION = { label: "GOV.UK — Set up a limited company", url: "https://www.gov.uk/limited-company-formation" };
+
+/** Date the figures below were last checked against the sources above. */
+const VERIFIED = "2026-08-11";
+
+export const DIRECT_ANSWERS: Record<string, DirectAnswer> = {
+  "corporate-tax": {
+    question: "What is the UAE corporate tax rate, and when do I have to register?",
+    answer:
+      "UAE Corporate Tax is charged at 0% on taxable income up to AED 375,000 and 9% on taxable income above that threshold. It applies to financial years beginning on or after 1 June 2023. Registration deadlines are set by FTA Decision No. 3 of 2024 and depend on when your trade licence was issued rather than on a single national cut-off date, so two businesses in the same free zone can have different deadlines. We work out your specific date, register you, and take over the filing calendar from there.",
+    sources: [UAE_GOV_CT, MOF_CT, FTA_CT_REGISTRATION],
+    verifiedOn: VERIFIED,
+  },
+  "vat-registration": {
+    question: "When does a UAE business have to register for VAT?",
+    answer:
+      "VAT registration is mandatory once the total value of your taxable supplies and imports exceeds AED 375,000 over the previous 12 months, or when you expect to exceed it within the next 30 days. Voluntary registration is available from AED 187,500, which is often worth taking early if you are incurring recoverable input VAT before revenue arrives. The obligation is forward-looking, so a single large contract can trigger it before your trailing revenue does.",
+    sources: [FTA_VAT_REGISTRATION],
+    verifiedOn: VERIFIED,
+  },
+  "free-zone-company-formation": {
+    question: "Do free zone companies still pay UAE corporate tax?",
+    answer:
+      "A free zone company is not automatically exempt. A Free Zone Person that meets the conditions to be treated as a Qualifying Free Zone Person can apply a 0% Corporate Tax rate to its Qualifying Income, but income falling outside that definition is taxed under the standard rules — 0% up to AED 375,000 and 9% above. Which of your revenue streams qualify depends on what you actually do and who you invoice, so the structure decision and the tax outcome are the same decision.",
+    sources: [MOF_CT, UAE_GOV_CT],
+    verifiedOn: VERIFIED,
+  },
+  "company-formation": {
+    question: "What do I need to register a UK limited company?",
+    answer:
+      "A UK limited company needs at least one director, at least one shareholder (who may be the same person), a registered office address in the UK, and a SIC code describing what the company does. Incorporation itself is quick; the parts that take planning are the registered office, the share structure, and getting the SIC code right, because it follows the company into bank onboarding and HMRC records.",
+    sources: [GOVUK_FORMATION],
+    verifiedOn: VERIFIED,
+  },
+  "corporation-tax": {
+    question: "What are the UK corporation tax rates and deadlines?",
+    answer:
+      "UK Corporation Tax is charged at 19% on profits of £50,000 or less and 25% on profits above £250,000, with Marginal Relief tapering the rate between those two thresholds. Both limits are reduced proportionately for short accounting periods and by the number of associated companies. The two deadlines run in an order that surprises people: Corporation Tax is usually payable 9 months and one day after the end of the accounting period, but the Company Tax Return is not due until 12 months after it — so the money is due before the return that calculates it.",
+    sources: [GOVUK_CT_RATES, GOVUK_CT_RETURNS],
+    verifiedOn: VERIFIED,
+  },
+  vat: {
+    question: "What is the UK VAT registration threshold?",
+    answer:
+      "You must register for UK VAT when your total taxable turnover for the last 12 months goes over £90,000, or when you expect it to go over £90,000 in the next 30 days. Registration is due within 30 days of the end of the month in which you crossed the threshold, and registration takes effect from the first day of the second month after you went over.",
+    sources: [GOVUK_VAT],
+    verifiedOn: VERIFIED,
+  },
 };
 
 export const GROUP_IMAGES: Record<Service["group"], { src: string; alt: string; caption: string; aspectClassName: string }> = {
@@ -35,7 +135,9 @@ export const GROUP_IMAGES: Record<Service["group"], { src: string; alt: string; 
   },
 };
 
-export const SERVICES: Service[] = [
+// Raw catalogue. DIRECT_ANSWERS is merged in below by slug rather than being
+// inlined here, so the sourced regulatory copy stays in one reviewable block.
+const SERVICE_CATALOGUE: Service[] = [
   {
     category: "uae",
     group: "UAE Setup",
@@ -349,6 +451,11 @@ export const SERVICES: Service[] = [
     whoFor: "Existing UAE company owners who want licence admin handled proactively rather than discovered as a deadline that's already passed.",
   },
 ];
+
+export const SERVICES: Service[] = SERVICE_CATALOGUE.map((service) => {
+  const directAnswer = DIRECT_ANSWERS[service.slug];
+  return directAnswer ? { ...service, directAnswer } : service;
+});
 
 export function getService(category: string, slug: string) {
   return SERVICES.find((service) => service.category === category && service.slug === slug);

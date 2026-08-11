@@ -33,6 +33,16 @@ jobs:
       - name: Build static export
         env:
           NEXT_PUBLIC_BASE_PATH: /alliance-street-consultancy-web
+          # Absolute origin for canonicals, sitemap <loc> values, OG URLs and
+          # schema @id. Set explicitly so it is a decision rather than a
+          # fallback in src/lib/site-url.ts.
+          #
+          # When moving to a custom domain: change this to that origin, add
+          # public/CNAME, and DELETE the NEXT_PUBLIC_BASE_PATH line above —
+          # basePath must be empty when serving from a domain root, or every
+          # canonical will carry a /alliance-street-consultancy-web segment
+          # that does not exist there.
+          NEXT_PUBLIC_SITE_URL: https://alliancestreetgoa-lang.github.io
         run: npm run build
 
       - name: Setup Pages

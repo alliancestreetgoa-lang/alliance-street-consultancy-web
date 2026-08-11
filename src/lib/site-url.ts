@@ -5,23 +5,21 @@
 // so none of them should re-derive this.
 //
 // ---------------------------------------------------------------------------
-// ACTION REQUIRED — the production domain is not configured yet.
+// Current deploy target is GitHub Pages, at the project sub-path. That is set
+// explicitly as NEXT_PUBLIC_SITE_URL in .github/workflows/deploy-pages.yml, so
+// the fallback below is only used for local builds.
 //
-// Nothing in this repo declares a real domain: no NEXT_PUBLIC_SITE_URL, no
-// public/CNAME, no custom-domain step in .github/workflows/deploy-pages.yml.
-// The only URL this project has ever been deployed to is the GitHub Pages
-// project sub-path, which is what the fallback below points at.
+// Absolute URLs (sitemap <loc>, canonical tags, og:url, schema @id) are the one
+// place a wrong value is actively harmful rather than merely missing — a
+// canonical pointing at the wrong origin tells Google to consolidate ranking
+// signals onto a URL you don't control.
 //
-// Absolute URLs (sitemap <loc>, canonical tags, og:url) are the one place a
-// wrong value is actively harmful rather than merely missing — a canonical
-// pointing at the wrong origin tells Google to consolidate ranking signals
-// onto a URL you don't control. So: set NEXT_PUBLIC_SITE_URL before launch.
-//
-//   1. Decide the production domain.
-//   2. Set NEXT_PUBLIC_SITE_URL in the build environment, and alongside
-//      NEXT_PUBLIC_BASE_PATH in .github/workflows/deploy-pages.yml.
-//   3. If moving to a domain root, stop setting NEXT_PUBLIC_BASE_PATH —
-//      BASE_PATH then correctly resolves to "".
+// To move to a custom domain, all three steps are required:
+//   1. Set NEXT_PUBLIC_SITE_URL to the new origin in the deploy workflow.
+//   2. Add public/CNAME containing that hostname.
+//   3. DELETE NEXT_PUBLIC_BASE_PATH from the workflow — basePath must be empty
+//      at a domain root, or every canonical carries a sub-path segment that
+//      does not exist there.
 // ---------------------------------------------------------------------------
 const SITE_ORIGIN =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
