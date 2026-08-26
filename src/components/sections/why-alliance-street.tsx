@@ -36,8 +36,8 @@ export function WhyAllianceStreet() {
         />
         <Stagger className="grid gap-8 sm:grid-cols-2">
           {DIFFERENTIATORS.map((item) => (
-            <StaggerItem key={item.title}>
-              <Card variant="glass">
+            <StaggerItem key={item.title} className="h-full">
+              <Card variant="glass" className="h-full">
                 <h3 className="font-display text-xl font-medium text-foreground">{item.title}</h3>
                 <p className="mt-3 text-muted-foreground">{item.description}</p>
               </Card>

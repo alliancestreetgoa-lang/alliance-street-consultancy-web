@@ -53,9 +53,16 @@ export function ServicePreview() {
         // Distance is the rail's overflow past its visible window. Measured
         // against the clipping parent, not the rail: the rail is `w-max`, so its
         // own scrollWidth and offsetWidth are identical and would give 0.
+        // The parent's large centering padding-left is dead space, not window —
+        // subtract it, or the rail stops short and the last card stays clipped.
         // In a function so a resize (via invalidateOnRefresh) re-measures rather
         // than reusing the first layout's number.
-        x: () => -Math.max(0, rail.scrollWidth - (rail.parentElement?.offsetWidth ?? 0)),
+        x: () => {
+          const parent = rail.parentElement;
+          if (!parent) return 0;
+          const visible = parent.clientWidth - parseFloat(getComputedStyle(parent).paddingLeft);
+          return -Math.max(0, rail.scrollWidth - visible);
+        },
         ease: "none",
         scrollTrigger: {
           trigger: trackRef.current,

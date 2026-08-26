@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
@@ -47,28 +46,28 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative isolate overflow-hidden py-20 sm:py-28">
-      {/* Dubai skyline at sunset — sits low in the frame so it reads as a horizon
+    <section
+      ref={sectionRef}
+      className="relative isolate flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden py-20 sm:py-28"
+    >
+      {/* Dubai skyline video — sits low in the frame so it reads as a horizon
           under the copy; the veils above it keep the dark type legible. */}
       <div ref={backdropRef} aria-hidden className="absolute inset-0 -z-10 will-change-transform">
-        <Image
-          src={asset("/brand/dubai-sunset-hero.jpg")}
-          alt=""
-          fill
-          priority
-          // `priority` alone does not emit fetchpriority here: static export
-          // forces images.unoptimized, which skips the loader path that
-          // normally adds it. Set explicitly — this is the LCP element.
-          // (Kept on best-practice grounds; local Lighthouse runs were too
-          // noisy to measure a difference either way.)
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover object-[center_72%]"
-        />
-        {/* Light wash — enough to hold dark type, light enough that the photo reads. */}
-        <div className="absolute inset-0 bg-background/30" />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={asset("/brand/hero-video-poster.jpg")}
+          className="absolute inset-0 h-full w-full object-cover object-[center_40%]"
+        >
+          <source src={asset("/brand/hero-video.mp4")} type="video/mp4" />
+        </video>
+        {/* Light wash — enough to hold dark type, light enough that the video reads. */}
+        <div className="absolute inset-0 bg-background/24" />
         {/* Soft bed directly under the copy column so the headline never fights the skyline. */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_50%_42%,var(--background)_0%,color-mix(in_oklch,var(--background)_55%,transparent)_45%,transparent_78%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_50%_42%,var(--background)_0%,color-mix(in_oklch,var(--background)_44%,transparent)_45%,transparent_78%)]" />
         {/* Blend into the white navbar above and the next section below. */}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
