@@ -76,7 +76,7 @@ export function CaseStudyGrid() {
                 <span className="text-xs font-semibold uppercase tracking-widest text-primary">
                   {study.category}
                 </span>
-                <h3 className="font-display text-xl font-medium text-foreground">{study.title}</h3>
+                <h3 className="text-xl font-semibold text-foreground">{study.title}</h3>
               </div>
               <dl className="flex flex-col gap-4">
                 <div>

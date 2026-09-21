@@ -137,7 +137,6 @@ export const PRIMARY_NAV: NavLink[] = [
   { label: "Industries", href: "/industries" },
   { label: "Case Studies", href: "/case-studies" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Knowledge Centre", href: "/knowledge-centre" },
   { label: "Contact", href: "/contact" },
 ];
 

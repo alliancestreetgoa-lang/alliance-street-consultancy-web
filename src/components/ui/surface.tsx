@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type SurfaceTone = "light" | "dark" | "brand";
+export type SurfaceTone = "light" | "muted" | "dark" | "brand";
 
 const TONE_CLASS: Record<SurfaceTone, string> = {
   light: "",
+  muted: "surface-muted",
   dark: "surface-dark",
   brand: "surface-brand",
 };

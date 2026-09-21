@@ -1,6 +1,6 @@
+import { DefinitionList } from "@/components/ui/definition-list";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Card } from "@/components/ui/card";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 
@@ -34,13 +34,10 @@ export function PricingFactors() {
           align="center"
           className="mx-auto"
         />
-        <Stagger className="grid gap-8 sm:grid-cols-2">
+        <Stagger className="grid gap-x-16 gap-y-10 sm:grid-cols-2">
           {FACTORS.map((factor) => (
             <StaggerItem key={factor.title}>
-              <Card variant="glass">
-                <h3 className="font-display text-xl font-medium text-foreground">{factor.title}</h3>
-                <p className="mt-3 text-muted-foreground">{factor.description}</p>
-              </Card>
+              <DefinitionList items={[factor]} />
             </StaggerItem>
           ))}
         </Stagger>

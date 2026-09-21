@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbJsonLd, jsonLdScriptProps } from "@/lib/schema";
 import { CaseStudiesHero } from "@/components/sections/case-studies-hero";
-import { CaseStudiesBanner } from "@/components/sections/case-studies-banner";
+import { StatementBanner } from "@/components/sections/statement-banner";
 import { CaseStudyGrid } from "@/components/sections/case-study-grid";
 import { BookConsultationCTA } from "@/components/sections/book-consultation-cta";
 
@@ -29,7 +29,13 @@ export default function CaseStudiesPage() {
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
       <CaseStudiesHero />
-      <CaseStudiesBanner />
+      <StatementBanner
+        eyebrow={["Case studies", "in practice"]}
+        imageSide="right"
+        image={{ src: "/brand/handshake.jpg", alt: "Advisor and client shaking hands" }}
+        statement="Every one of these started as a conversation, not a quote."
+        body="We scope the actual problem before we recommend a structure — which is why the approach below sometimes isn't the one that's easiest to sell."
+      />
       <CaseStudyGrid />
       <BookConsultationCTA />
     </>

@@ -125,11 +125,12 @@ export function Process() {
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {STEPS.map((step, index) => (
                 <div key={step.title} className="js-process-step flex flex-col gap-4">
-                  <span className="font-display text-3xl font-medium text-primary">
+                  {/* Space Mono numerals, as on the live site's "Battleplan". */}
+                  <span className="font-mono text-2xl text-primary">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="font-display text-lg font-medium text-foreground">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground">{step.description}</p>
+                  <h3 className="text-xl font-semibold text-foreground">{step.title}</h3>
+                  <p className="text-base text-muted-foreground">{step.description}</p>
                 </div>
               ))}
             </div>

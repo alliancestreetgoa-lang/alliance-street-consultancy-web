@@ -32,7 +32,7 @@ export default function BookConsultationPage() {
       <Container className="relative z-10 flex min-h-[60vh] flex-col items-center justify-center gap-6 text-center">
         <Reveal className="flex flex-col items-center gap-6 text-center">
           <Badge>Book a Consultation</Badge>
-          <h1 className="font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl text-3d">
+          <h1 className="text-4xl font-semibold text-balance sm:text-5xl">
             Online booking is coming soon.
           </h1>
           <p className="max-w-xl text-muted-foreground">

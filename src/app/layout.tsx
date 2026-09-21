@@ -1,16 +1,18 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Inter } from "next/font/google";
+import { Inter, Space_Mono } from "next/font/google";
 import { LazyMotion, domAnimation } from "framer-motion";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { Navbar } from "@/components/layout/navbar";
-import { CinematicFooter } from "@/components/ui/motion-footer";
+import { SiteFooter } from "@/components/ui/site-footer";
 import { SITE_URL } from "@/lib/site-url";
 import { buildOrganizationJsonLd, buildWebsiteJsonLd, jsonLdScriptProps } from "@/lib/schema";
 
-const geist = Geist({
-  variable: "--font-geist",
+// Space Mono carries the live site's eyebrows and small-caps labels.
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
   subsets: ["latin"],
 });
 
@@ -60,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${spaceMono.variable} ${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         {/* Entity-level schema — rendered on every route so the Organization
             and WebSite nodes other pages reference by @id always resolve. */}
@@ -70,7 +72,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <Navbar />
             <main className="flex-1 pt-20">{children}</main>
-            <CinematicFooter />
+            <SiteFooter />
           </SmoothScrollProvider>
         </LazyMotion>
       </body>

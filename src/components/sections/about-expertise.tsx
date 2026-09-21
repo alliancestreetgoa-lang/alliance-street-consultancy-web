@@ -36,10 +36,10 @@ export function AboutExpertise() {
         <Stagger className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {AREAS.map((area, index) => (
             <StaggerItem key={area.title} className="flex flex-col gap-4">
-              <span className="font-display text-3xl font-medium text-primary">
+              <span className="font-mono text-2xl text-primary">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-display text-lg font-medium text-foreground">{area.title}</h3>
+              <h3 className="text-lg font-semibold text-foreground">{area.title}</h3>
               <p className="text-sm text-muted-foreground">{area.description}</p>
             </StaggerItem>
           ))}

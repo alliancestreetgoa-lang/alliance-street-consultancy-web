@@ -1,6 +1,7 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 
@@ -10,7 +11,7 @@ export function BookConsultationCTA() {
       <Container>
         <Reveal
           scale
-          className="glass-pill relative overflow-hidden flex flex-col items-center gap-8 rounded-3xl px-8 py-16 text-center"
+          className="relative flex flex-col items-center gap-8 overflow-hidden rounded-3xl border border-border bg-card px-8 py-16 text-center shadow-card"
         >
           <AmbientGlow className="opacity-40" />
           <SectionHeading
@@ -20,9 +21,7 @@ export function BookConsultationCTA() {
             align="center"
             className="relative z-10"
           />
-          <MagneticButton href="/book-consultation" variant="primary" className="relative z-10">
-            Book Consultation
-          </MagneticButton>
+          <Button size="lg" className="relative z-10" asChild><Link href="/book-consultation">Book Consultation</Link></Button>
         </Reveal>
       </Container>
     </section>

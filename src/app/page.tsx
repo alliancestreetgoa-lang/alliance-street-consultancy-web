@@ -18,25 +18,27 @@ export const metadata: Metadata = {
 import { Surface } from "@/components/ui/surface";
 
 export default function Home() {
-  // Sections alternate white → black → red down the page.
+  // Light throughout, alternating #ffffff and #fafafa, as on alliancestreet.ae.
+  // The page's only dark and red moments are the two gradient walls that
+  // bookend it: the hero descends dark-red → white, the footer red → black.
   return (
     <>
       <Surface tone="light">
         <Hero />
       </Surface>
-      <Surface tone="dark">
+      <Surface tone="muted">
         <WhyAllianceStreet />
       </Surface>
-      <Surface tone="brand">
+      <Surface tone="light">
         <ServicePreview />
       </Surface>
-      <Surface tone="light">
+      <Surface tone="muted">
         <Process />
       </Surface>
-      <Surface tone="dark">
+      <Surface tone="light">
         <HomeFAQ />
       </Surface>
-      <Surface tone="brand">
+      <Surface tone="muted">
         <BookConsultationCTA />
       </Surface>
       <Surface tone="light">

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Card } from "@/components/ui/card";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Reveal } from "@/components/ui/scroll-reveal";
@@ -146,9 +146,7 @@ export function ContactSection() {
                   </p>
                 ) : null}
               </div>
-              <MagneticButton variant="primary" onClick={handleSubmit(onSubmit)} className="self-start">
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </MagneticButton>
+              <Button size="lg" className="self-start" onClick={handleSubmit(onSubmit)}>{isSubmitting ? "Sending..." : "Send Message"}</Button>
             </form>
           )}
         </Card>

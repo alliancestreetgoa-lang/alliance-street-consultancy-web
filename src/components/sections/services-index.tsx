@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { DefinitionList } from "@/components/ui/definition-list";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SERVICES } from "@/lib/services-data";
@@ -18,30 +17,20 @@ export function ServicesIndex() {
       <AmbientGlow className="opacity-30" />
       <Container className="relative z-10">
         <Stagger className="grid gap-16 sm:grid-cols-2">
-        {GROUPS.map((group) => (
-          <StaggerItem key={group.title} className="flex flex-col gap-6">
-            <span className="text-sm font-medium uppercase tracking-widest text-primary">{group.title}</span>
-            <ul className="flex flex-col gap-1">
-              {SERVICES.filter((service) => service.group === group.title).map((service) => (
-                <li key={service.slug}>
-                  <Link
-                    href={`/services/${service.category}/${service.slug}`}
-                    className="group flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-colors hover:bg-secondary/40"
-                  >
-                    <span>
-                      <span className="block font-display text-lg font-medium text-foreground">{service.title}</span>
-                      <span className="block text-sm text-muted-foreground">{service.tagline}</span>
-                    </span>
-                    <ArrowUpRight
-                      className="h-5 w-5 shrink-0 text-primary opacity-0 transition-opacity group-hover:opacity-100"
-                      aria-hidden
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </StaggerItem>
-        ))}
+          {GROUPS.map((group) => (
+            <StaggerItem key={group.title}>
+              <DefinitionList
+                heading={group.title}
+                items={SERVICES.filter((service) => service.group === group.title).map(
+                  (service) => ({
+                    title: service.title,
+                    description: service.tagline,
+                    href: `/services/${service.category}/${service.slug}`,
+                  })
+                )}
+              />
+            </StaggerItem>
+          ))}
         </Stagger>
       </Container>
     </section>

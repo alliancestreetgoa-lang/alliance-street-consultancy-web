@@ -5,8 +5,8 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ export function Newsletter() {
       <AmbientGlow className="opacity-30" />
       <Container className="relative z-10">
         <Reveal className="mx-auto flex flex-col items-center gap-6 text-center">
-          <h2 className="font-display text-2xl font-medium text-foreground sm:text-3xl">
+          <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Stay ahead of UAE and UK compliance changes.
           </h2>
           <p className="max-w-xl text-muted-foreground">
@@ -79,9 +79,7 @@ export function Newsletter() {
                   </p>
                 ) : null}
               </div>
-              <MagneticButton variant="primary" onClick={handleSubmit(onSubmit)} className="shrink-0">
-                {isSubmitting ? "Submitting..." : "Subscribe"}
-              </MagneticButton>
+              <Button size="lg" className="shrink-0" onClick={handleSubmit(onSubmit)}>{isSubmitting ? "Submitting..." : "Subscribe"}</Button>
             </form>
           )}
         </Reveal>

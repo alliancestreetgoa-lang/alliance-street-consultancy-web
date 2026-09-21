@@ -43,7 +43,6 @@ const STATIC_ROUTES: StaticRoute[] = [
   { path: "/pricing", lastModified: "2026-07-22", changeFrequency: "monthly", priority: 0.8 },
   // `monthly`, not `weekly`: the page is currently a "coming soon" stub with no
   // article listing. Revisit once it actually publishes on a cadence.
-  { path: "/knowledge-centre", lastModified: "2026-07-21", changeFrequency: "monthly", priority: 0.6 },
   { path: "/book-consultation", lastModified: "2026-08-10", changeFrequency: "yearly", priority: 0.8 },
   { path: "/contact", lastModified: "2026-07-21", changeFrequency: "yearly", priority: 0.5 },
   { path: "/privacy-policy", lastModified: "2026-07-21", changeFrequency: "yearly", priority: 0.1 },

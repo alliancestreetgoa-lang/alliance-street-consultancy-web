@@ -1,4 +1,5 @@
-import { ParallaxImage } from "@/components/ui/parallax-image";
+import Image from "next/image";
+import { asset } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
 
 type FramedImageProps = {
@@ -26,7 +27,9 @@ export function FramedImage({
         className
       )}
     >
-      <ParallaxImage src={src} alt={alt} sizes={sizes} />
+      {/* Static fill image. The live site does not parallax its photography —
+          images sit still inside their frame and only the section reveals. */}
+      <Image src={asset(src)} alt={alt} fill sizes={sizes} className="object-cover" />
       {caption ? (
         <div className="absolute bottom-0 left-0 p-5">
           <span className="text-xs font-semibold uppercase tracking-widest text-white/80">{caption}</span>

@@ -8,7 +8,7 @@ import { m, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { NAV_GROUPS, PRIMARY_NAV, type NavLink } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
-import { MagneticButton } from "@/components/ui/magnetic-button";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,6 +21,10 @@ import {
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { asset } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
+
+// The live site's nav links are dark chips on the black bar, not bare text.
+const NAV_CHIP =
+  "rounded-full bg-white/10 px-4 text-sm font-medium text-foreground hover:bg-white/20 data-[state=open]:bg-white/20";
 
 function ServiceLink({ link }: { link: NavLink }) {
   return (
@@ -77,8 +81,10 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
-        scrolled ? "border-b border-glass-border bg-background/70 backdrop-blur-xl" : "bg-transparent"
+        // The live nav is solid black at every scroll position — it never goes
+        // transparent — so `scrolled` only earns the hairline and the shadow.
+        "surface-dark fixed inset-x-0 top-0 z-50 bg-background text-foreground transition-shadow duration-300",
+        scrolled ? "border-b border-border shadow-card" : ""
       )}
     >
       <m.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: progress }} />
@@ -93,19 +99,19 @@ export function Navbar() {
               priority
               style={{ width: "34px", height: "28px" }}
             />
-            <span className="font-display text-lg font-semibold tracking-tight text-foreground">Alliance Street</span>
+            <span className="text-lg font-semibold text-foreground">Alliance Street</span>
           </Link>
 
           <div className="hidden lg:flex">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className={NAV_CHIP}>Services</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid w-[760px] grid-cols-4 gap-6 p-8">
                       {NAV_GROUPS.map((group) => (
                         <div key={group.title} className="flex flex-col gap-3">
-                          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+                          <span className="as-eyebrow as-eyebrow-accent text-[0.6875rem]">
                             {group.title}
                           </span>
                           <ul className="flex flex-col gap-1">
@@ -121,7 +127,10 @@ export function Navbar() {
 
                 {PRIMARY_NAV.map((link) => (
                   <NavigationMenuItem key={link.href}>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <NavigationMenuLink
+                      asChild
+                      className={cn(navigationMenuTriggerStyle(), NAV_CHIP)}
+                    >
                       <Link href={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
@@ -131,7 +140,9 @@ export function Navbar() {
           </div>
 
           <div className="hidden lg:block">
-            <MagneticButton href="/book-consultation">Book Consultation</MagneticButton>
+            <Button asChild>
+              <Link href="/book-consultation">Book Consultation</Link>
+            </Button>
           </div>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -140,7 +151,7 @@ export function Navbar() {
                 <Menu size={24} />
               </button>
             </SheetTrigger>
-            <SheetContent className="lg:hidden">
+            <SheetContent className="surface-dark bg-background text-foreground lg:hidden">
               <SheetTitle className="sr-only">Site navigation</SheetTitle>
               <Container className="shrink-0">
                 <div className="flex h-20 items-center justify-between">
@@ -152,7 +163,7 @@ export function Navbar() {
                       height={20}
                       style={{ width: "24px", height: "20px" }}
                     />
-                    <span className="font-display text-lg font-semibold text-foreground">Alliance Street</span>
+                    <span className="text-lg font-semibold text-foreground">Alliance Street</span>
                   </div>
                   <SheetClose asChild>
                     <button type="button" className="text-foreground" aria-label="Close menu">
@@ -181,7 +192,7 @@ export function Navbar() {
                   </div>
                   {NAV_GROUPS.map((group) => (
                     <div key={group.title} className="flex flex-col gap-1 border-t border-glass-border pt-6">
-                      <span className="text-xs font-semibold uppercase tracking-widest text-primary">{group.title}</span>
+                      <span className="as-eyebrow as-eyebrow-accent text-[0.6875rem]">{group.title}</span>
                       <ul className="flex flex-col">
                         {group.links.map((link) => (
                           <li key={link.href}>
@@ -199,9 +210,11 @@ export function Navbar() {
                       </ul>
                     </div>
                   ))}
-                  <MagneticButton href="/book-consultation" onClick={() => setMobileOpen(false)}>
-                    Book Consultation
-                  </MagneticButton>
+                  <Button asChild className="w-full">
+                    <Link href="/book-consultation" onClick={() => setMobileOpen(false)}>
+                      Book Consultation
+                    </Link>
+                  </Button>
                 </div>
               </Container>
             </SheetContent>

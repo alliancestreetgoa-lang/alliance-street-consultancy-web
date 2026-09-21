@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbJsonLd, jsonLdScriptProps } from "@/lib/schema";
 import { PageHero } from "@/components/sections/page-hero";
-import { ServicesBanner } from "@/components/sections/services-banner";
+import { StatementBanner } from "@/components/sections/statement-banner";
 import { ServicesIndex } from "@/components/sections/services-index";
 import { BookConsultationCTA } from "@/components/sections/book-consultation-cta";
 
@@ -33,7 +33,16 @@ export default function ServicesPage() {
         title="Everything under one advisory relationship."
         subhead="UAE setup, UAE tax and compliance, UK services, and advisory — twenty services, one point of contact."
       />
-      <ServicesBanner />
+      <StatementBanner
+        eyebrow={["Our services", "in full"]}
+        imageSide="left"
+        image={{
+          src: "/brand/dubai-skyline-photo.jpg",
+          alt: "Dubai skyline at sunset including the Burj Khalifa",
+        }}
+        statement="Twenty services, four categories, one advisor across all of them."
+        body="Browse by what you need — setup, tax, UK compliance, or advisory — or book a call and we'll tell you which ones actually apply to your situation."
+      />
       <ServicesIndex />
       <BookConsultationCTA />
     </>

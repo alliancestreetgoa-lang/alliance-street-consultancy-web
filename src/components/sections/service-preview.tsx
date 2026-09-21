@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import { cardGlassClassName } from "@/components/ui/card";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
@@ -112,9 +112,7 @@ export function ServicePreview() {
           <Container className="flex flex-col gap-16">
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
               <SectionHeading eyebrow="Services" title="Where clients start with us." align="center" />
-              <MagneticButton href="/services" variant="ghost">
-                View All Services
-              </MagneticButton>
+              <Button variant="ghost" size="lg" asChild><Link href="/services">View All Services</Link></Button>
             </div>
           </Container>
           {/* Full-bleed so cards can run off the right edge of the viewport. */}
@@ -130,7 +128,7 @@ export function ServicePreview() {
                   )}
                 >
                   <div>
-                    <h3 className="font-display text-xl font-medium text-foreground">
+                    <h3 className="text-xl font-semibold text-foreground">
                       {service.title}
                     </h3>
                     <p className="mt-3 text-muted-foreground">{service.description}</p>

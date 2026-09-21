@@ -12,9 +12,12 @@ type DisplayHeadingProps = {
 };
 
 /**
- * The site's page-level h1: words stagger in, the type is rendered as a lit,
- * slightly extruded surface (`.text-3d`), and it tilts a few degrees toward the
- * cursor so the extrusion has a moving light source.
+ * The site's page-level h1: words stagger in, and the type tilts a few degrees
+ * toward the cursor.
+ *
+ * The extruded `.text-3d` face this used to carry was dropped with the rest of
+ * the cinematic layer — the live site's headings are flat Inter 600. The word
+ * stagger is kept deliberately.
  *
  * Word spacing is a real space text node rather than a right margin on each
  * word — a trailing margin does not collapse at a line break, so it shifted
@@ -33,7 +36,7 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
   useEffect(() => {
     if (shouldReduceMotion) return;
     // Track across the whole hero section, not just the heading's own box —
-    // same approach AuroraBackground uses for its cursor glow.
+    // same approach AmbientGlow uses for its wash.
     const section = wrapperRef.current?.closest<HTMLElement>("section");
     if (!section) return;
 
@@ -63,7 +66,7 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
       <m.h1
         style={shouldReduceMotion ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" }}
         className={cn(
-          "text-3d text-balance font-display font-medium tracking-tight [transform-origin:50%_120%]",
+          "text-balance font-semibold [transform-origin:50%_120%]",
           className
         )}
       >

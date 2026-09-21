@@ -2,10 +2,8 @@
 
 import { Check } from "lucide-react";
 import Link from "next/link";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Container } from "@/components/ui/container";
-import { Badge } from "@/components/ui/badge";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
@@ -20,20 +18,23 @@ type ServiceDetailProps = {
 export function ServiceDetail({ service, related }: ServiceDetailProps) {
   return (
     <>
-      <section className="relative flex min-h-[40vh] items-center overflow-hidden py-20 sm:py-24">
-        <AuroraBackground />
-        <AmbientGlow className="opacity-50" />
+      {/* Dark, like the live site's service pages (see /dubai-business-setup):
+          black ground, red glow, mono eyebrow, then a wedge into the light
+          body. surface-dark remaps the tokens, so the children are unchanged. */}
+      <section className="surface-dark relative flex min-h-[46vh] items-center overflow-hidden bg-background py-24 sm:py-32">
+        <AmbientGlow className="opacity-60" />
         <HeroEntrance className="relative z-10 w-full">
           <Container className="flex flex-col items-center gap-6 text-center">
-            <span data-hero-item>
-              <Badge>{service.group}</Badge>
+            <span data-hero-item className="as-eyebrow">
+              {service.group}
             </span>
             <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl" />
-            <p data-hero-item className="max-w-xl text-lg text-muted-foreground">
+            <p data-hero-item className="max-w-xl text-base text-muted-foreground">
               {service.tagline}
             </p>
           </Container>
         </HeroEntrance>
+        <span className="as-wedge" aria-hidden />
       </section>
 
       <section className="py-24 sm:py-32">
@@ -52,7 +53,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
             */}
             {service.directAnswer && (
               <div className="flex flex-col gap-4 border-l-2 border-primary/40 pl-5">
-                <h2 className="font-display text-2xl font-medium text-balance text-foreground">
+                <h2 className="text-2xl font-semibold text-balance text-foreground">
                   {service.directAnswer.question}
                 </h2>
                 <p className="text-base leading-relaxed text-foreground/90">{service.directAnswer.answer}</p>
@@ -90,7 +91,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
             {/* A real heading, not a styled span: this labels the page's main
                 content block, and heading structure is how both crawlers and
                 screen readers find it. Visual treatment is unchanged. */}
-            <h2 className="text-sm font-medium uppercase tracking-widest text-primary">What&apos;s Included</h2>
+            <h2 className="as-eyebrow as-eyebrow-accent">What&apos;s Included</h2>
             {/* The rail draws downward as the list scrolls past, so the
                 checklist reads as being worked through. Scrubbed to the
                 scrollbar; the rail is absolutely positioned so it cannot
@@ -105,31 +106,19 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                 ))}
               </Stagger>
             </ScrubRail>
-          </Reveal>
-          {/* The sidebar drifts slightly slower than the copy column beside it,
-              which opens a little depth between the two. */}
-          <ParallaxBlock distance={-60} className="lg:mt-0">
-            <Reveal delay={0.1} className="flex flex-col gap-8">
-            <FramedImage
-              src={GROUP_IMAGES[service.group].src}
-              alt={GROUP_IMAGES[service.group].alt}
-              caption={GROUP_IMAGES[service.group].caption}
-              aspectClassName={GROUP_IMAGES[service.group].aspectClassName}
-              sizes="(min-width: 1024px) 420px, 100vw"
-            />
-            <Card variant="glass" hover={false} className="flex flex-col gap-3">
-              <h3 className="font-display text-lg font-medium text-foreground">Who This Is For</h3>
+            <Card variant="glass" hover={false} className="mt-2 flex flex-col gap-3">
+              <h3 className="text-lg font-semibold text-foreground">Who This Is For</h3>
               <p className="text-sm text-muted-foreground">{service.whoFor}</p>
             </Card>
             {related.length > 0 ? (
               <Card variant="glass" hover={false} className="flex flex-col gap-3">
-                <h3 className="font-display text-lg font-medium text-foreground">Related Services</h3>
+                <h3 className="text-lg font-semibold text-foreground">Related Services</h3>
                 <ul className="flex flex-col gap-2">
                   {related.map((item) => (
                     <li key={item.slug}>
                       <Link
                         href={`/services/${item.category}/${item.slug}`}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="text-sm text-muted-foreground transition-colors duration-350 hover:text-foreground"
                       >
                         {item.title}
                       </Link>
@@ -138,6 +127,18 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                 </ul>
               </Card>
             ) : null}
+          </Reveal>
+          {/* The sidebar drifts slightly slower than the copy column beside it,
+              which opens a little depth between the two. */}
+          <ParallaxBlock distance={-60} className="lg:mt-0">
+            <Reveal delay={0.1}>
+            <FramedImage
+              src={GROUP_IMAGES[service.group].src}
+              alt={GROUP_IMAGES[service.group].alt}
+              caption={GROUP_IMAGES[service.group].caption}
+              aspectClassName={GROUP_IMAGES[service.group].aspectClassName}
+              sizes="(min-width: 1024px) 420px, 100vw"
+            />
             </Reveal>
           </ParallaxBlock>
         </Container>

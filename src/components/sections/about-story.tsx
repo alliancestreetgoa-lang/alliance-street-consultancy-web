@@ -23,10 +23,10 @@ export function AboutStory() {
     <section className="py-24 sm:py-32">
       <Container className="grid gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
         <Reveal className="flex flex-col gap-6">
-          <span className="text-sm font-medium uppercase tracking-widest text-primary">
-            Our Story
+          <span className="as-eyebrow">
+            Our <span className="as-eyebrow-accent">Story</span>
           </span>
-          <p className="text-2xl font-display font-medium leading-snug text-foreground">
+          <p className="text-2xl font-semibold leading-snug text-foreground">
             Alliance Street started in Business Bay because two markets full of founders were
             getting the same bad deal.
           </p>
@@ -41,22 +41,22 @@ export function AboutStory() {
             UAE structuring and UK compliance well enough to plan across both, and stays on after
             the paperwork is filed to handle the tax, accounting, and questions that come after.
           </p>
+          <Card variant="glass" hover={false} className="mt-2 flex flex-col gap-8">
+            {PRINCIPLES.map((principle) => (
+              <div key={principle.title} className="flex flex-col gap-2">
+                <h3 className="text-lg font-semibold text-foreground">{principle.title}</h3>
+                <p className="text-sm text-muted-foreground">{principle.description}</p>
+              </div>
+            ))}
+          </Card>
         </Reveal>
-        <Reveal delay={0.1} className="flex flex-col gap-8">
+        <Reveal delay={0.1}>
           <FramedImage
             src="/brand/advisor-portrait.png"
             alt="Alliance Street advisor"
             aspectClassName="aspect-[3/4]"
             sizes="(min-width: 1024px) 420px, 100vw"
           />
-          <Card variant="glass" hover={false} className="flex flex-col gap-8">
-            {PRINCIPLES.map((principle) => (
-              <div key={principle.title} className="flex flex-col gap-2">
-                <h3 className="font-display text-lg font-medium text-foreground">{principle.title}</h3>
-                <p className="text-sm text-muted-foreground">{principle.description}</p>
-              </div>
-            ))}
-          </Card>
         </Reveal>
       </Container>
     </section>

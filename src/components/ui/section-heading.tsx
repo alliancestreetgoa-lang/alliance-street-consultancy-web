@@ -69,6 +69,10 @@ export function SectionHeading({
     return () => ctx.revert();
   }, []);
 
+  const eyebrowWords = eyebrow ? eyebrow.split(" ") : [];
+  const lead = eyebrowWords.slice(0, -1).join(" ");
+  const tail = eyebrowWords.slice(-1).join("");
+
   return (
     <div
       ref={rootRef}
@@ -79,11 +83,15 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <span className="js-heading-eyebrow text-sm font-medium uppercase tracking-widest text-primary">
-          {eyebrow}
+        // Two-tone, as on the live site: the lead is ink, the trailing word is
+        // red ("BUSINESS SETUP SIMPLIFIED"). A single-word eyebrow is all red,
+        // with no empty lead and no leading space before it.
+        <span className="js-heading-eyebrow as-eyebrow">
+          {lead ? <>{lead} </> : null}
+          <span className="as-eyebrow-accent">{tail}</span>
         </span>
       ) : null}
-      <h2 className="text-balance font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
+      <h2 className="text-balance text-4xl font-semibold text-foreground sm:text-5xl">
         {/* Spacing is a real space text node, not a right margin on each word: a
             margin does not collapse at a line break, so it pushed every wrapped
             line of a centred heading off-centre by that amount. */}

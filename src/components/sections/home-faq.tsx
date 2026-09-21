@@ -67,8 +67,8 @@ export function HomeFAQ() {
           {FAQS.map((faq) => (
             <StaggerItem key={faq.question}>
               <details className="group not-last:border-b border-border">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 py-2.5 text-left font-display text-lg text-foreground outline-none [&::-webkit-details-marker]:hidden focus-visible:ring-3 focus-visible:ring-ring/50 hover:underline">
-                  <h3 className="font-display text-lg font-medium">{faq.question}</h3>
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 py-2.5 text-left text-lg text-foreground outline-none [&::-webkit-details-marker]:hidden focus-visible:ring-3 focus-visible:ring-ring/50 hover:underline">
+                  <h3 className="text-lg font-semibold">{faq.question}</h3>
                   <ChevronDownIcon
                     aria-hidden="true"
                     className="mt-1 size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
