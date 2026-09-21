@@ -3,7 +3,9 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
-import FACTORS from "@/content/sections/pricing-factors.json";
+import factorsContent from "@/content/sections/pricing-factors.json";
+
+const FACTORS = factorsContent.items;
 
 
 export function PricingFactors() {

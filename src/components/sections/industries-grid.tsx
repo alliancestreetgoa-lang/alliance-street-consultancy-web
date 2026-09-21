@@ -2,7 +2,9 @@ import { DefinitionList } from "@/components/ui/definition-list";
 import { Container } from "@/components/ui/container";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
-import INDUSTRIES from "@/content/sections/industries.json";
+import industriesContent from "@/content/sections/industries.json";
+
+const INDUSTRIES = industriesContent.items;
 
 
 export function IndustriesGrid() {

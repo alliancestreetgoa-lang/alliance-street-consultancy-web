@@ -3,7 +3,9 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
-import CASE_STUDIES from "@/content/sections/case-studies.json";
+import case_studiesContent from "@/content/sections/case-studies.json";
+
+const CASE_STUDIES = case_studiesContent.items;
 
 
 export function CaseStudyGrid() {

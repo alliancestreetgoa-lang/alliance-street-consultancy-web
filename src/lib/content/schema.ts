@@ -79,8 +79,27 @@ export const servicesSchema = z
     }
   });
 
-/** Keyed by service slug. Cross-checked against services.json by the validator. */
-export const directAnswersSchema = z.record(slugSchema, directAnswerSchema);
+/**
+ * A list, not an object keyed by slug. A CMS form can add a row to a list; it
+ * cannot invent a new object key, which made the keyed shape uneditable.
+ * `slug` says which service the answer belongs to, and the validator checks
+ * that the service exists.
+ */
+export const directAnswersSchema = z
+  .array(directAnswerSchema.extend({ slug: slugSchema }))
+  .superRefine((answers, ctx) => {
+    const seen = new Set<string>();
+    for (const a of answers) {
+      if (seen.has(a.slug)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `two sourced answers both claim the service "${a.slug}"`,
+          path: ["slug"],
+        });
+      }
+      seen.add(a.slug);
+    }
+  });
 
 export const groupImageSchema = z.object({
   src: nonEmpty("src"),

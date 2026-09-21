@@ -2,7 +2,9 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
-import AREAS from "@/content/sections/about-expertise.json";
+import areasContent from "@/content/sections/about-expertise.json";
+
+const AREAS = areasContent.items;
 
 
 export function AboutExpertise() {

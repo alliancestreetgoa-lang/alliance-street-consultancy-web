@@ -2,7 +2,9 @@ import { DefinitionList } from "@/components/ui/definition-list";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
-import DIFFERENTIATORS from "@/content/sections/differentiators.json";
+import differentiatorsContent from "@/content/sections/differentiators.json";
+
+const DIFFERENTIATORS = differentiatorsContent.items;
 
 
 export function WhyAllianceStreet() {

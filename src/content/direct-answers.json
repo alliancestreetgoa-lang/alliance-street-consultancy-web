@@ -1,84 +1,92 @@
 {
-  "corporate-tax": {
-    "question": "What is the UAE corporate tax rate, and when do I have to register?",
-    "answer": "UAE Corporate Tax is charged at 0% on taxable income up to AED 375,000 and 9% on taxable income above that threshold. It applies to financial years beginning on or after 1 June 2023. Registration deadlines are set by FTA Decision No. 3 of 2024 and depend on when your trade licence was issued rather than on a single national cut-off date, so two businesses in the same free zone can have different deadlines. We work out your specific date, register you, and take over the filing calendar from there.",
-    "sources": [
-      {
-        "label": "UAE Government portal — Corporate tax",
-        "url": "https://u.ae/en/information-and-services/finance-and-investment/taxation/corporate-tax"
-      },
-      {
-        "label": "UAE Ministry of Finance — Corporate Tax",
-        "url": "https://mof.gov.ae/en/public-finance/tax/corporate-tax/"
-      },
-      {
-        "label": "Federal Tax Authority — Decision No. 3 of 2024, registration timeframes",
-        "url": "https://tax.gov.ae/en/media.centre/news/federal.tax.authority.issues.new.decision.on.specified.timeframes.for.corporate.tax.registration.aspx"
-      }
-    ],
-    "verifiedOn": "2026-08-11"
-  },
-  "vat-registration": {
-    "question": "When does a UAE business have to register for VAT?",
-    "answer": "VAT registration is mandatory once the total value of your taxable supplies and imports exceeds AED 375,000 over the previous 12 months, or when you expect to exceed it within the next 30 days. Voluntary registration is available from AED 187,500, which is often worth taking early if you are incurring recoverable input VAT before revenue arrives. The obligation is forward-looking, so a single large contract can trigger it before your trailing revenue does.",
-    "sources": [
-      {
-        "label": "Federal Tax Authority — VAT registration",
-        "url": "https://tax.gov.ae/en/taxes/Vat/vat.topics/registration.for.vat.aspx"
-      }
-    ],
-    "verifiedOn": "2026-08-11"
-  },
-  "free-zone-company-formation": {
-    "question": "Do free zone companies still pay UAE corporate tax?",
-    "answer": "A free zone company is not automatically exempt. A Free Zone Person that meets the conditions to be treated as a Qualifying Free Zone Person can apply a 0% Corporate Tax rate to its Qualifying Income, but income falling outside that definition is taxed under the standard rules — 0% up to AED 375,000 and 9% above. Which of your revenue streams qualify depends on what you actually do and who you invoice, so the structure decision and the tax outcome are the same decision.",
-    "sources": [
-      {
-        "label": "UAE Ministry of Finance — Corporate Tax",
-        "url": "https://mof.gov.ae/en/public-finance/tax/corporate-tax/"
-      },
-      {
-        "label": "UAE Government portal — Corporate tax",
-        "url": "https://u.ae/en/information-and-services/finance-and-investment/taxation/corporate-tax"
-      }
-    ],
-    "verifiedOn": "2026-08-11"
-  },
-  "company-formation": {
-    "question": "What do I need to register a UK limited company?",
-    "answer": "A UK limited company needs at least one director, at least one shareholder (who may be the same person), a registered office address in the UK, and a SIC code describing what the company does. Incorporation itself is quick; the parts that take planning are the registered office, the share structure, and getting the SIC code right, because it follows the company into bank onboarding and HMRC records.",
-    "sources": [
-      {
-        "label": "GOV.UK — Set up a limited company",
-        "url": "https://www.gov.uk/limited-company-formation"
-      }
-    ],
-    "verifiedOn": "2026-08-11"
-  },
-  "corporation-tax": {
-    "question": "What are the UK corporation tax rates and deadlines?",
-    "answer": "UK Corporation Tax is charged at 19% on profits of £50,000 or less and 25% on profits above £250,000, with Marginal Relief tapering the rate between those two thresholds. Both limits are reduced proportionately for short accounting periods and by the number of associated companies. The two deadlines run in an order that surprises people: Corporation Tax is usually payable 9 months and one day after the end of the accounting period, but the Company Tax Return is not due until 12 months after it — so the money is due before the return that calculates it.",
-    "sources": [
-      {
-        "label": "GOV.UK — Corporation Tax rates",
-        "url": "https://www.gov.uk/corporation-tax-rates"
-      },
-      {
-        "label": "GOV.UK — Company Tax Returns",
-        "url": "https://www.gov.uk/company-tax-returns"
-      }
-    ],
-    "verifiedOn": "2026-08-11"
-  },
-  "vat": {
-    "question": "What is the UK VAT registration threshold?",
-    "answer": "You must register for UK VAT when your total taxable turnover for the last 12 months goes over £90,000, or when you expect it to go over £90,000 in the next 30 days. Registration is due within 30 days of the end of the month in which you crossed the threshold, and registration takes effect from the first day of the second month after you went over.",
-    "sources": [
-      {
-        "label": "GOV.UK — VAT registration",
-        "url": "https://www.gov.uk/vat-registration/when-to-register"
-      }
-    ],
-    "verifiedOn": "2026-08-11"
-  }
+  "answers": [
+    {
+      "slug": "corporate-tax",
+      "question": "What is the UAE corporate tax rate, and when do I have to register?",
+      "answer": "UAE Corporate Tax is charged at 0% on taxable income up to AED 375,000 and 9% on taxable income above that threshold. It applies to financial years beginning on or after 1 June 2023. Registration deadlines are set by FTA Decision No. 3 of 2024 and depend on when your trade licence was issued rather than on a single national cut-off date, so two businesses in the same free zone can have different deadlines. We work out your specific date, register you, and take over the filing calendar from there.",
+      "sources": [
+        {
+          "label": "UAE Government portal — Corporate tax",
+          "url": "https://u.ae/en/information-and-services/finance-and-investment/taxation/corporate-tax"
+        },
+        {
+          "label": "UAE Ministry of Finance — Corporate Tax",
+          "url": "https://mof.gov.ae/en/public-finance/tax/corporate-tax/"
+        },
+        {
+          "label": "Federal Tax Authority — Decision No. 3 of 2024, registration timeframes",
+          "url": "https://tax.gov.ae/en/media.centre/news/federal.tax.authority.issues.new.decision.on.specified.timeframes.for.corporate.tax.registration.aspx"
+        }
+      ],
+      "verifiedOn": "2026-08-11"
+    },
+    {
+      "slug": "vat-registration",
+      "question": "When does a UAE business have to register for VAT?",
+      "answer": "VAT registration is mandatory once the total value of your taxable supplies and imports exceeds AED 375,000 over the previous 12 months, or when you expect to exceed it within the next 30 days. Voluntary registration is available from AED 187,500, which is often worth taking early if you are incurring recoverable input VAT before revenue arrives. The obligation is forward-looking, so a single large contract can trigger it before your trailing revenue does.",
+      "sources": [
+        {
+          "label": "Federal Tax Authority — VAT registration",
+          "url": "https://tax.gov.ae/en/taxes/Vat/vat.topics/registration.for.vat.aspx"
+        }
+      ],
+      "verifiedOn": "2026-08-11"
+    },
+    {
+      "slug": "free-zone-company-formation",
+      "question": "Do free zone companies still pay UAE corporate tax?",
+      "answer": "A free zone company is not automatically exempt. A Free Zone Person that meets the conditions to be treated as a Qualifying Free Zone Person can apply a 0% Corporate Tax rate to its Qualifying Income, but income falling outside that definition is taxed under the standard rules — 0% up to AED 375,000 and 9% above. Which of your revenue streams qualify depends on what you actually do and who you invoice, so the structure decision and the tax outcome are the same decision.",
+      "sources": [
+        {
+          "label": "UAE Ministry of Finance — Corporate Tax",
+          "url": "https://mof.gov.ae/en/public-finance/tax/corporate-tax/"
+        },
+        {
+          "label": "UAE Government portal — Corporate tax",
+          "url": "https://u.ae/en/information-and-services/finance-and-investment/taxation/corporate-tax"
+        }
+      ],
+      "verifiedOn": "2026-08-11"
+    },
+    {
+      "slug": "company-formation",
+      "question": "What do I need to register a UK limited company?",
+      "answer": "A UK limited company needs at least one director, at least one shareholder (who may be the same person), a registered office address in the UK, and a SIC code describing what the company does. Incorporation itself is quick; the parts that take planning are the registered office, the share structure, and getting the SIC code right, because it follows the company into bank onboarding and HMRC records.",
+      "sources": [
+        {
+          "label": "GOV.UK — Set up a limited company",
+          "url": "https://www.gov.uk/limited-company-formation"
+        }
+      ],
+      "verifiedOn": "2026-08-11"
+    },
+    {
+      "slug": "corporation-tax",
+      "question": "What are the UK corporation tax rates and deadlines?",
+      "answer": "UK Corporation Tax is charged at 19% on profits of £50,000 or less and 25% on profits above £250,000, with Marginal Relief tapering the rate between those two thresholds. Both limits are reduced proportionately for short accounting periods and by the number of associated companies. The two deadlines run in an order that surprises people: Corporation Tax is usually payable 9 months and one day after the end of the accounting period, but the Company Tax Return is not due until 12 months after it — so the money is due before the return that calculates it.",
+      "sources": [
+        {
+          "label": "GOV.UK — Corporation Tax rates",
+          "url": "https://www.gov.uk/corporation-tax-rates"
+        },
+        {
+          "label": "GOV.UK — Company Tax Returns",
+          "url": "https://www.gov.uk/company-tax-returns"
+        }
+      ],
+      "verifiedOn": "2026-08-11"
+    },
+    {
+      "slug": "vat",
+      "question": "What is the UK VAT registration threshold?",
+      "answer": "You must register for UK VAT when your total taxable turnover for the last 12 months goes over £90,000, or when you expect it to go over £90,000 in the next 30 days. Registration is due within 30 days of the end of the month in which you crossed the threshold, and registration takes effect from the first day of the second month after you went over.",
+      "sources": [
+        {
+          "label": "GOV.UK — VAT registration",
+          "url": "https://www.gov.uk/vat-registration/when-to-register"
+        }
+      ],
+      "verifiedOn": "2026-08-11"
+    }
+  ]
 }

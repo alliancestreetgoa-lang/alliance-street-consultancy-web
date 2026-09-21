@@ -1,0 +1,340 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# Content editor for alliancestreet.ae.
+#
+# Saving here commits to the repository; GitHub Actions rebuilds and deploys,
+# so a change is live a couple of minutes later. Nothing is edited in place on
+# the live site, which means every change is attributable and revertible.
+#
+# The collections below deliberately do NOT expose everything in the repo. Two
+# things are kept out on purpose:
+#   - advisor credentials (ACCA numbers and the like), because those are
+#     checkable against a public register and must not be guessed at
+#   - page URLs/slugs of existing services, because changing one silently
+#     breaks inbound links and search rankings
+#
+# Anything saved here is still validated on build: see tests/content.test.ts.
+# A figure published without a source fails the build rather than going live.
+
+backend:
+  name: github
+  repo: alliancestreetgoa-lang/alliance-street-consultancy-web
+  branch: main
+  # OAuth client that completes the GitHub login handshake. GitHub Pages cannot
+  # do this itself — it serves static files only and the exchange needs a
+  # server-side secret. See docs/cms-setup.md for deploying this worker.
+  base_url: https://REPLACE-ME.workers.dev
+
+# Uploaded images land beside the existing artwork, where the prebuild image
+# pipeline (scripts/optimize-images.mjs) picks them up and generates the
+# responsive WebP variants automatically.
+media_folder: public/brand
+public_folder: /brand
+
+collections:
+  - name: services
+    label: Services
+    files:
+      - name: catalogue
+        label: Service catalogue
+        file: src/content/services.json
+        description: >-
+          The 23 services. Each one becomes its own page and appears in the
+          Services menu. Ask a developer before changing a web address.
+        fields:
+          - label: Services
+            name: services
+            widget: list
+            label_singular: Service
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - label: One-line summary
+                name: tagline
+                widget: string
+                hint: Shown under the title in menus and listings.
+              - label: Section
+                name: group
+                widget: select
+                options: ['UAE Setup', 'UAE Tax & Compliance', 'UK Services', 'Advisory']
+                hint: Which menu column this appears under.
+              - label: Area
+                name: category
+                widget: select
+                options: [uae, uk, advisory]
+                hint: Part of the page address. Changing it changes the URL.
+              - label: Web address
+                name: slug
+                widget: string
+                pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Lowercase words separated by single hyphens']
+                hint: >-
+                  Part of the page address. Changing this breaks existing links
+                  and search rankings — ask a developer first.
+              - label: What's included
+                name: includes
+                widget: list
+                field: { label: Item, name: item, widget: string }
+              - { label: Who this is for, name: whoFor, widget: text }
+
+  - name: tax_figures
+    label: Tax figures & sources
+    files:
+      - name: direct_answers
+        label: Sourced answers
+        file: src/content/direct-answers.json
+        description: >-
+          Rates, thresholds and deadlines shown on service pages. Every figure
+          must name the official source it came from and the date someone last
+          checked it. Publishing without a source will fail the build.
+        fields:
+          - label: Answers
+            name: answers
+            widget: list
+            label_singular: Answer
+            summary: '{{fields.question}}'
+            fields:
+              - label: Applies to service
+                name: slug
+                widget: string
+                hint: Must match the web address of an existing service.
+              - { label: Question, name: question, widget: string }
+              - label: Answer
+                name: answer
+                widget: text
+                hint: Two to five sentences, readable on its own.
+              - label: Sources
+                name: sources
+                widget: list
+                label_singular: Source
+                summary: '{{fields.label}}'
+                hint: Official sources only — FTA, UAE Ministry of Finance, GOV.UK.
+                fields:
+                  - { label: Source name, name: label, widget: string }
+                  - { label: Link, name: url, widget: string }
+              - label: Figures last checked
+                name: verifiedOn
+                widget: datetime
+                format: 'YYYY-MM-DD'
+                date_format: 'DD MMMM YYYY'
+                time_format: false
+                hint: >-
+                  The date a person last checked these numbers against the
+                  official source. Update it whenever you re-check.
+
+  - name: site
+    label: Site & navigation
+    files:
+      - name: site
+        label: Company details and menus
+        file: src/content/site.json
+        fields:
+          - label: Company
+            name: company
+            widget: object
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Email, name: email, widget: string }
+              - { label: Phone (display), name: phone, widget: string }
+              - label: Phone (dialling)
+                name: phoneHref
+                widget: string
+                pattern: ['^\+\d{7,15}$', 'International format, e.g. +97142627928']
+              - label: WhatsApp
+                name: whatsapp
+                widget: string
+                required: false
+                hint: Leave blank if there is no WhatsApp number. The site hides the row.
+              - { label: Address, name: address, widget: string }
+          - label: Main menu
+            name: primaryNav
+            widget: list
+            summary: '{{fields.label}}'
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: Link, name: href, widget: string }
+          - label: Services menu
+            name: navGroups
+            widget: list
+            label_singular: Menu column
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Column heading, name: title, widget: string }
+              - label: Links
+                name: links
+                widget: list
+                summary: '{{fields.label}}'
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+                  - { label: Description, name: description, widget: string, required: false }
+
+  - name: pages
+    label: Page content
+    files:
+      - name: headlines
+        label: Page headlines
+        file: src/content/sections/headlines.json
+        fields:
+          - { label: Home page headline, name: home, widget: text }
+          - { label: About page headline, name: about, widget: text }
+          - { label: Case studies headline, name: caseStudies, widget: text }
+
+      - name: differentiators
+        label: 'Home — why Alliance Street'
+        file: src/content/sections/differentiators.json
+        fields:
+          - label: Points
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+
+      - name: process
+        label: 'Home — how an engagement works'
+        file: src/content/sections/process.json
+        fields:
+          - label: Steps
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            hint: Shown in order. Drag to reorder.
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+
+      - name: home_faq
+        label: 'Home — questions'
+        file: src/content/sections/home-faq.json
+        fields:
+          - label: Questions
+            name: items
+            widget: list
+            summary: '{{fields.question}}'
+            fields:
+              - { label: Question, name: question, widget: string }
+              - { label: Answer, name: answer, widget: text }
+
+      - name: service_preview
+        label: 'Home — featured services'
+        file: src/content/sections/service-preview.json
+        fields:
+          - label: Featured
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Link, name: href, widget: string }
+
+      - name: about_expertise
+        label: 'About — what we do'
+        file: src/content/sections/about-expertise.json
+        fields:
+          - label: Areas
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+
+      - name: about_principles
+        label: 'About — our principles'
+        file: src/content/sections/about-principles.json
+        fields:
+          - label: Principles
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+
+      - name: case_studies
+        label: Case studies
+        file: src/content/sections/case-studies.json
+        fields:
+          - label: Case studies
+            name: items
+            widget: list
+            label_singular: Case study
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - label: Filed under
+                name: category
+                widget: select
+                options: ['UAE Setup', 'UAE Tax & Compliance', 'UK Services', 'Advisory']
+              - { label: Challenge, name: challenge, widget: text }
+              - { label: Our approach, name: approach, widget: text }
+              - { label: Outcome, name: outcome, widget: text }
+
+      - name: industries
+        label: Industries
+        file: src/content/sections/industries.json
+        fields:
+          - label: Industries
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+
+      - name: pricing_factors
+        label: Pricing factors
+        file: src/content/sections/pricing-factors.json
+        fields:
+          - label: Factors
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+
+  - name: imagery
+    label: Imagery
+    files:
+      - name: group_images
+        label: Service section images
+        file: src/content/group-images.json
+        description: >-
+          The photograph shown on service pages, one per menu section.
+          Uploads are optimised automatically when the site rebuilds.
+        fields:
+          - label: UAE Setup
+            name: 'UAE Setup'
+            widget: object
+            fields:
+              - { label: Image, name: src, widget: image }
+              - { label: Alt text, name: alt, widget: string, hint: Describes the image for screen readers. }
+              - { label: Caption, name: caption, widget: string }
+              - { label: Shape, name: aspectClassName, widget: string }
+          - label: UAE Tax & Compliance
+            name: 'UAE Tax & Compliance'
+            widget: object
+            fields:
+              - { label: Image, name: src, widget: image }
+              - { label: Alt text, name: alt, widget: string }
+              - { label: Caption, name: caption, widget: string }
+              - { label: Shape, name: aspectClassName, widget: string }
+          - label: UK Services
+            name: 'UK Services'
+            widget: object
+            fields:
+              - { label: Image, name: src, widget: image }
+              - { label: Alt text, name: alt, widget: string }
+              - { label: Caption, name: caption, widget: string }
+              - { label: Shape, name: aspectClassName, widget: string }
+          - label: Advisory
+            name: Advisory
+            widget: object
+            fields:
+              - { label: Image, name: src, widget: image }
+              - { label: Alt text, name: alt, widget: string }
+              - { label: Caption, name: caption, widget: string }
+              - { label: Shape, name: aspectClassName, widget: string }

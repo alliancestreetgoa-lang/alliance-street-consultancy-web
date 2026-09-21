@@ -51,8 +51,8 @@ function check(label: string, schema: z.ZodType, value: unknown) {
 }
 
 describe("content schemas", () => {
-  it("services.json", () => check("services.json", servicesSchema, services));
-  it("direct-answers.json", () => check("direct-answers.json", directAnswersSchema, directAnswers));
+  it("services.json", () => check("services.json", servicesSchema, services.services));
+  it("direct-answers.json", () => check("direct-answers.json", directAnswersSchema, directAnswers.answers));
   it("group-images.json", () => check("group-images.json", groupImagesSchema, groupImages));
   it("site.json", () => check("site.json", siteSchema, site));
 
@@ -63,11 +63,11 @@ describe("content schemas", () => {
     ["industries", industries],
     ["pricing-factors", pricingFactors],
     ["process", process_],
-  ])("sections/%s.json", (name, value) => check(`sections/${name}.json`, entriesSchema, value));
+  ])("sections/%s.json", (name, value) => check(`sections/${name}.json`, entriesSchema, (value as { items: unknown }).items));
 
-  it("sections/home-faq.json", () => check("sections/home-faq.json", faqSchema, homeFaq));
+  it("sections/home-faq.json", () => check("sections/home-faq.json", faqSchema, homeFaq.items));
   it("sections/case-studies.json", () =>
-    check("sections/case-studies.json", caseStudySchema, caseStudies));
+    check("sections/case-studies.json", caseStudySchema, caseStudies.items));
 
   it("sections/headlines.json", () =>
     check(
@@ -80,21 +80,21 @@ describe("content schemas", () => {
     check(
       "sections/service-preview.json",
       z.array(z.object({ title: z.string().min(1), description: z.string().min(1), href: z.string().startsWith("/") })).min(1),
-      servicePreview
+      servicePreview.items
     ));
 });
 
 describe("content integrity", () => {
-  const routes = new Set(services.map((s) => `/services/${s.category}/${s.slug}`));
+  const routes = new Set(services.services.map((s) => `/services/${s.category}/${s.slug}`));
 
   it("attaches every sourced answer to a service that exists", () => {
-    const slugs = new Set(services.map((s) => s.slug));
-    const orphans = Object.keys(directAnswers).filter((slug) => !slugs.has(slug));
+    const slugs = new Set(services.services.map((s) => s.slug));
+    const orphans = directAnswers.answers.map((a) => a.slug).filter((slug) => !slugs.has(slug));
     expect(orphans, "a sourced answer names a service that no longer exists").toEqual([]);
   });
 
   it("has an image for every service group in use", () => {
-    const used = [...new Set(services.map((s) => s.group))];
+    const used = [...new Set(services.services.map((s) => s.group))];
     const missing = used.filter((g) => !(g in groupImages));
     expect(missing).toEqual([]);
   });
@@ -118,19 +118,19 @@ describe("content integrity", () => {
 
   it("files every service under a nav group of the same name", () => {
     const navTitles = new Set(site.navGroups.map((g) => g.title));
-    const stray = [...new Set(services.map((s) => s.group))].filter((g) => !navTitles.has(g));
+    const stray = [...new Set(services.services.map((s) => s.group))].filter((g) => !navTitles.has(g));
     expect(stray).toEqual([]);
   });
 
   it("uses only known service groups", () => {
-    const stray = [...new Set(services.map((s) => s.group))].filter(
+    const stray = [...new Set(services.services.map((s) => s.group))].filter(
       (g) => !(SERVICE_GROUPS as readonly string[]).includes(g)
     );
     expect(stray).toEqual([]);
   });
 
   it("links the service preview at real service pages", () => {
-    const orphans = servicePreview.map((s) => s.href).filter((h) => !routes.has(h));
+    const orphans = servicePreview.items.map((s) => s.href).filter((h) => !routes.has(h));
     expect(orphans).toEqual([]);
   });
 });

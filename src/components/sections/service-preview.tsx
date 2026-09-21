@@ -9,7 +9,9 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { cardGlassClassName } from "@/components/ui/card";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
-import SERVICES from "@/content/sections/service-preview.json";
+import servicesContent from "@/content/sections/service-preview.json";
+
+const SERVICES = servicesContent.items;
 
 
 export function ServicePreview() {

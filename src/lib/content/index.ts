@@ -21,7 +21,13 @@ export type { DirectAnswer, SiteContent };
 /** A service plus its sourced answer, where one exists. */
 export type Service = ServiceBase & { directAnswer?: DirectAnswer };
 
-export const DIRECT_ANSWERS = directAnswersJson as Record<string, DirectAnswer>;
+/** Indexed by slug for lookup; the file itself is a list, for the CMS's sake. */
+export const DIRECT_ANSWERS: Record<string, DirectAnswer> = Object.fromEntries(
+  (directAnswersJson.answers as (DirectAnswer & { slug: string })[]).map(({ slug, ...answer }) => [
+    slug,
+    answer,
+  ])
+);
 
 export const GROUP_IMAGES = groupImagesJson as Record<
   ServiceBase["group"],
@@ -33,7 +39,7 @@ export const GROUP_IMAGES = groupImagesJson as Record<
  * the CMS can present them as a separate collection with its own stricter
  * schema — and so a service can be edited without touching its tax figures.
  */
-export const SERVICES: Service[] = (servicesJson as ServiceBase[]).map((service) => {
+export const SERVICES: Service[] = (servicesJson.services as ServiceBase[]).map((service) => {
   const directAnswer = DIRECT_ANSWERS[service.slug];
   return directAnswer ? { ...service, directAnswer } : service;
 });

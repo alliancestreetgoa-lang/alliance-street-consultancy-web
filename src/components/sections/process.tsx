@@ -5,7 +5,9 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
-import STEPS from "@/content/sections/process.json";
+import stepsContent from "@/content/sections/process.json";
+
+const STEPS = stepsContent.items;
 
 
 export function Process() {

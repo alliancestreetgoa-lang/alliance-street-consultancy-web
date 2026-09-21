@@ -2,7 +2,9 @@ import { Container } from "@/components/ui/container";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/scroll-reveal";
-import PRINCIPLES from "@/content/sections/about-principles.json";
+import principlesContent from "@/content/sections/about-principles.json";
+
+const PRINCIPLES = principlesContent.items;
 
 
 export function AboutStory() {

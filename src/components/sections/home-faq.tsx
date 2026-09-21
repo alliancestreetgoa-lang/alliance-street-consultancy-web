@@ -3,7 +3,9 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
-import FAQS from "@/content/sections/home-faq.json";
+import faqsContent from "@/content/sections/home-faq.json";
+
+const FAQS = faqsContent.items;
 
 
 export function HomeFAQ() {

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- noindex, and deliberately NOT a robots.txt Disallow. See the note at
+         the foot of src/app/robots.ts: a disallowed URL is never fetched, so
+         the noindex tag is never read, and the URL can still surface in
+         results as a bare link. Crawling stays allowed so this tag is seen. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Alliance Street — Content Editor</title>
+  </head>
+  <body>
+    <!-- No type="module": Sveltia CMS is not distributed as an ES module, and
+         adding it breaks the JavaScript API. -->
+    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+  </body>
+</html>

@@ -1,22 +1,24 @@
-[
-  {
-    "title": "Free Zone Company Formation",
-    "description": "Set up in a UAE free zone with 100% foreign ownership.",
-    "href": "/services/uae/free-zone-company-formation"
-  },
-  {
-    "title": "Corporate Tax",
-    "description": "Registration, filing, and planning that keeps you compliant as UAE tax rules evolve.",
-    "href": "/services/uae/corporate-tax"
-  },
-  {
-    "title": "UK Company Formation",
-    "description": "Incorporate with Companies House and get accounting support from day one.",
-    "href": "/services/uk/company-formation"
-  },
-  {
-    "title": "CFO Services",
-    "description": "Fractional finance leadership for founders who need strategy, not just bookkeeping.",
-    "href": "/services/advisory/cfo-services"
-  }
-]
+{
+  "items": [
+    {
+      "title": "Free Zone Company Formation",
+      "description": "Set up in a UAE free zone with 100% foreign ownership.",
+      "href": "/services/uae/free-zone-company-formation"
+    },
+    {
+      "title": "Corporate Tax",
+      "description": "Registration, filing, and planning that keeps you compliant as UAE tax rules evolve.",
+      "href": "/services/uae/corporate-tax"
+    },
+    {
+      "title": "UK Company Formation",
+      "description": "Incorporate with Companies House and get accounting support from day one.",
+      "href": "/services/uk/company-formation"
+    },
+    {
+      "title": "CFO Services",
+      "description": "Fractional finance leadership for founders who need strategy, not just bookkeeping.",
+      "href": "/services/advisory/cfo-services"
+    }
+  ]
+}
