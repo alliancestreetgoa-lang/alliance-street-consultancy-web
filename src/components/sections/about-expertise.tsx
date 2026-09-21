@@ -2,25 +2,8 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import AREAS from "@/content/sections/about-expertise.json";
 
-const AREAS = [
-  {
-    title: "UAE Setup",
-    description: "Free zone, mainland, and offshore formation, PRO services, and corporate banking introductions.",
-  },
-  {
-    title: "UAE Tax & Compliance",
-    description: "Corporate tax, VAT registration and filing, audit support, and monthly bookkeeping.",
-  },
-  {
-    title: "UK Services",
-    description: "Companies House incorporation, statutory accounts, self assessment, and UK VAT.",
-  },
-  {
-    title: "Advisory",
-    description: "Business consulting, fractional CFO services, tax planning, and payroll.",
-  },
-];
 
 export function AboutExpertise() {
   return (

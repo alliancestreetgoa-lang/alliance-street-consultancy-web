@@ -5,29 +5,8 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import STEPS from "@/content/sections/process.json";
 
-const STEPS = [
-  {
-    title: "Discovery Call",
-    description:
-      "We learn about your business, where you're trading, and what structure actually fits — not the one that's easiest to sell.",
-  },
-  {
-    title: "Structuring & Setup",
-    description:
-      "We recommend the right jurisdiction and entity type, then handle formation, licensing, and banking introductions.",
-  },
-  {
-    title: "Compliance, Built In",
-    description:
-      "VAT, corporate tax, and bookkeeping are set up correctly from day one, not fixed after an audit finds the gaps.",
-  },
-  {
-    title: "Ongoing Partnership",
-    description:
-      "We stay on as your accountant and advisor — filings, renewals, and the questions that come up in between.",
-  },
-];
 
 export function Process() {
   const trackRef = useRef<HTMLDivElement>(null);

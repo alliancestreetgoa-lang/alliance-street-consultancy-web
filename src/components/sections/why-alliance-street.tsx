@@ -2,27 +2,8 @@ import { DefinitionList } from "@/components/ui/definition-list";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import DIFFERENTIATORS from "@/content/sections/differentiators.json";
 
-const DIFFERENTIATORS = [
-  {
-    title: "Two markets, one point of contact",
-    description:
-      "UAE and UK expertise under one advisor relationship, no re-explaining your business to a new firm every time you cross a border.",
-  },
-  {
-    title: "Built for founders, not filing cabinets",
-    description: "Plain-language guidance, not generic paperwork processing.",
-  },
-  {
-    title: "We stay after the licence is printed",
-    description:
-      "An ongoing compliance and accounting partner, not a setup agent who disappears once you're registered.",
-  },
-  {
-    title: "Structured for growth",
-    description: "Tax planning and CFO-level advisory as you scale, not just initial registration.",
-  },
-];
 
 export function WhyAllianceStreet() {
   return (

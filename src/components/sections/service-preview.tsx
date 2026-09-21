@@ -9,29 +9,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { cardGlassClassName } from "@/components/ui/card";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
+import SERVICES from "@/content/sections/service-preview.json";
 
-const SERVICES = [
-  {
-    title: "Free Zone Company Formation",
-    description: "Set up in a UAE free zone with 100% foreign ownership.",
-    href: "/services/uae/free-zone-company-formation",
-  },
-  {
-    title: "Corporate Tax",
-    description: "Registration, filing, and planning that keeps you compliant as UAE tax rules evolve.",
-    href: "/services/uae/corporate-tax",
-  },
-  {
-    title: "UK Company Formation",
-    description: "Incorporate with Companies House and get accounting support from day one.",
-    href: "/services/uk/company-formation",
-  },
-  {
-    title: "CFO Services",
-    description: "Fractional finance leadership for founders who need strategy, not just bookkeeping.",
-    href: "/services/advisory/cfo-services",
-  },
-];
 
 export function ServicePreview() {
   const trackRef = useRef<HTMLDivElement>(null);

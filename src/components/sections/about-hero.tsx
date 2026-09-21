@@ -4,8 +4,8 @@ import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { HeroEntrance } from "@/components/ui/scroll-reveal";
+import headlines from "@/content/sections/headlines.json";
 
-const HEADLINE = "Built by people who've sat on your side of the table.";
 
 export function AboutHero() {
   return (
@@ -17,7 +17,7 @@ export function AboutHero() {
           <span data-hero-item>
             <Badge className="border-white/25 bg-white/10">About Alliance Street</Badge>
           </span>
-          <DisplayHeading text={HEADLINE} className="max-w-3xl text-4xl sm:text-6xl" />
+          <DisplayHeading text={headlines.about} className="max-w-3xl text-4xl sm:text-6xl" />
           <p data-hero-item className="max-w-xl text-base text-white/80">
             We started Alliance Street because too many founders learn about a compliance gap from a
             penalty notice instead of an advisor.

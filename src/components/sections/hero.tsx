@@ -8,8 +8,8 @@ import { Container } from "@/components/ui/container";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { asset } from "@/lib/asset-path";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import headlines from "@/content/sections/headlines.json";
 
-const HEADLINE = "Company formation and compliance, without the guesswork.";
 
 /**
  * Home hero, built on the live site's structure: a dark-red → white gradient
@@ -100,7 +100,7 @@ export function Hero() {
               </Link>
             </span>
 
-            <DisplayHeading text={HEADLINE} className="max-w-3xl text-left text-hero" />
+            <DisplayHeading text={headlines.home} className="max-w-3xl text-left text-hero" />
 
             <p className="max-w-xl text-base text-muted-foreground">
               Alliance Street handles UAE and UK company setup, tax, accounting, and advisory under

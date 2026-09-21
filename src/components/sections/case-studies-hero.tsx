@@ -4,8 +4,8 @@ import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { HeroEntrance } from "@/components/ui/scroll-reveal";
+import headlines from "@/content/sections/headlines.json";
 
-const HEADLINE = "Real situations, and how we work them.";
 
 export function CaseStudiesHero() {
   return (
@@ -17,7 +17,7 @@ export function CaseStudiesHero() {
           <span data-hero-item>
             <Badge className="border-white/25 bg-white/10">Case Studies</Badge>
           </span>
-          <DisplayHeading text={HEADLINE} className="max-w-3xl text-4xl sm:text-6xl" />
+          <DisplayHeading text={headlines.caseStudies} className="max-w-3xl text-4xl sm:text-6xl" />
           <p data-hero-item className="max-w-xl text-base text-white/80">
             Six recurring scenarios from across UAE setup, tax, UK services, and advisory —
             illustrative of how an engagement actually runs, not a list of named clients.

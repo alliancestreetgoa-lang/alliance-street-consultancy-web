@@ -2,21 +2,8 @@ import { Container } from "@/components/ui/container";
 import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/scroll-reveal";
+import PRINCIPLES from "@/content/sections/about-principles.json";
 
-const PRINCIPLES = [
-  {
-    title: "We say the real number first.",
-    description: "Cost, timeline, and risk get named before you commit — not discovered on an invoice.",
-  },
-  {
-    title: "One advisor, not a queue.",
-    description: "The person who scopes your engagement is the person who answers when something's wrong.",
-  },
-  {
-    title: "Compliance is the floor, not the pitch.",
-    description: "Getting you licensed is table stakes. The work that matters starts after.",
-  },
-];
 
 export function AboutStory() {
   return (

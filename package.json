@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prebuild": "node scripts/optimize-images.mjs",
+    "prebuild": "node scripts/optimize-images.mjs && npm run validate:content",
     "optimize:images": "node scripts/optimize-images.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "validate:content": "vitest run tests/content.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
