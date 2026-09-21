@@ -108,7 +108,22 @@ export const groupImageSchema = z.object({
   aspectClassName: nonEmpty("aspectClassName"),
 });
 
-export const groupImagesSchema = z.record(z.enum(SERVICE_GROUPS), groupImageSchema);
+/** A list carrying its group, for the same reason direct answers are a list. */
+export const groupImagesSchema = z
+  .array(groupImageSchema.extend({ group: z.enum(SERVICE_GROUPS) }))
+  .superRefine((images, ctx) => {
+    const seen = new Set<string>();
+    for (const i of images) {
+      if (seen.has(i.group)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `two images both claim the "${i.group}" section`,
+          path: ["group"],
+        });
+      }
+      seen.add(i.group);
+    }
+  });
 
 const navLinkSchema = z.object({
   label: nonEmpty("label"),

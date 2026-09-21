@@ -1,40 +1,49 @@
 {
-  "pages": {
-    "/about": {
+  "pages": [
+    {
+      "route": "/about",
       "title": "About the Firm",
       "description": "Why Alliance Street exists, who we work with, and the experience behind our UAE and UK company formation, tax and accounting advice."
     },
-    "/services": {
+    {
+      "route": "/services",
       "title": "UAE & UK Advisory Services",
       "description": "UAE free zone, mainland and offshore setup, corporate tax and VAT compliance, UK incorporation and accounting — under one advisory relationship."
     },
-    "/industries": {
+    {
+      "route": "/industries",
       "title": "Industries We Serve",
       "description": "The industries we work in closely enough to know their regulatory detail — and the same standard of UAE and UK setup, tax and compliance work behind each."
     },
-    "/case-studies": {
+    {
+      "route": "/case-studies",
       "title": "Case Studies",
       "description": "Six recurring client situations across UAE setup, tax and UK services — the problem, the approach we took, and how each one resolved."
     },
-    "/pricing": {
+    {
+      "route": "/pricing",
       "title": "Pricing",
       "description": "Company formation and advisory pricing depends on your structure. Here's what actually drives the number — and how to get a real quote rather than a rate card."
     },
-    "/contact": {
+    {
+      "route": "/contact",
       "title": "Contact",
       "description": "Tell us what you're working on — by email, WhatsApp, or the form. An Alliance Street advisor replies within one business day."
     },
-    "/book-consultation": {
+    {
+      "route": "/book-consultation",
       "title": "Book a Consultation",
       "description": "Talk through UAE or UK company formation, corporate tax and compliance with an Alliance Street advisor. Reach us by email or WhatsApp while calendar booking is being set up."
     },
-    "/privacy-policy": {
+    {
+      "route": "/privacy-policy",
       "title": "Privacy Policy",
       "description": "How Alliance Street Consultancy collects, uses and protects information submitted through this website."
     },
-    "/terms-and-conditions": {
+    {
+      "route": "/terms-and-conditions",
       "title": "Terms & Conditions",
       "description": "The terms governing use of the Alliance Street Consultancy website and the basis on which we accept client engagements."
     }
-  }
+  ]
 }

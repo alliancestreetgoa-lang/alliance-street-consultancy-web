@@ -22,10 +22,12 @@ type BannerContent = {
   body: string;
 };
 
-const intros = introsJson.intros as Record<
-  string,
-  { hero?: HeroContent; banner?: BannerContent }
->;
+/** Indexed by route; stored as a list, because a route is not a legal field name. */
+const intros = Object.fromEntries(
+  (introsJson.intros as { route: string; hero?: HeroContent; banner?: BannerContent }[]).map(
+    ({ route, ...content }) => [route, content]
+  )
+);
 
 export function pageHero(route: string): HeroContent {
   const hero = intros[route]?.hero;

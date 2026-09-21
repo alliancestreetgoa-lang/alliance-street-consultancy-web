@@ -20,6 +20,24 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+
+  // Dev only. The CMS is a static file at public/admin/index.html, which the
+  // export serves correctly at /admin/ (GitHub Pages resolves a directory to
+  // its index.html). `next dev` does not: it hands /admin to the app router,
+  // which has no such route, so you get the site's own 404 inside the site
+  // layout — confusing, and it makes the CMS config impossible to work on
+  // locally.
+  //
+  // Rewrites are not supported under `output: "export"` and are ignored there,
+  // so this is guarded to avoid a build warning that would otherwise appear on
+  // every production build.
+  ...(process.env.NODE_ENV === "development"
+    ? {
+        async rewrites() {
+          return [{ source: "/admin", destination: "/admin/index.html" }];
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

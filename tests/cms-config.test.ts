@@ -81,6 +81,32 @@ describe("cms config", () => {
     expect(mismatches).toEqual([]);
   });
 
+  it("uses field names the CMS will accept", () => {
+    // Sveltia rejects field names containing special characters — dots are its
+    // nesting syntax, and spaces, ampersands and slashes are not identifiers.
+    // This is easy to violate without noticing, because a JSON object keyed by
+    // something human-readable ("UAE Tax & Compliance", "/case-studies") reads
+    // perfectly well in code and only fails when the admin page is opened.
+    //
+    // Nothing else catches it: the site builds, the types check, and the
+    // content is valid. The CMS simply refuses to start.
+    const VALID = /^[A-Za-z0-9_-]+$/;
+    const bad: string[] = [];
+
+    const walk = (fields: Field[] | undefined, where: string) => {
+      for (const field of fields ?? []) {
+        if (field.name && !VALID.test(field.name)) {
+          bad.push(`${where} → "${field.name}"`);
+        }
+        walk(field.fields, `${where} → ${field.name}`);
+        if (field.field) walk([field.field], `${where} → ${field.name}`);
+      }
+    };
+
+    for (const def of fileDefs) walk(def.fields, def.file);
+    expect(bad, "a field name the CMS will reject at startup").toEqual([]);
+  });
+
   it("exposes every content file", () => {
     // A content file that exists but was never added to config.yml is content
     // the client cannot reach — invisible until they go looking for it.

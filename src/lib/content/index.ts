@@ -29,10 +29,20 @@ export const DIRECT_ANSWERS: Record<string, DirectAnswer> = Object.fromEntries(
   ])
 );
 
-export const GROUP_IMAGES = groupImagesJson as Record<
-  ServiceBase["group"],
-  { src: string; alt: string; caption: string; aspectClassName: string }
->;
+type GroupImage = { src: string; alt: string; caption: string; aspectClassName: string };
+
+/**
+ * Indexed by group for lookup; the file itself is a list.
+ *
+ * Group names contain spaces and an ampersand, which are not legal CMS field
+ * names — and a form cannot add an object key in any case. Every content file
+ * keyed by a human-readable string is stored as a list carrying that key.
+ */
+export const GROUP_IMAGES: Record<ServiceBase["group"], GroupImage> = Object.fromEntries(
+  (groupImagesJson.images as (GroupImage & { group: ServiceBase["group"] })[]).map(
+    ({ group, ...image }) => [group, image]
+  )
+) as Record<ServiceBase["group"], GroupImage>;
 
 /**
  * Sourced answers are joined on slug rather than nested in services.json, so

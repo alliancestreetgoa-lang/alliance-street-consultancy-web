@@ -53,7 +53,7 @@ function check(label: string, schema: z.ZodType, value: unknown) {
 describe("content schemas", () => {
   it("services.json", () => check("services.json", servicesSchema, services.services));
   it("direct-answers.json", () => check("direct-answers.json", directAnswersSchema, directAnswers.answers));
-  it("group-images.json", () => check("group-images.json", groupImagesSchema, groupImages));
+  it("group-images.json", () => check("group-images.json", groupImagesSchema, groupImages.images));
   it("site.json", () => check("site.json", siteSchema, site));
 
   it.each([
@@ -95,7 +95,8 @@ describe("content integrity", () => {
 
   it("has an image for every service group in use", () => {
     const used = [...new Set(services.services.map((s) => s.group))];
-    const missing = used.filter((g) => !(g in groupImages));
+    const have = new Set(groupImages.images.map((i) => i.group));
+    const missing = used.filter((g) => !have.has(g));
     expect(missing).toEqual([]);
   });
 

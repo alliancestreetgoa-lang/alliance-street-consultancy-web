@@ -19,7 +19,12 @@ import siteJson from "@/content/site.json";
  */
 
 const site = siteJson as { seo: { siteName: string; titleTemplate: string } };
-const pages = pagesJson.pages as Record<string, { title?: string; description?: string }>;
+/** Indexed by route; stored as a list, because a route is not a legal field name. */
+const pages = Object.fromEntries(
+  (pagesJson.pages as { route: string; title?: string; description?: string }[]).map(
+    ({ route, ...meta }) => [route, meta]
+  )
+);
 
 export function pageMetadata(route: string): Metadata {
   const page = pages[route];

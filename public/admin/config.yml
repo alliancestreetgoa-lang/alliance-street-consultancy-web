@@ -222,71 +222,25 @@ collections:
         fields:
           - label: Pages
             name: pages
-            widget: object
+            widget: list
+            label_singular: Page
+            summary: '{{fields.route}}'
             fields:
-            - label: About
-              name: '/about'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Services
-              name: '/services'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Industries
-              name: '/industries'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Case studies
-              name: '/case-studies'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Pricing
-              name: '/pricing'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Contact
-              name: '/contact'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Book a consultation
-              name: '/book-consultation'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Privacy policy
-              name: '/privacy-policy'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
-            - label: Terms & conditions
-              name: '/terms-and-conditions'
-              widget: object
-              collapsed: true
-              fields:
-                - { label: Page title, name: title, widget: string }
-                - { label: Search description, name: description, widget: text }
+              - label: Page
+                name: route
+                widget: select
+                options:
+                  - '/about'
+                  - '/services'
+                  - '/industries'
+                  - '/case-studies'
+                  - '/pricing'
+                  - '/contact'
+                  - '/book-consultation'
+                  - '/privacy-policy'
+                  - '/terms-and-conditions'
+              - { label: Page title, name: title, widget: string }
+              - { label: Search description, name: description, widget: text }
 
       - name: page_intros
         label: Page headings & banners
@@ -297,16 +251,25 @@ collections:
         fields:
           - label: Pages
             name: intros
-            widget: object
+            widget: list
+            label_singular: Page
+            summary: '{{fields.route}}'
             fields:
-            - label: Services
-              name: '/services'
-              widget: object
-              collapsed: true
-              fields:
+              - label: Page
+                name: route
+                widget: select
+                options:
+                  - '/services'
+                  - '/industries'
+                  - '/pricing'
+                  - '/case-studies'
+                  - '/contact'
+                  - '/privacy-policy'
+                  - '/terms-and-conditions'
               - label: Page heading
                 name: hero
                 widget: object
+                required: false
                 fields:
                   - { label: Small label above the heading, name: badge, widget: string }
                   - { label: Heading, name: title, widget: text }
@@ -314,6 +277,7 @@ collections:
               - label: Image and statement
                 name: banner
                 widget: object
+                required: false
                 fields:
                   - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
                   - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
@@ -325,113 +289,6 @@ collections:
                     name: imageSide
                     widget: select
                     options: [left, right]
-            - label: Industries
-              name: '/industries'
-              widget: object
-              collapsed: true
-              fields:
-              - label: Page heading
-                name: hero
-                widget: object
-                fields:
-                  - { label: Small label above the heading, name: badge, widget: string }
-                  - { label: Heading, name: title, widget: text }
-                  - { label: Intro sentence, name: subhead, widget: text }
-              - label: Image and statement
-                name: banner
-                widget: object
-                fields:
-                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
-                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
-                  - { label: Statement, name: statement, widget: text }
-                  - { label: Paragraph, name: body, widget: text }
-                  - { label: Image, name: imageSrc, widget: image }
-                  - { label: Alt text, name: imageAlt, widget: string }
-                  - label: Image on the
-                    name: imageSide
-                    widget: select
-                    options: [left, right]
-            - label: Pricing
-              name: '/pricing'
-              widget: object
-              collapsed: true
-              fields:
-              - label: Page heading
-                name: hero
-                widget: object
-                fields:
-                  - { label: Small label above the heading, name: badge, widget: string }
-                  - { label: Heading, name: title, widget: text }
-                  - { label: Intro sentence, name: subhead, widget: text }
-              - label: Image and statement
-                name: banner
-                widget: object
-                fields:
-                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
-                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
-                  - { label: Statement, name: statement, widget: text }
-                  - { label: Paragraph, name: body, widget: text }
-                  - { label: Image, name: imageSrc, widget: image }
-                  - { label: Alt text, name: imageAlt, widget: string }
-                  - label: Image on the
-                    name: imageSide
-                    widget: select
-                    options: [left, right]
-            - label: Case studies
-              name: '/case-studies'
-              widget: object
-              collapsed: true
-              fields:
-              - label: Image and statement
-                name: banner
-                widget: object
-                fields:
-                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
-                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
-                  - { label: Statement, name: statement, widget: text }
-                  - { label: Paragraph, name: body, widget: text }
-                  - { label: Image, name: imageSrc, widget: image }
-                  - { label: Alt text, name: imageAlt, widget: string }
-                  - label: Image on the
-                    name: imageSide
-                    widget: select
-                    options: [left, right]
-            - label: Contact
-              name: '/contact'
-              widget: object
-              collapsed: true
-              fields:
-              - label: Page heading
-                name: hero
-                widget: object
-                fields:
-                  - { label: Small label above the heading, name: badge, widget: string }
-                  - { label: Heading, name: title, widget: text }
-                  - { label: Intro sentence, name: subhead, widget: text }
-            - label: Privacy policy
-              name: '/privacy-policy'
-              widget: object
-              collapsed: true
-              fields:
-              - label: Page heading
-                name: hero
-                widget: object
-                fields:
-                  - { label: Small label above the heading, name: badge, widget: string }
-                  - { label: Heading, name: title, widget: text }
-                  - { label: Intro sentence, name: subhead, widget: text }
-            - label: Terms & conditions
-              name: '/terms-and-conditions'
-              widget: object
-              collapsed: true
-              fields:
-              - label: Page heading
-                name: hero
-                widget: object
-                fields:
-                  - { label: Small label above the heading, name: badge, widget: string }
-                  - { label: Heading, name: title, widget: text }
-                  - { label: Intro sentence, name: subhead, widget: text }
 
       - name: differentiators
         label: 'Home — why Alliance Street'
@@ -560,35 +417,20 @@ collections:
           The photograph shown on service pages, one per menu section.
           Uploads are optimised automatically when the site rebuilds.
         fields:
-          - label: UAE Setup
-            name: 'UAE Setup'
-            widget: object
+          - label: Images
+            name: images
+            widget: list
+            label_singular: Section image
+            summary: '{{fields.group}}'
             fields:
+              - label: Menu section
+                name: group
+                widget: select
+                options: ['UAE Setup', 'UAE Tax & Compliance', 'UK Services', 'Advisory']
               - { label: Image, name: src, widget: image }
-              - { label: Alt text, name: alt, widget: string, hint: Describes the image for screen readers. }
-              - { label: Caption, name: caption, widget: string }
-              - { label: Shape, name: aspectClassName, widget: string }
-          - label: UAE Tax & Compliance
-            name: 'UAE Tax & Compliance'
-            widget: object
-            fields:
-              - { label: Image, name: src, widget: image }
-              - { label: Alt text, name: alt, widget: string }
-              - { label: Caption, name: caption, widget: string }
-              - { label: Shape, name: aspectClassName, widget: string }
-          - label: UK Services
-            name: 'UK Services'
-            widget: object
-            fields:
-              - { label: Image, name: src, widget: image }
-              - { label: Alt text, name: alt, widget: string }
-              - { label: Caption, name: caption, widget: string }
-              - { label: Shape, name: aspectClassName, widget: string }
-          - label: Advisory
-            name: Advisory
-            widget: object
-            fields:
-              - { label: Image, name: src, widget: image }
-              - { label: Alt text, name: alt, widget: string }
+              - label: Alt text
+                name: alt
+                widget: string
+                hint: Describes the image for screen readers and search engines.
               - { label: Caption, name: caption, widget: string }
               - { label: Shape, name: aspectClassName, widget: string }

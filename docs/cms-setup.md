@@ -16,6 +16,27 @@ for Q4 2025 and is on hold), so this cannot currently be avoided. The worker
 below exists only to complete that handshake. It stores nothing, and it sees no
 content.
 
+## You can start without the worker
+
+The sign-in screen offers three routes, and only the first needs anything
+deployed:
+
+| Option | Needs the worker? | Good for |
+| --- | --- | --- |
+| **Sign In with GitHub** | Yes | The client. Nothing to manage, no token to lose. |
+| **Sign In Using Access Token** | No | Working today, or a small technical team. |
+| **Work with Local Repository** | No | Editing the config locally with `npm run dev`. |
+
+The access-token route works immediately: create a fine-grained personal access
+token with **Contents** and **Pull requests** permissions on this repository and
+paste it in. Both are needed — Pull requests because tax figures go through the
+editorial workflow.
+
+It is the right answer for getting started and the wrong one for handover: a
+token is a secret the client has to store and re-create when it expires, and it
+is theirs alone rather than tied to their GitHub identity. Set up OAuth below
+before you hand the site over.
+
 ## 1. Create a GitHub OAuth app
 
 <https://github.com/settings/developers> → **New OAuth App**

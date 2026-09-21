@@ -1,6 +1,7 @@
 {
-  "intros": {
-    "/services": {
+  "intros": [
+    {
+      "route": "/services",
       "hero": {
         "badge": "Services",
         "title": "Everything under one advisory relationship.",
@@ -16,7 +17,8 @@
         "body": "Browse by what you need — setup, tax, UK compliance, or advisory — or book a call and we'll tell you which ones actually apply to your situation."
       }
     },
-    "/industries": {
+    {
+      "route": "/industries",
       "hero": {
         "badge": "Industries",
         "title": "Different businesses, the same advisory standard.",
@@ -32,7 +34,8 @@
         "body": "Fast-moving free zones, real deadlines, and cross-border founders — the same city that makes these businesses possible is the one that makes the paperwork worth getting right."
       }
     },
-    "/pricing": {
+    {
+      "route": "/pricing",
       "hero": {
         "badge": "Pricing",
         "title": "A real quote, not a rate card.",
@@ -48,7 +51,8 @@
         "body": "A quote reflects your jurisdiction, entity count, and whether the work is one-time or ongoing — the same detail that determines whether the engagement actually fits."
       }
     },
-    "/case-studies": {
+    {
+      "route": "/case-studies",
       "banner": {
         "eyebrowLead": "Case studies",
         "eyebrowAccent": "in practice",
@@ -59,26 +63,29 @@
         "body": "We scope the actual problem before we recommend a structure — which is why the approach below sometimes isn't the one that's easiest to sell."
       }
     },
-    "/contact": {
+    {
+      "route": "/contact",
       "hero": {
         "badge": "Contact",
         "title": "Tell us what you're working on.",
         "subhead": "Email, WhatsApp, or the form below — an advisor replies within one business day."
       }
     },
-    "/privacy-policy": {
+    {
+      "route": "/privacy-policy",
       "hero": {
         "badge": "Legal",
         "title": "Privacy Policy",
         "subhead": "How we handle information submitted through this website."
       }
     },
-    "/terms-and-conditions": {
+    {
+      "route": "/terms-and-conditions",
       "hero": {
         "badge": "Legal",
         "title": "Terms & Conditions",
         "subhead": "The terms governing use of this website and our engagements."
       }
     }
-  }
+  ]
 }
