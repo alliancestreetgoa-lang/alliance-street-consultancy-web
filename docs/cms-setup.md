@@ -70,9 +70,30 @@ Commit and push. The admin is live at `<site>/admin/`.
 Editing commits to this repository, so the client needs a GitHub account with
 **write access** to it. Repo settings → Collaborators → add them.
 
-Write access is the whole permission model. Anyone who can log in can edit
-everything the CMS exposes — there are no per-section roles. If that is too
-broad, the alternative is a separate content repo, which is a larger change.
+Write access is the base permission, but it is not the whole model. The **Tax
+figures & sources** collection runs `publish_mode: editorial_workflow` with
+`publish: false`, so an editor can draft a change and send it for review but
+cannot publish it — a second person merges the pull request. Every other
+collection publishes on save.
+
+That split is the point: marketing copy that is wrong is embarrassing and
+fixable in minutes, while a wrong tax rate is something a reader can act on.
+If you need finer-grained roles than "can publish copy / cannot publish
+figures", the next step up is a separate content repository, which is a
+larger change.
+
+Because tax figures use the editorial workflow, the CMS opens, labels and
+merges pull requests on the editor's behalf. OAuth sign-in with GitHub's
+default `repo` scope already covers that. If anyone signs in with a
+fine-grained personal access token instead, that token needs **Pull requests**
+permission as well as **Contents**, or the workflow fails with a permissions
+error that does not obviously point at the token.
+
+`.github/workflows/validate-content.yml` runs on every pull request, so the
+review is informed: the schemas, types, lint, tests and a full build all run
+before the merge, and the built site is attached to the run as an artifact for
+seven days. Without it a reviewer would be approving a JSON diff blind, since
+the build only runs after the merge.
 
 ## What protects the site from a bad edit
 

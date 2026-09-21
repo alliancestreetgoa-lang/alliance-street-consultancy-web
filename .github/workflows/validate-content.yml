@@ -1,0 +1,70 @@
+name: Validate content
+
+# Runs on every pull request, which is what the CMS opens when someone edits a
+# tax figure (see publish_mode: editorial_workflow in public/admin/config.yml).
+#
+# Without this, a reviewer merging a content change would be approving blind:
+# the content schema is only enforced at build time, and the build only runs
+# after the merge. This moves that check in front of the merge, so the pull
+# request itself says whether the change is publishable.
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Content schemas first and on its own: this is the check a content
+      # editor's pull request is actually about, and naming it separately means
+      # the failure in the PR's checks list reads "Content schemas", not
+      # "Build".
+      - name: Content schemas
+        run: npm run validate:content
+
+      - name: Types
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Full test suite
+        run: npm test
+
+      # Proves the change actually produces a site, not just valid JSON.
+      - name: Build static export
+        env:
+          NEXT_PUBLIC_BASE_PATH: /alliance-street-consultancy-web
+          NEXT_PUBLIC_SITE_URL: https://alliancestreetgoa-lang.github.io
+        run: npm run build
+
+      # So a reviewer can look at the built pages rather than reading a diff of
+      # JSON. GitHub Pages only serves one branch, so a real preview deployment
+      # would mean a second host; an artifact is the honest version of this on
+      # the current stack.
+      - name: Upload built site for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: out
+          retention-days: 7

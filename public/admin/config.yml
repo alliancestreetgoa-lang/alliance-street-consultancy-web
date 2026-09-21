@@ -16,6 +16,8 @@
 # Anything saved here is still validated on build: see tests/content.test.ts.
 # A figure published without a source fails the build rather than going live.
 
+site_url: https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web
+
 backend:
   name: github
   repo: alliancestreetgoa-lang/alliance-street-consultancy-web
@@ -78,6 +80,18 @@ collections:
 
   - name: tax_figures
     label: Tax figures & sources
+    # The only collection that cannot be published by the person editing it.
+    #
+    # Everything else on this site is marketing copy: wrong is embarrassing and
+    # fixable in two minutes. A wrong tax rate or filing deadline on an
+    # accountancy firm's website is different in kind — a reader can act on it
+    # and be penalised. So a change here opens a pull request and waits for
+    # someone else to merge it, rather than going straight to main.
+    #
+    # `publish: false` hides the publish control: the editor can draft and send
+    # for review, but the merge is somebody else's decision.
+    publish_mode: editorial_workflow
+    publish: false
     files:
       - name: direct_answers
         label: Sourced answers

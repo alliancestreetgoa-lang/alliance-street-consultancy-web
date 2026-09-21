@@ -32,6 +32,20 @@ overwritten.
 | **Page content** | Headlines, home page sections, case studies, industries, pricing factors |
 | **Imagery** | The photograph on each service section |
 
+## Tax figures work differently
+
+Everything on this site publishes when you save it. **Tax figures are the one
+exception.**
+
+When you change a rate, threshold or deadline, saving does not publish it.
+It creates a change request that someone else has to approve. You'll see it
+move through *Draft → In Review → Ready*, and a second person merges it.
+
+This is deliberate. Wrong marketing copy is embarrassing and fixable in two
+minutes. A wrong tax rate on an accountancy firm's website is different in
+kind — a reader can act on it and be penalised for it. So that one change
+gets a second pair of eyes.
+
 ## The one rule that really matters
 
 **Every tax figure needs a source and a date.**
