@@ -39,54 +39,75 @@ before you hand the site over.
 
 ## 1. Create a GitHub OAuth app
 
+This is the one step with no CLI: GitHub's API cannot create OAuth apps, only
+the web UI can.
+
 <https://github.com/settings/developers> → **New OAuth App**
 
 | Field | Value |
 | --- | --- |
-| Application name | Alliance Street CMS |
-| Homepage URL | the live site URL |
-| Authorization callback URL | `https://<worker>.workers.dev/callback` (fill in after step 2, then come back) |
+| Application name | `Alliance Street CMS` |
+| Homepage URL | `https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web` |
+| Authorization callback URL | `https://alliance-street-cms-auth.<your-subdomain>.workers.dev/callback` |
 
-Keep the **Client ID** and generate a **Client secret**. The secret is shown
-once.
+You will not know the worker subdomain until step 2, so put anything in the
+callback field for now and come back and correct it. **The callback must match
+exactly**, including `/callback` — a mismatch is the single most common reason
+login fails.
+
+Generate a **Client secret** and keep the tab open. The secret is shown once.
 
 ## 2. Deploy the OAuth worker
 
-Sveltia publishes one for Cloudflare Workers. The free tier covers this
-comfortably — it handles a handful of logins a month.
+Sveltia publishes the worker; it is MIT-licensed and does nothing but complete
+the token exchange. Cloudflare's free tier covers this comfortably — it handles
+a handful of logins a month.
 
 ```sh
-git clone https://github.com/sveltia/sveltia-cms-auth.git
+git clone --depth 1 https://github.com/sveltia/sveltia-cms-auth.git
 cd sveltia-cms-auth
+sed -i '' 's/^name = "sveltia-cms-auth"/name = "alliance-street-cms-auth"/' wrangler.toml
 npx wrangler deploy
 ```
 
-Then set the secrets (never commit these):
+The deploy prints the worker URL. Note it down.
+
+## 3. Set the secrets
+
+Run these yourself — the client secret should not be pasted into a chat, a
+ticket, or anything that keeps a transcript.
 
 ```sh
-npx wrangler secret put GITHUB_CLIENT_ID
-npx wrangler secret put GITHUB_CLIENT_SECRET
-npx wrangler secret put ALLOWED_DOMAINS   # the live site's hostname
+npx wrangler secret put GITHUB_CLIENT_ID       # from step 1
+npx wrangler secret put GITHUB_CLIENT_SECRET   # from step 1
+npx wrangler secret put ALLOWED_DOMAINS        # alliancestreetgoa-lang.github.io
 ```
 
-`ALLOWED_DOMAINS` matters: without it the worker will complete a login for any
-site that points at it.
+`ALLOWED_DOMAINS` is not optional in practice: without it the worker will
+complete a login for any site that points at it, which makes your OAuth app a
+free authentication service for anyone who finds the URL.
 
-Go back to the OAuth app and set the callback URL to the deployed worker's
-`/callback`.
+Now go back to the OAuth app and set the callback URL to
+`<worker-url>/callback`.
 
-## 3. Point the CMS at it
+## 4. Point the CMS at the worker
 
-In `public/admin/config.yml`, replace the placeholder:
+In `public/admin/config.yml`:
 
 ```yaml
 backend:
-  base_url: https://REPLACE-ME.workers.dev   # ← the worker URL
+  base_url: https://alliance-street-cms-auth.<your-subdomain>.workers.dev
 ```
 
-Commit and push. The admin is live at `<site>/admin/`.
+Commit and push. `npm test` will confirm the placeholder is gone — there is a
+test asserting `base_url` is a real `https://` URL and not `REPLACE-ME`.
 
-## 4. Give the client access
+## 5. Check it
+
+Open `<site>/admin/`, click **Sign In with GitHub**, and authorise. You should
+land in the editor with five collections listed.
+
+## 6. Give the client access
 
 Editing commits to this repository, so the client needs a GitHub account with
 **write access** to it. Repo settings → Collaborators → add them.

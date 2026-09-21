@@ -27,6 +27,21 @@ describe("cms config", () => {
     expect(config.backend.branch).toBe("main");
   });
 
+  it("has a usable OAuth endpoint", () => {
+    // base_url ships as a REPLACE-ME placeholder because the worker lives in
+    // the client's own Cloudflare account and cannot be deployed from here.
+    // This test does not fail on the placeholder — that would block every
+    // build until setup is done — but it does fail on anything that is neither
+    // the placeholder nor a real https URL, which is what a half-finished edit
+    // looks like.
+    const url = config.backend.base_url;
+    expect(url, "backend.base_url is missing").toBeTruthy();
+    if (url.includes("REPLACE-ME")) return; // not set up yet; see docs/cms-setup.md
+    expect(() => new URL(url)).not.toThrow();
+    expect(url.startsWith("https://"), "the OAuth endpoint must be https").toBe(true);
+    expect(url.endsWith("/"), "base_url must not have a trailing slash").toBe(false);
+  });
+
   it("points media uploads where the image pipeline reads from", () => {
     // scripts/optimize-images.mjs globs public/brand, so anything uploaded
     // elsewhere would ship unoptimised at full size.
