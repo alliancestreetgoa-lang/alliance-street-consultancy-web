@@ -49,6 +49,7 @@ const site = siteJson as SiteContent;
 export const COMPANY = site.company;
 export const PRIMARY_NAV = site.primaryNav;
 export const NAV_GROUPS = site.navGroups;
+export const SEO = site.seo;
 
 export function getService(category: string, slug: string) {
   return SERVICES.find((service) => service.category === category && service.slug === slug);

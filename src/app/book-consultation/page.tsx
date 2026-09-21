@@ -1,23 +1,12 @@
-import type { Metadata } from "next";
 import { buildBreadcrumbJsonLd, jsonLdScriptProps } from "@/lib/schema";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import { COMPANY } from "@/lib/site-config";
+import { pageMetadata } from "@/lib/content/metadata";
 
-export const metadata: Metadata = {
-  title: "Book a Consultation",
-  description:
-    "Talk through UAE or UK company formation, corporate tax and compliance with an Alliance Street advisor. Reach us by email or WhatsApp while calendar booking is being set up.",
-  alternates: { canonical: "/book-consultation" },
-  openGraph: {
-    url: "/book-consultation",
-    title: "Book a Consultation | Alliance Street Consultancy",
-    description:
-      "Talk through UAE or UK company formation, corporate tax and compliance with an Alliance Street advisor.",
-  },
-};
+export const metadata = pageMetadata("/book-consultation");
 
 export default function BookConsultationPage() {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([

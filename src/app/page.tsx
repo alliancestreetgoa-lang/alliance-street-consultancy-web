@@ -1,5 +1,4 @@
 // src/app/page.tsx
-import type { Metadata } from "next";
 import { Hero } from "@/components/sections/hero";
 import { WhyAllianceStreet } from "@/components/sections/why-alliance-street";
 import { ServicePreview } from "@/components/sections/service-preview";
@@ -11,11 +10,9 @@ import { Newsletter } from "@/components/sections/newsletter";
 // Title and description come from the root layout's `default` — the homepage
 // is the one route where the site-wide wording is the right wording. Only the
 // self-referencing canonical is set here.
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-  openGraph: { url: "/" },
-};
+export const metadata = pageMetadata("/");
 import { Surface } from "@/components/ui/surface";
+import { pageMetadata } from "@/lib/content/metadata";
 
 export default function Home() {
   // Light throughout, alternating #ffffff and #fafafa, as on alliancestreet.ae.

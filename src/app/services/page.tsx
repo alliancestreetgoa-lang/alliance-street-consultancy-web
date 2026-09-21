@@ -1,23 +1,13 @@
 // src/app/services/page.tsx
-import type { Metadata } from "next";
 import { buildBreadcrumbJsonLd, jsonLdScriptProps } from "@/lib/schema";
 import { PageHero } from "@/components/sections/page-hero";
 import { StatementBanner } from "@/components/sections/statement-banner";
 import { ServicesIndex } from "@/components/sections/services-index";
 import { BookConsultationCTA } from "@/components/sections/book-consultation-cta";
+import { pageMetadata } from "@/lib/content/metadata";
+import { pageHero, pageBanner } from "@/lib/content/page-intros";
 
-export const metadata: Metadata = {
-  title: "UAE & UK Advisory Services",
-  description:
-    "UAE free zone, mainland and offshore setup, corporate tax and VAT compliance, UK incorporation and accounting — under one advisory relationship.",
-  alternates: { canonical: "/services" },
-  openGraph: {
-    url: "/services",
-    title: "UAE & UK Advisory Services | Alliance Street Consultancy",
-    description:
-      "UAE free zone, mainland and offshore setup, corporate tax and VAT compliance, UK incorporation and accounting — under one advisory relationship.",
-  },
-};
+export const metadata = pageMetadata("/services");
 
 export default function ServicesPage() {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
@@ -28,21 +18,8 @@ export default function ServicesPage() {
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
-      <PageHero
-        badge="Services"
-        title="Everything under one advisory relationship."
-        subhead="UAE setup, UAE tax and compliance, UK services, and advisory — twenty services, one point of contact."
-      />
-      <StatementBanner
-        eyebrow={["Our services", "in full"]}
-        imageSide="left"
-        image={{
-          src: "/brand/dubai-skyline-photo.jpg",
-          alt: "Dubai skyline at sunset including the Burj Khalifa",
-        }}
-        statement="Twenty services, four categories, one advisor across all of them."
-        body="Browse by what you need — setup, tax, UK compliance, or advisory — or book a call and we'll tell you which ones actually apply to your situation."
-      />
+      <PageHero {...pageHero("/services")} />
+      <StatementBanner {...pageBanner("/services")} />
       <ServicesIndex />
       <BookConsultationCTA />
     </>

@@ -128,6 +128,24 @@ collections:
         label: Company details and menus
         file: src/content/site.json
         fields:
+          - label: Search engine defaults
+            name: seo
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Site name, name: siteName, widget: string }
+              - label: Default page title
+                name: defaultTitle
+                widget: string
+                hint: Used for the home page and anywhere without its own title.
+              - label: Title pattern
+                name: titleTemplate
+                widget: string
+                hint: '%s is replaced by the page name. Keep the %s.'
+              - label: Default description
+                name: defaultDescription
+                widget: text
+                hint: The sentence shown under the link in Google, where a page has no description of its own.
           - label: Company
             name: company
             widget: object
@@ -178,6 +196,228 @@ collections:
           - { label: Home page headline, name: home, widget: text }
           - { label: About page headline, name: about, widget: text }
           - { label: Case studies headline, name: caseStudies, widget: text }
+
+
+      - name: page_seo
+        label: Search engine listings
+        file: src/content/pages.json
+        description: >-
+          How each page appears in Google: the clickable title and the sentence
+          beneath it. The home page uses the site defaults under
+          "Site & navigation".
+        fields:
+          - label: Pages
+            name: pages
+            widget: object
+            fields:
+            - label: About
+              name: '/about'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Services
+              name: '/services'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Industries
+              name: '/industries'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Case studies
+              name: '/case-studies'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Pricing
+              name: '/pricing'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Contact
+              name: '/contact'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Book a consultation
+              name: '/book-consultation'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Privacy policy
+              name: '/privacy-policy'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+            - label: Terms & conditions
+              name: '/terms-and-conditions'
+              widget: object
+              collapsed: true
+              fields:
+                - { label: Page title, name: title, widget: string }
+                - { label: Search description, name: description, widget: text }
+
+      - name: page_intros
+        label: Page headings & banners
+        file: src/content/sections/page-intros.json
+        description: >-
+          The heading at the top of each page, and the image-and-statement
+          block beneath it.
+        fields:
+          - label: Pages
+            name: intros
+            widget: object
+            fields:
+            - label: Services
+              name: '/services'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Page heading
+                name: hero
+                widget: object
+                fields:
+                  - { label: Small label above the heading, name: badge, widget: string }
+                  - { label: Heading, name: title, widget: text }
+                  - { label: Intro sentence, name: subhead, widget: text }
+              - label: Image and statement
+                name: banner
+                widget: object
+                fields:
+                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
+                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
+                  - { label: Statement, name: statement, widget: text }
+                  - { label: Paragraph, name: body, widget: text }
+                  - { label: Image, name: imageSrc, widget: image }
+                  - { label: Alt text, name: imageAlt, widget: string }
+                  - label: Image on the
+                    name: imageSide
+                    widget: select
+                    options: [left, right]
+            - label: Industries
+              name: '/industries'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Page heading
+                name: hero
+                widget: object
+                fields:
+                  - { label: Small label above the heading, name: badge, widget: string }
+                  - { label: Heading, name: title, widget: text }
+                  - { label: Intro sentence, name: subhead, widget: text }
+              - label: Image and statement
+                name: banner
+                widget: object
+                fields:
+                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
+                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
+                  - { label: Statement, name: statement, widget: text }
+                  - { label: Paragraph, name: body, widget: text }
+                  - { label: Image, name: imageSrc, widget: image }
+                  - { label: Alt text, name: imageAlt, widget: string }
+                  - label: Image on the
+                    name: imageSide
+                    widget: select
+                    options: [left, right]
+            - label: Pricing
+              name: '/pricing'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Page heading
+                name: hero
+                widget: object
+                fields:
+                  - { label: Small label above the heading, name: badge, widget: string }
+                  - { label: Heading, name: title, widget: text }
+                  - { label: Intro sentence, name: subhead, widget: text }
+              - label: Image and statement
+                name: banner
+                widget: object
+                fields:
+                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
+                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
+                  - { label: Statement, name: statement, widget: text }
+                  - { label: Paragraph, name: body, widget: text }
+                  - { label: Image, name: imageSrc, widget: image }
+                  - { label: Alt text, name: imageAlt, widget: string }
+                  - label: Image on the
+                    name: imageSide
+                    widget: select
+                    options: [left, right]
+            - label: Case studies
+              name: '/case-studies'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Image and statement
+                name: banner
+                widget: object
+                fields:
+                  - { label: Eyebrow (black part), name: eyebrowLead, widget: string }
+                  - { label: Eyebrow (red part), name: eyebrowAccent, widget: string }
+                  - { label: Statement, name: statement, widget: text }
+                  - { label: Paragraph, name: body, widget: text }
+                  - { label: Image, name: imageSrc, widget: image }
+                  - { label: Alt text, name: imageAlt, widget: string }
+                  - label: Image on the
+                    name: imageSide
+                    widget: select
+                    options: [left, right]
+            - label: Contact
+              name: '/contact'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Page heading
+                name: hero
+                widget: object
+                fields:
+                  - { label: Small label above the heading, name: badge, widget: string }
+                  - { label: Heading, name: title, widget: text }
+                  - { label: Intro sentence, name: subhead, widget: text }
+            - label: Privacy policy
+              name: '/privacy-policy'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Page heading
+                name: hero
+                widget: object
+                fields:
+                  - { label: Small label above the heading, name: badge, widget: string }
+                  - { label: Heading, name: title, widget: text }
+                  - { label: Intro sentence, name: subhead, widget: text }
+            - label: Terms & conditions
+              name: '/terms-and-conditions'
+              widget: object
+              collapsed: true
+              fields:
+              - label: Page heading
+                name: hero
+                widget: object
+                fields:
+                  - { label: Small label above the heading, name: badge, widget: string }
+                  - { label: Heading, name: title, widget: text }
+                  - { label: Intro sentence, name: subhead, widget: text }
 
       - name: differentiators
         label: 'Home — why Alliance Street'

@@ -1,0 +1,84 @@
+{
+  "intros": {
+    "/services": {
+      "hero": {
+        "badge": "Services",
+        "title": "Everything under one advisory relationship.",
+        "subhead": "UAE setup, UAE tax and compliance, UK services, and advisory — twenty services, one point of contact."
+      },
+      "banner": {
+        "eyebrowLead": "Our services",
+        "eyebrowAccent": "in full",
+        "imageSide": "left",
+        "imageSrc": "/brand/dubai-skyline-photo.jpg",
+        "imageAlt": "Dubai skyline at sunset including the Burj Khalifa",
+        "statement": "Twenty services, four categories, one advisor across all of them.",
+        "body": "Browse by what you need — setup, tax, UK compliance, or advisory — or book a call and we'll tell you which ones actually apply to your situation."
+      }
+    },
+    "/industries": {
+      "hero": {
+        "badge": "Industries",
+        "title": "Different businesses, the same advisory standard.",
+        "subhead": "We work across a handful of industries closely enough to know what actually breaks — not generic advice with your sector name swapped in."
+      },
+      "banner": {
+        "eyebrowLead": "Industries",
+        "eyebrowAccent": "we know",
+        "imageSide": "left",
+        "imageSrc": "/brand/dubai-night.jpg",
+        "imageAlt": "Dubai skyline at night, Burj Khalifa lit up",
+        "statement": "Every industry below trades in and out of Dubai for a reason.",
+        "body": "Fast-moving free zones, real deadlines, and cross-border founders — the same city that makes these businesses possible is the one that makes the paperwork worth getting right."
+      }
+    },
+    "/pricing": {
+      "hero": {
+        "badge": "Pricing",
+        "title": "A real quote, not a rate card.",
+        "subhead": "Company formation and advisory pricing depends on your structure — here's what actually shapes the number."
+      },
+      "banner": {
+        "eyebrowLead": "Pricing",
+        "eyebrowAccent": "explained",
+        "imageSide": "right",
+        "imageSrc": "/brand/finance-chart.jpg",
+        "imageAlt": "Financial data on a tablet screen",
+        "statement": "The number depends on what we're actually solving, not a rate card.",
+        "body": "A quote reflects your jurisdiction, entity count, and whether the work is one-time or ongoing — the same detail that determines whether the engagement actually fits."
+      }
+    },
+    "/case-studies": {
+      "banner": {
+        "eyebrowLead": "Case studies",
+        "eyebrowAccent": "in practice",
+        "imageSide": "right",
+        "imageSrc": "/brand/handshake.jpg",
+        "imageAlt": "Advisor and client shaking hands",
+        "statement": "Every one of these started as a conversation, not a quote.",
+        "body": "We scope the actual problem before we recommend a structure — which is why the approach below sometimes isn't the one that's easiest to sell."
+      }
+    },
+    "/contact": {
+      "hero": {
+        "badge": "Contact",
+        "title": "Tell us what you're working on.",
+        "subhead": "Email, WhatsApp, or the form below — an advisor replies within one business day."
+      }
+    },
+    "/privacy-policy": {
+      "hero": {
+        "badge": "Legal",
+        "title": "Privacy Policy",
+        "subhead": "How we handle information submitted through this website."
+      }
+    },
+    "/terms-and-conditions": {
+      "hero": {
+        "badge": "Legal",
+        "title": "Terms & Conditions",
+        "subhead": "The terms governing use of this website and our engagements."
+      }
+    }
+  }
+}

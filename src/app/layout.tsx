@@ -7,6 +7,7 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { Navbar } from "@/components/layout/navbar";
 import { SiteFooter } from "@/components/ui/site-footer";
 import { SITE_URL } from "@/lib/site-url";
+import { SEO } from "@/lib/content";
 import { buildOrganizationJsonLd, buildWebsiteJsonLd, jsonLdScriptProps } from "@/lib/schema";
 
 // Space Mono carries the live site's eyebrows and small-caps labels.
@@ -30,11 +31,10 @@ export const metadata: Metadata = {
   title: {
     // `default` applies to any route that doesn't set its own title;
     // `template` wraps the ones that do, so pages declare only their own name.
-    default: "Alliance Street Consultancy | UAE & UK Company Formation, Tax & Accounting",
-    template: "%s | Alliance Street Consultancy",
+    default: SEO.defaultTitle,
+    template: SEO.titleTemplate,
   },
-  description:
-    "Premium UAE and UK business setup, tax, accounting, and advisory services for founders and enterprises.",
+  description: SEO.defaultDescription,
   // NOTE: deliberately no `alternates.canonical` here. Metadata is inherited by
   // routes that don't override it, so a canonical set at the layout level would
   // make every page without its own canonical claim to be the homepage — worse
@@ -42,17 +42,15 @@ export const metadata: Metadata = {
   // canonical instead, including `/` below in src/app/page.tsx.
   openGraph: {
     type: "website",
-    siteName: "Alliance Street Consultancy",
+    siteName: SEO.siteName,
     locale: "en",
-    title: "Alliance Street Consultancy | UAE & UK Company Formation, Tax & Accounting",
-    description:
-      "Premium UAE and UK business setup, tax, accounting, and advisory services for founders and enterprises.",
+    title: SEO.defaultTitle,
+    description: SEO.defaultDescription,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alliance Street Consultancy | UAE & UK Company Formation, Tax & Accounting",
-    description:
-      "Premium UAE and UK business setup, tax, accounting, and advisory services for founders and enterprises.",
+    title: SEO.defaultTitle,
+    description: SEO.defaultDescription,
   },
 };
 

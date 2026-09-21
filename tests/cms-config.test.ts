@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { load } from "js-yaml";
 
 /**
@@ -79,6 +79,18 @@ describe("cms config", () => {
       }
     }
     expect(mismatches).toEqual([]);
+  });
+
+  it("exposes every content file", () => {
+    // A content file that exists but was never added to config.yml is content
+    // the client cannot reach — invisible until they go looking for it.
+    const declared = new Set(fileDefs.map((f) => f.file));
+    const onDisk = [
+      ...readdirSync("src/content").map((f) => `src/content/${f}`),
+      ...readdirSync("src/content/sections").map((f) => `src/content/sections/${f}`),
+    ].filter((p) => p.endsWith(".json"));
+    const unreachable = onDisk.filter((p) => !declared.has(p));
+    expect(unreachable, "content file exists but is not editable in the CMS").toEqual([]);
   });
 
   it("keeps advisor credentials out of the CMS", () => {

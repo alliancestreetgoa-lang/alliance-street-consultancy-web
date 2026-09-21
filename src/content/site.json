@@ -165,5 +165,11 @@
         }
       ]
     }
-  ]
+  ],
+  "seo": {
+    "defaultTitle": "Alliance Street Consultancy | UAE & UK Company Formation, Tax & Accounting",
+    "titleTemplate": "%s | Alliance Street Consultancy",
+    "defaultDescription": "Premium UAE and UK business setup, tax, accounting, and advisory services for founders and enterprises.",
+    "siteName": "Alliance Street Consultancy"
+  }
 }

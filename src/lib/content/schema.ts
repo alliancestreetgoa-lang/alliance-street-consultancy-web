@@ -117,6 +117,15 @@ const navLinkSchema = z.object({
 });
 
 export const siteSchema = z.object({
+  seo: z.object({
+    siteName: nonEmpty("site name"),
+    defaultTitle: nonEmpty("default title"),
+    /** Must contain %s, which Next replaces with the page's own title. */
+    titleTemplate: z
+      .string()
+      .includes("%s", { message: "must contain %s, where the page name goes" }),
+    defaultDescription: nonEmpty("default description"),
+  }),
   company: z.object({
     name: nonEmpty("company name"),
     email: z.string().email(),
