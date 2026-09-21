@@ -99,8 +99,10 @@ export function SiteFooter() {
         <div className="flex flex-col gap-14 lg:flex-row lg:justify-between">
           <div className="flex max-w-md flex-col items-start gap-8">
             <Link href="/" className="flex items-center gap-2.5">
+              {/* White-on-transparent mark, for the footer's red/black wall.
+                  The navbar keeps logo-mark.png. */}
               <Image
-                src={asset("/brand/logo-mark.png")}
+                src={asset("/brand/logo-mark-white.png")}
                 alt=""
                 width={34}
                 height={28}
