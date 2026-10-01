@@ -15,11 +15,13 @@ export default function CaseStudiesPage() {
     { name: "Case Studies", path: "/case-studies" },
   ]);
 
+  const banner = pageBanner("/case-studies");
+
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
-      <CaseStudiesHero />
-      <StatementBanner {...pageBanner("/case-studies")} />
+      <CaseStudiesHero image={banner.image} />
+      <StatementBanner {...banner} image={undefined} />
       <CaseStudyGrid />
       <BookConsultationCTA />
     </>

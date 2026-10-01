@@ -31,7 +31,7 @@ export function Process() {
       // a node that is no longer its parent and the whole app dies with
       // "removeChild: The node to be removed is not a child of this node".
       // Sticky gets the same effect with React keeping ownership of the DOM.
-      mm.add("(min-width: 1024px)", () => {
+      mm.add("(min-width: 1024px) and (min-height: 740px)", () => {
         const steps = gsap.utils.toArray<HTMLElement>(".js-process-step");
 
         const tl = gsap.timeline({
@@ -39,7 +39,7 @@ export function Process() {
             trigger: trackRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.8,
+            scrub: 0.25,
             invalidateOnRefresh: true,
           },
         });
@@ -49,12 +49,12 @@ export function Process() {
           // so exactly one reads as "current" at any scroll position.
           tl.fromTo(
             step,
-            { opacity: 0.25, y: 12 },
+            { opacity: 0.65, y: 12 },
             { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
             index * 0.8
           );
           if (index < steps.length - 1) {
-            tl.to(step, { opacity: 0.25, duration: 0.4, ease: "none" }, index * 0.8 + 0.6);
+            tl.to(step, { opacity: 0.65, duration: 0.4, ease: "none" }, index * 0.8 + 0.6);
           }
         });
 
@@ -64,7 +64,7 @@ export function Process() {
       // Below the sticky breakpoint the four columns collapse to one, so the
       // steps simply reveal in sequence. Separate branch rather than <Stagger>,
       // so only one system ever animates these elements' opacity.
-      mm.add("(max-width: 1023px)", () => {
+      mm.add("(max-width: 1023px), (max-height: 739px)", () => {
         const steps = gsap.utils.toArray<HTMLElement>(".js-process-step");
         const tween = gsap.fromTo(
           steps,
@@ -94,8 +94,8 @@ export function Process() {
     // and stop the sticky panel below from sticking. AmbientGlow clips itself.
     <section className="relative">
       <AmbientGlow className="opacity-30" />
-      <div ref={trackRef} className="lg:h-[280vh]">
-        <div className="py-24 sm:py-32 lg:sticky lg:top-20 lg:flex lg:h-[calc(100vh-5rem)] lg:flex-col lg:justify-center lg:py-0">
+      <div ref={trackRef} className="as-process-track lg:h-[180vh]">
+        <div className="as-process-sticky py-24 sm:py-32 lg:sticky lg:top-20 lg:flex lg:h-[calc(100vh-5rem)] lg:flex-col lg:justify-center lg:py-0">
           <Container className="relative z-10 flex flex-col gap-16">
             <SectionHeading
               eyebrow="Process"

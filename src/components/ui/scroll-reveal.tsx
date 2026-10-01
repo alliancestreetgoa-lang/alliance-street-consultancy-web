@@ -4,7 +4,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
-const EASE = "power3.out";
+import { settle as EASE } from "@/lib/motion";
 
 type RevealProps = {
   children: ReactNode;
@@ -61,8 +61,7 @@ type StaggerProps = {
 
 /**
  * Reveals its direct children in sequence as the group enters view. Each child
- * rises, un-tilts and settles forward out of the page, so a grid of cards reads
- * as physical objects arriving rather than boxes fading in.
+ * settles into place with a bounded total stagger, even for long lists.
  */
 export function Stagger({ children, className }: StaggerProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -74,13 +73,12 @@ export function Stagger({ children, className }: StaggerProps) {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ref.current!.children,
-        { opacity: 0, y: 56, rotateX: -12, transformOrigin: "50% 100%" },
+        { opacity: 0.3, y: 24 },
         {
           opacity: 1,
           y: 0,
-          rotateX: 0,
-          duration: 0.8,
-          stagger: 0.09,
+          duration: 0.6,
+          stagger: { amount: 0.24 },
           ease: EASE,
           scrollTrigger: {
             trigger: ref.current,
@@ -96,9 +94,7 @@ export function Stagger({ children, className }: StaggerProps) {
   }, []);
 
   return (
-    // Perspective on the group, so the children's rotateX reads as depth rather
-    // than a vertical squash.
-    <div ref={ref} className={cn("[perspective:1200px]", className)}>
+    <div ref={ref} className={className}>
       {children}
     </div>
   );
@@ -248,7 +244,7 @@ export function ParallaxBlock({ children, className, distance = -80 }: ParallaxP
             trigger: ref.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: true,
+            scrub: 0.25,
             invalidateOnRefresh: true,
           },
         }

@@ -1,7 +1,9 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { m, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
+import { gsap } from "@/lib/gsap";
+import { settle } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type DisplayHeadingProps = {
@@ -40,18 +42,27 @@ function introDelay() {
 export function DisplayHeading({ text, className }: DisplayHeadingProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  // Captured once at mount; the transition never reaches the server markup,
-  // so there is no hydration mismatch.
-  const [baseDelay] = useState(introDelay);
+  // Server and first client paint are identical, including reduced-motion mode.
+  // Start the entrance after hydration and leave the default markup readable.
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".js-display-word", { opacity: 0.6, y: 12 }, {
+        opacity: 1, y: 0, duration: 0.55, stagger: { amount: 0.18 },
+        delay: introDelay(), ease: settle, clearProps: "opacity,transform",
+      });
+    }, wrapperRef);
+    return () => ctx.revert();
+  }, [shouldReduceMotion]);
 
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
-  const springConfig = { stiffness: 120, damping: 20, mass: 0.6 };
-  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [5, -5]), springConfig);
-  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-7, 7]), springConfig);
+  const springConfig = { stiffness: 210, damping: 28, mass: 0.6 };
+  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [2, -2]), springConfig);
+  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-3, 3]), springConfig);
 
   useEffect(() => {
-    if (shouldReduceMotion) return;
+    if (shouldReduceMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     // Track across the whole hero section, not just the heading's own box —
     // same approach AmbientGlow uses for its wash.
     const section = wrapperRef.current?.closest<HTMLElement>("section");
@@ -73,6 +84,7 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
     return () => {
       section.removeEventListener("pointermove", handlePointerMove);
       section.removeEventListener("pointerleave", handlePointerLeave);
+      handlePointerLeave();
     };
   }, [pointerX, pointerY, shouldReduceMotion]);
 
@@ -81,7 +93,7 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
   return (
     <div ref={wrapperRef} className="[perspective:1400px]">
       <m.h1
-        style={shouldReduceMotion ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" }}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         className={cn(
           "text-balance font-semibold [transform-origin:50%_120%]",
           className
@@ -89,30 +101,9 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
       >
         {words.map((word, index) => (
           <Fragment key={`${word}-${index}`}>
-            <m.span
-              // `initial` is what gets rendered into the static HTML, so it must
-              // never be opacity 0: Chrome excludes fully transparent elements
-              // from Largest Contentful Paint candidacy, which meant every page
-              // whose biggest above-fold element is this heading (rather than a
-              // hero photo) could not register an LCP until the bundle had
-              // downloaded, hydrated and run this animation — 9.1s on /contact.
-              // Starting part-visible keeps the stagger while leaving the
-              // heading LCP-eligible and legible from first paint.
-              {...(shouldReduceMotion
-                ? {}
-                : {
-                    initial: { opacity: 0.4, y: "0.35em", filter: "blur(6px)" },
-                    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-                    transition: {
-                      duration: 0.5,
-                      delay: baseDelay + index * 0.035,
-                      ease: [0.16, 1, 0.3, 1],
-                    },
-                  })}
-              className="inline-block"
-            >
+            <span className="js-display-word inline-block">
               {word}
-            </m.span>{" "}
+            </span>{" "}
           </Fragment>
         ))}
       </m.h1>

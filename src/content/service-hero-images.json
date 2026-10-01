@@ -1,0 +1,119 @@
+{
+  "images": [
+    {
+      "service": "uae/free-zone-company-formation",
+      "src": "/brand/service-uae-free-zone-company-formation.jpg",
+      "alt": "Palm-lined UAE business campus beside a logistics port"
+    },
+    {
+      "service": "uae/mainland-company-formation",
+      "src": "/brand/service-uae-mainland-company-formation.jpg",
+      "alt": "Dubai commercial avenue with modern storefronts"
+    },
+    {
+      "service": "uae/offshore-company-formation",
+      "src": "/brand/service-uae-offshore-company-formation.jpg",
+      "alt": "Waterfront terrace overlooking an international port"
+    },
+    {
+      "service": "uae/pro-services",
+      "src": "/brand/service-uae-pro-services.jpg",
+      "alt": "Passport and document folders on a UAE office desk"
+    },
+    {
+      "service": "uae/corporate-bank-account-assistance",
+      "src": "/brand/service-uae-corporate-bank-account-assistance.jpg",
+      "alt": "Corporate banking meeting room overlooking Dubai"
+    },
+    {
+      "service": "uae/private-and-personal-banking",
+      "src": "/brand/service-uae-private-and-personal-banking.jpg",
+      "alt": "Private banking lounge with a seated client"
+    },
+    {
+      "service": "uae/corporate-tax",
+      "src": "/brand/service-uae-corporate-tax.jpg",
+      "alt": "Corporate financial reports and calculator beside a Dubai skyline"
+    },
+    {
+      "service": "uae/vat-registration",
+      "src": "/brand/service-uae-vat-registration.jpg",
+      "alt": "Open registration binder in a modern office"
+    },
+    {
+      "service": "uae/vat-return-filing",
+      "src": "/brand/service-uae-vat-return-filing.jpg",
+      "alt": "Accountant reconciling quarterly invoices"
+    },
+    {
+      "service": "uae/audit-support",
+      "src": "/brand/service-uae-audit-support.jpg",
+      "alt": "Advisor reviewing audit documents with a magnifying glass"
+    },
+    {
+      "service": "uae/bookkeeping",
+      "src": "/brand/service-uae-bookkeeping.jpg",
+      "alt": "Ledger, receipts and calculator on a bookkeeping desk"
+    },
+    {
+      "service": "uk/company-formation",
+      "src": "/brand/service-uk-company-formation.jpg",
+      "alt": "London office overlooking historic and contemporary buildings"
+    },
+    {
+      "service": "uk/accounting",
+      "src": "/brand/service-uk-accounting.jpg",
+      "alt": "Accountant reviewing reports beside a London window"
+    },
+    {
+      "service": "uk/self-assessment",
+      "src": "/brand/service-uk-self-assessment.jpg",
+      "alt": "Receipts and tax folder in a British home office"
+    },
+    {
+      "service": "uk/corporation-tax",
+      "src": "/brand/service-uk-corporation-tax.jpg",
+      "alt": "Corporate accounts on a City of London boardroom table"
+    },
+    {
+      "service": "uk/vat",
+      "src": "/brand/service-uk-vat.jpg",
+      "alt": "Accountant reviewing VAT paperwork with London in the background"
+    },
+    {
+      "service": "advisory/business-consulting",
+      "src": "/brand/service-advisory-business-consulting.jpg",
+      "alt": "Business strategy models and planning cards on a meeting table"
+    },
+    {
+      "service": "advisory/cfo-services",
+      "src": "/brand/service-advisory-cfo-services.jpg",
+      "alt": "Finance leader reviewing reports in a boardroom"
+    },
+    {
+      "service": "advisory/tax-planning",
+      "src": "/brand/service-advisory-tax-planning.jpg",
+      "alt": "Corporate folders and a globe for international tax planning"
+    },
+    {
+      "service": "advisory/payroll",
+      "src": "/brand/service-advisory-payroll.jpg",
+      "alt": "Organized payroll envelopes and calculator"
+    },
+    {
+      "service": "advisory/business-licensing",
+      "src": "/brand/service-advisory-business-licensing.jpg",
+      "alt": "Business licence dossier, seal and premises keys"
+    },
+    {
+      "service": "advisory/working-capital-and-mortgage-finance",
+      "src": "/brand/service-advisory-working-capital-and-mortgage-finance.jpg",
+      "alt": "Commercial property model, financing documents and keys"
+    },
+    {
+      "service": "advisory/real-estate-and-investment-advisory",
+      "src": "/brand/service-advisory-real-estate-and-investment-advisory.jpg",
+      "alt": "Contemporary waterfront property development in the UAE"
+    }
+  ]
+}

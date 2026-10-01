@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
+import { settle } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
@@ -27,15 +28,12 @@ export function SectionHeading({
     if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // Scrubbed rather than fire-and-forget: the words resolve as you scroll
-      // into the section, so the heading is tied to the reader's own pace.
+      // Finish the entrance even when scrolling stops; text must never stay half-hidden.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootRef.current,
           start: "top 90%",
-          end: "top 45%",
-          scrub: 0.7,
-          invalidateOnRefresh: true,
+          once: true,
         },
       });
 
@@ -47,14 +45,13 @@ export function SectionHeading({
       )
         .fromTo(
           ".js-heading-word",
-          { opacity: 0, yPercent: 60, filter: "blur(8px)" },
+          { opacity: 0.35, yPercent: 35 },
           {
             opacity: 1,
             yPercent: 0,
-            filter: "blur(0px)",
             duration: 0.6,
-            stagger: 0.08,
-            ease: "power3.out",
+            stagger: { amount: 0.18 },
+            ease: settle,
           },
           0.1
         )
@@ -62,7 +59,7 @@ export function SectionHeading({
           ".js-heading-description",
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          0.5
+          0.18
         );
     }, rootRef);
 

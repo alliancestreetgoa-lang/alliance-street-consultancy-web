@@ -16,7 +16,13 @@ export default function ContactPage() {
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
-      <PageHero {...pageHero("/contact")} />
+      <PageHero
+        {...pageHero("/contact")}
+        image={{
+          src: "/brand/contact-hero.jpg",
+          alt: "Illustrative consultation lounge with two chairs and a coffee table overlooking Dubai Business Bay",
+        }}
+      />
       <ContactSection />
     </>
   );

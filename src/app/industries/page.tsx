@@ -15,11 +15,13 @@ export default function IndustriesPage() {
     { name: "Industries", path: "/industries" },
   ]);
 
+  const banner = pageBanner("/industries");
+
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
-      <PageHero {...pageHero("/industries")} />
-      <StatementBanner {...pageBanner("/industries")} />
+      <PageHero {...pageHero("/industries")} image={banner.image} />
+      <StatementBanner {...banner} image={undefined} />
       <IndustriesGrid />
       <BookConsultationCTA />
     </>

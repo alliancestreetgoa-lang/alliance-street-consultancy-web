@@ -1,10 +1,14 @@
 "use client";
 
+import Image from "next/image";
+import { asset } from "@/lib/asset-path";
+import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { HeroEntrance } from "@/components/ui/scroll-reveal";
 
 type PageHeroProps = {
+  image?: { src: string; alt: string };
   badge: string;
   title: string;
   subhead: string;
@@ -27,9 +31,13 @@ type PageHeroProps = {
  * DisplayHeading's own word stagger (see HeroEntrance for why it must not be
  * wrapped in an opacity animation).
  */
-export function PageHero({ badge, title, subhead }: PageHeroProps) {
+export function PageHero({ badge, title, subhead, image }: PageHeroProps) {
   return (
-    <section className="as-wall-page surface-dark relative flex min-h-[58vh] items-start overflow-hidden pt-32 pb-40 sm:pt-40 sm:pb-56">
+    <section className={cn("surface-dark relative isolate flex overflow-hidden", image ? "as-image-hero bg-background" : "as-wall-page min-h-[58vh] items-start pt-32 pb-40 sm:pt-40 sm:pb-56")}>
+      {image && <>
+        <Image src={asset(image.src)} alt={image.alt} fill preload sizes="100vw" className="-z-20 object-cover" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-black/65" />
+      </>}
       <HeroEntrance className="relative z-10 w-full">
         <Container className="flex flex-col items-center gap-6 text-center">
           <span data-hero-item className="as-eyebrow">

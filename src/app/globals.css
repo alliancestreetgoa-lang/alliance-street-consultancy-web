@@ -629,3 +629,41 @@ html[data-intro="skip"] .as-intro-hero {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Short screens and reduced motion get the complete, naturally flowing list. */
+@media (prefers-reduced-motion: reduce), (max-height: 739px) {
+  .as-service-track, .as-process-track { height: auto; }
+  .as-service-sticky, .as-process-sticky {
+    position: static;
+    height: auto;
+    padding-block: 6rem;
+  }
+  .as-service-clip { overflow: visible; padding-inline: 1.5rem; }
+  .as-service-rail {
+    width: auto;
+    max-width: 80rem;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    padding-right: 0;
+  }
+  .as-service-rail .js-service-card { width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fill the visible screen below the fixed h-20 navigation. Min-height lets
+   long headings and zoomed text expand without clipping on short screens. */
+.as-image-hero {
+  min-height: calc(100vh - 5rem);
+  min-height: calc(100dvh - 5rem);
+  align-items: center;
+  padding-block: clamp(3rem, 8vh, 7rem);
+  padding-block: clamp(3rem, 8dvh, 7rem);
+}

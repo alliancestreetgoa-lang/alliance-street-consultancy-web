@@ -188,3 +188,10 @@ export type Service = z.infer<typeof serviceSchema>;
 export type DirectAnswer = z.infer<typeof directAnswerSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
 export type Entry = z.infer<typeof entrySchema>;
+
+/** Service-specific hero artwork, stored as a CMS-editable list. */
+export const serviceHeroImagesSchema = z.array(z.object({
+  service: nonEmpty("service").regex(/^(uae|uk|advisory)\/[a-z0-9]+(?:-[a-z0-9]+)*$/, "must match an area/service-slug"),
+  src: nonEmpty("src").regex(/^\/brand\/[^/]+\.(jpe?g|png|webp)$/i, "use a local image in /brand/"),
+  alt: nonEmpty("alt"),
+}));

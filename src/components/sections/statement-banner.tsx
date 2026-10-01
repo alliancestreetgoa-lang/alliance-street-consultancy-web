@@ -6,7 +6,7 @@ type StatementBannerProps = {
   /** The large statement line. Set at the live site's h4 (26px/600). */
   statement: string;
   body: string;
-  image: { src: string; alt: string };
+  image?: { src: string; alt: string };
   /** Which side the photograph sits on. Defaults to the left. */
   imageSide?: "left" | "right";
   /** Optional two-tone Space Mono eyebrow, e.g. ["Business setup", "simplified"]. */
@@ -27,7 +27,7 @@ export function StatementBanner({
   imageSide = "left",
   eyebrow,
 }: StatementBannerProps) {
-  const figure = (
+  const figure = image ? (
     <Reveal delay={imageSide === "left" ? 0 : 0.1}>
       <FramedImage
         src={image.src}
@@ -36,7 +36,7 @@ export function StatementBanner({
         sizes="(min-width: 1024px) 420px, 100vw"
       />
     </Reveal>
-  );
+  ) : null;
 
   const copy = (
     <Reveal delay={imageSide === "left" ? 0.1 : 0} className="flex flex-col gap-4">
@@ -54,7 +54,7 @@ export function StatementBanner({
     <section className="py-24 sm:py-32">
       <Container
         className={
-          imageSide === "left"
+          !image ? "max-w-4xl" : imageSide === "left"
             ? "grid items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16"
             : "grid items-center gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16"
         }

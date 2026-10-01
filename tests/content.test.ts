@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { existsSync } from "node:fs";
+import heroImages from "@/content/service-hero-images.json";
 import { z } from "zod";
 
 import services from "@/content/services.json";
@@ -23,6 +25,7 @@ import {
   entriesSchema,
   faqSchema,
   groupImagesSchema,
+  serviceHeroImagesSchema,
   servicesSchema,
   siteSchema,
   SERVICE_GROUPS,
@@ -55,6 +58,7 @@ describe("content schemas", () => {
   it("services.json", () => check("services.json", servicesSchema, services.services));
   it("direct-answers.json", () => check("direct-answers.json", directAnswersSchema, directAnswers.answers));
   it("group-images.json", () => check("group-images.json", groupImagesSchema, groupImages.images));
+  it("service-hero-images.json", () => check("service-hero-images.json", serviceHeroImagesSchema, heroImages.images));
   it("site.json", () => check("site.json", siteSchema, site));
 
   it.each([
@@ -123,6 +127,14 @@ describe("content integrity", () => {
     const slugs = new Set(services.services.map((s) => s.slug));
     const orphans = directAnswers.answers.map((a) => a.slug).filter((slug) => !slugs.has(slug));
     expect(orphans, "a sourced answer names a service that no longer exists").toEqual([]);
+  });
+
+  it("has exactly one local hero image for every service", () => {
+    const expected = services.services.map((s) => `${s.category}/${s.slug}`).sort();
+    expect(heroImages.images.map((image) => image.service).sort()).toEqual(expected);
+    for (const image of heroImages.images) {
+      expect(existsSync(`public${image.src}`), `missing hero image: ${image.src}`).toBe(true);
+    }
   });
 
   it("has an image for every service group in use", () => {

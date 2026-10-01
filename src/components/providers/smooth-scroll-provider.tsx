@@ -21,10 +21,14 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     // Two frames: let the new route paint before measuring it.
+    let secondFrame = 0;
     const raf = requestAnimationFrame(() => {
-      requestAnimationFrame(() => ScrollTrigger.refresh());
+      secondFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
     });
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      cancelAnimationFrame(secondFrame);
+    };
   }, [pathname]);
 
   useEffect(() => {

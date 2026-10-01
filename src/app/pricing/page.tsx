@@ -15,11 +15,13 @@ export default function PricingPage() {
     { name: "Pricing", path: "/pricing" },
   ]);
 
+  const banner = pageBanner("/pricing");
+
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
-      <PageHero {...pageHero("/pricing")} />
-      <StatementBanner {...pageBanner("/pricing")} />
+      <PageHero {...pageHero("/pricing")} image={banner.image} />
+      <StatementBanner {...banner} image={undefined} />
       <PricingFactors />
       <BookConsultationCTA />
     </>

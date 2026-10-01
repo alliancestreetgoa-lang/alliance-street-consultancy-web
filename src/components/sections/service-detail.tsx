@@ -1,14 +1,16 @@
 "use client";
 
+import Image from "next/image";
+import { asset } from "@/lib/asset-path";
+import heroImages from "@/content/service-hero-images.json";
+import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Container } from "@/components/ui/container";
 import { DisplayHeading } from "@/components/ui/display-heading";
-import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
-import { HeroEntrance, ParallaxBlock, Reveal, ScrubRail, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
-import { GROUP_IMAGES, type Service } from "@/lib/services-data";
+import { HeroEntrance, Reveal, ScrubRail, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
+import { type Service } from "@/lib/services-data";
 
 type ServiceDetailProps = {
   service: Service;
@@ -16,29 +18,40 @@ type ServiceDetailProps = {
 };
 
 export function ServiceDetail({ service, related }: ServiceDetailProps) {
+  const hero = heroImages.images.find((image) => image.service === `${service.category}/${service.slug}`);
+
   return (
     <>
-      {/* Dark, like the live site's service pages (see /dubai-business-setup):
-          black ground, red glow, mono eyebrow, then a wedge into the light
-          body. surface-dark remaps the tokens, so the children are unchanged. */}
-      <section className="surface-dark relative flex min-h-[46vh] items-center overflow-hidden bg-background py-24 sm:py-32">
-        <AmbientGlow className="opacity-60" />
-        <HeroEntrance className="relative z-10 w-full">
-          <Container className="flex flex-col items-center gap-6 text-center">
-            <span data-hero-item className="as-eyebrow">
-              {service.group}
-            </span>
-            <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl" />
-            <p data-hero-item className="max-w-xl text-base text-muted-foreground">
+      <section className="surface-dark as-image-hero relative isolate flex overflow-hidden bg-background">
+        {hero && (
+          <Image
+            src={asset(hero.src)}
+            alt={hero.alt}
+            fill
+            preload
+            sizes="100vw"
+            className="-z-20 object-cover object-[65%_center] sm:object-center"
+          />
+        )}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,0.86)_0%,rgba(0,0,0,0.7)_42%,rgba(0,0,0,0.15)_100%)]" />
+        <HeroEntrance className="w-full">
+          <Container className="flex flex-col items-start gap-6">
+            <Link href="/services" data-hero-item className="text-sm text-white/80 underline-offset-4 hover:text-white hover:underline">
+              All services / {service.group}
+            </Link>
+            <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl lg:text-6xl" />
+            <p data-hero-item className="max-w-xl text-lg text-white/85">
               {service.tagline}
             </p>
+            <Button data-hero-item size="lg" asChild className="mt-2">
+              <Link href="/book-consultation">Book a Consultation</Link>
+            </Button>
           </Container>
         </HeroEntrance>
-        <span className="as-wedge" aria-hidden />
       </section>
 
       <section className="py-24 sm:py-32">
-        <Container className="grid gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
+        <Container className="max-w-4xl">
           <Reveal className="flex flex-col gap-6">
             {/*
               The direct answer sits above "What's Included" deliberately: it is
@@ -128,19 +141,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
               </Card>
             ) : null}
           </Reveal>
-          {/* The sidebar drifts slightly slower than the copy column beside it,
-              which opens a little depth between the two. */}
-          <ParallaxBlock distance={-60} className="lg:mt-0">
-            <Reveal delay={0.1}>
-            <FramedImage
-              src={GROUP_IMAGES[service.group].src}
-              alt={GROUP_IMAGES[service.group].alt}
-              caption={GROUP_IMAGES[service.group].caption}
-              aspectClassName={GROUP_IMAGES[service.group].aspectClassName}
-              sizes="(min-width: 1024px) 420px, 100vw"
-            />
-            </Reveal>
-          </ParallaxBlock>
+
         </Container>
       </section>
     </>

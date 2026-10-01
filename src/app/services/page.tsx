@@ -15,11 +15,13 @@ export default function ServicesPage() {
     { name: "Services", path: "/services" },
   ]);
 
+  const banner = pageBanner("/services");
+
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
-      <PageHero {...pageHero("/services")} />
-      <StatementBanner {...pageBanner("/services")} />
+      <PageHero {...pageHero("/services")} image={banner.image} />
+      <StatementBanner {...banner} image={undefined} />
       <ServicesIndex />
       <BookConsultationCTA />
     </>

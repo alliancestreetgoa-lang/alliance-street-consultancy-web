@@ -25,6 +25,32 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let visible = false;
+    const sync = () => {
+      if (visible && !document.hidden && !reduced.matches) void video.play().catch(() => {});
+      else video.pause();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(section);
+    document.addEventListener("visibilitychange", sync);
+    reduced.addEventListener("change", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+      reduced.removeEventListener("change", sync);
+      video.pause();
+    };
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -38,16 +64,16 @@ export function Hero() {
           trigger: sectionRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: 0.6,
+          scrub: 0.25,
           invalidateOnRefresh: true,
         },
       });
 
       // The card sinks slowly; the copy inside it leaves faster. The difference
       // between the two rates is the parallax.
-      tl.to(cardRef.current, { yPercent: 8, scale: 0.98, ease: "none" }, 0).to(
+      tl.to(cardRef.current, { yPercent: 4, scale: 0.99, ease: "none" }, 0).to(
         copyRef.current,
-        { yPercent: -14, opacity: 0.3, ease: "none" },
+        { yPercent: -7, opacity: 0.8, ease: "none" },
         0
       );
     }, sectionRef);
@@ -75,11 +101,11 @@ export function Hero() {
               z-index would paint the video behind the card's own fill. */}
           <div aria-hidden className="absolute inset-0 z-0">
             <video
-              autoPlay
+              ref={videoRef}
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
               poster={asset("/brand/hero-video-poster.jpg")}
               className="absolute inset-0 h-full w-full object-cover object-[center_40%]"
             >

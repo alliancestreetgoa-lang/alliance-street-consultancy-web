@@ -13,7 +13,7 @@ const STATS: { value: number; suffix?: string; label: string }[] = statsContent.
  * The server renders the final figures, so crawlers, no-JS visitors and
  * reduced-motion visitors all read the real numbers. With motion allowed, each
  * figure counts up from 0 and rises into place as the strip scrolls into view —
- * scrubbed to the scroll position, so scrolling back up counts them back down.
+ * then stays at its final value, even when the visitor stops scrolling.
  */
 export function Stats() {
   const rootRef = useRef<HTMLElement>(null);
@@ -27,9 +27,7 @@ export function Stats() {
         scrollTrigger: {
           trigger: rootRef.current,
           start: "top 95%",
-          end: "top 45%",
-          scrub: 0.6,
-          invalidateOnRefresh: true,
+          once: true,
         },
       });
 
@@ -40,7 +38,7 @@ export function Stats() {
         const counter = { value: 0 };
         const at = index * 0.12;
 
-        tl.fromTo(item, { y: 48, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5 }, at);
+        tl.fromTo(item, { y: 20, opacity: 0.4 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5 }, at);
         tl.to(
           counter,
           {

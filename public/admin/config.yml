@@ -434,6 +434,23 @@ collections:
   - name: imagery
     label: Imagery
     files:
+      - name: service_hero_images
+        label: Service hero images
+        file: src/content/service-hero-images.json
+        description: Topic-specific images shown at the top of each service page.
+        fields:
+          - label: Images
+            name: images
+            widget: list
+            summary: '{{fields.service}}'
+            fields:
+              - label: Service address
+                name: service
+                widget: string
+                hint: Area and slug, for example uae/free-zone-company-formation.
+              - { label: Hero image, name: src, widget: image }
+              - { label: Image description, name: alt, widget: string }
+
       - name: group_images
         label: Service section images
         file: src/content/group-images.json

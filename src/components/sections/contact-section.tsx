@@ -7,7 +7,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
-import { FramedImage } from "@/components/ui/framed-image";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { COMPANY } from "@/lib/site-config";
@@ -62,13 +61,6 @@ export function ContactSection() {
               </a>
             )}
           </div>
-          <FramedImage
-            src="/brand/dubai-skyline.png"
-            alt="Dubai skyline including the Burj Khalifa and Burj Al Arab"
-            caption="Business Bay, Dubai"
-            aspectClassName="aspect-[4/3]"
-            sizes="(min-width: 1024px) 420px, 100vw"
-          />
         </Reveal>
 
         <Reveal delay={0.1}>

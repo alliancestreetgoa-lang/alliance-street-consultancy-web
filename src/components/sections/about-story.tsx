@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/container";
-import { FramedImage } from "@/components/ui/framed-image";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import principlesContent from "@/content/sections/about-principles.json";
@@ -10,7 +9,7 @@ const PRINCIPLES = principlesContent.items;
 export function AboutStory() {
   return (
     <section className="py-24 sm:py-32">
-      <Container className="grid gap-12 lg:grid-cols-[7fr_5fr] lg:gap-16">
+      <Container className="max-w-4xl">
         <Reveal className="flex flex-col gap-6">
           <span className="as-eyebrow">
             Our <span className="as-eyebrow-accent">Story</span>
@@ -39,14 +38,7 @@ export function AboutStory() {
             ))}
           </Card>
         </Reveal>
-        <Reveal delay={0.1}>
-          <FramedImage
-            src="/brand/advisor-portrait.png"
-            alt="Alliance Street advisor"
-            aspectClassName="aspect-[3/4]"
-            sizes="(min-width: 1024px) 420px, 100vw"
-          />
-        </Reveal>
+
       </Container>
     </section>
   );

@@ -2,31 +2,31 @@
   "images": [
     {
       "group": "UAE Setup",
-      "src": "/brand/dubai-skyline-photo.jpg",
-      "alt": "Dubai skyline at sunset including the Burj Khalifa",
+      "src": "/brand/service-uae-free-zone-company-formation.jpg",
+      "alt": "Palm-lined UAE business campus beside a logistics port",
       "caption": "Dubai, UAE",
-      "aspectClassName": "aspect-[4/3]"
+      "aspectClassName": "aspect-[3/2]"
     },
     {
       "group": "UAE Tax & Compliance",
-      "src": "/brand/finance-chart.jpg",
-      "alt": "Financial data on a tablet screen",
+      "src": "/brand/service-uae-corporate-tax.jpg",
+      "alt": "Corporate financial reports and calculator beside a Dubai skyline",
       "caption": "Filing & Compliance",
-      "aspectClassName": "aspect-[4/3]"
+      "aspectClassName": "aspect-[3/2]"
     },
     {
       "group": "UK Services",
-      "src": "/brand/architecture.jpg",
-      "alt": "Modern corporate office building",
+      "src": "/brand/service-uk-accounting.jpg",
+      "alt": "Accountant reviewing reports beside a London window",
       "caption": "UK Services",
-      "aspectClassName": "aspect-[4/3]"
+      "aspectClassName": "aspect-[3/2]"
     },
     {
       "group": "Advisory",
-      "src": "/brand/advisor-portrait.png",
-      "alt": "Alliance Street advisor",
+      "src": "/brand/service-advisory-business-consulting.jpg",
+      "alt": "Business strategy models and planning cards on a meeting table",
       "caption": "Advisory",
-      "aspectClassName": "aspect-[3/4]"
+      "aspectClassName": "aspect-[3/2]"
     }
   ]
 }
