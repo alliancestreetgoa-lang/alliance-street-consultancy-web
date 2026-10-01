@@ -1,28 +1,28 @@
 {
   "items": [
     {
-      "quote": "SAMPLE — replace with a real client's words. We came in asking for a free zone licence and left with a structure that actually fitted how we trade. Licence, visas and the bank account were handled as one process instead of three.",
-      "name": "Client name",
-      "role": "Founder, e-commerce brand",
-      "location": "Dubai",
-      "service": "Free Zone Company Formation",
-      "approved": false
+      "quote": "We've got our visas, bank accounts start to be opened, and we've just really benefited from his full ground knowledge of the, UK, tax and banking system and the same in The UAE. And, I wouldn't feel happier in anyone else's hands!",
+      "name": "Charlotte",
+      "role": "Henley Finance",
+      "location": "",
+      "service": "",
+      "approved": true
     },
     {
-      "quote": "SAMPLE — replace with a real client's words. Corporate tax registration and our first filing were done before the deadline, and every figure came with an explanation we could follow.",
-      "name": "Client name",
-      "role": "Managing Director, trading company",
-      "location": "Abu Dhabi",
-      "service": "Corporate Tax",
-      "approved": false
+      "quote": "I could see that he understood the needs and requirements of our company. We embarked on the process, arrived in The UAE, and it's been a seamless flow of meetings, and we have everything in place for our new business life in The UAE.",
+      "name": "Richard",
+      "role": "Padbrook Finance",
+      "location": "",
+      "service": "",
+      "approved": true
     },
     {
-      "quote": "SAMPLE — replace with a real client's words. Running a UK company from Dubai used to mean two advisors and twice the emails. Now one team handles Companies House, VAT and our UAE side together.",
-      "name": "Client name",
-      "role": "Co-founder, SaaS company",
-      "location": "London & Dubai",
-      "service": "UK Company Formation",
-      "approved": false
+      "quote": "They are providing all of the education and resources that you need to understand that you're making a really good decision for your life and your business. So if you're on the fence, don't hesitate. Just reach out, and then they're more than happy to help you.",
+      "name": "Phaibion",
+      "role": "Royal Energy Marketing",
+      "location": "",
+      "service": "",
+      "approved": true
     }
   ]
 }
