@@ -57,8 +57,11 @@
 
   /* Neutral shadows. The live site tints nothing with red — red is an accent
      colour there, never a light source. */
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px -12px rgba(0, 0, 0, 0.12);
-  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.05), 0 28px 56px -16px rgba(0, 0, 0, 0.16);
+  /* Every card on the site casts the brand red, not a neutral grey. */
+  --shadow-card: 0 2px 6px rgba(226, 46, 52, 0.12), 0 12px 32px -8px rgba(226, 46, 52, 0.32),
+    0 28px 64px -20px rgba(226, 46, 52, 0.38);
+  --shadow-card-hover: 0 3px 8px rgba(226, 46, 52, 0.16), 0 18px 44px -10px rgba(226, 46, 52, 0.42),
+    0 40px 84px -24px rgba(226, 46, 52, 0.48);
 
   /* --------------------------------------------------------------------
      Type scale, lifted from the live site's published stylesheet:
@@ -86,7 +89,7 @@
   --text-6xl--line-height: 1.1;
 
   /* h1 at its live breakpoint range: 42px small → 70px large. */
-  --text-hero: clamp(2.625rem, 1.5rem + 4.5vw, 4.375rem);
+  --text-hero: clamp(2.25rem, 1.35rem + 4.5vw, 4.375rem);
   --text-hero--line-height: 1.1;
 }
 
@@ -148,6 +151,19 @@
        headings and body alike, is tracked at -0.04em (h1 -2.8/70, h2 -2/50,
        h3 -1.5/38, h4 -1.04/26, body -0.64/16). One rule reproduces all of it. */
     letter-spacing: -0.04em;
+  }
+  /* Large monitors: everything is sized in rem, so growing the root size scales
+     the whole layout in proportion — a 2560px screen shows the 1920px design
+     larger, rather than the same laptop-sized column marooned in empty space. */
+  @media (min-width: 1920px) {
+    html {
+      font-size: calc(100vw / 120);
+    }
+  }
+  @media (min-width: 2880px) {
+    html {
+      font-size: 24px;
+    }
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans font-semibold text-foreground;
@@ -236,6 +252,30 @@
   vertical-align: super;
   margin-left: 0.05em;
 }
+/* Home stats strip, matched to the live site's numbers row: larger, tighter
+   figures in pure black; a heavier "+" set low against the figure in a
+   maroon → red sweep; and the live site's lighter label grey. */
+.as-stat-home {
+  font-size: clamp(3.5rem, 1.5rem + 6vw, 7.6rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: #000000;
+}
+.as-stat-suffix-low {
+  font-size: 0.4em;
+  font-weight: 700;
+  vertical-align: baseline;
+  margin-left: 0.02em;
+  letter-spacing: 0;
+  background: linear-gradient(90deg, #3a1012 0%, #c42d31 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.as-stat-label {
+  color: #8f909b;
+}
 
 /* Ambient red wash — the soft radial bleed the live site puts behind card
    clusters. Replaces the old aurora, which mixed primary with secondary. */
@@ -319,8 +359,10 @@
   --glass-border: rgba(255, 255, 255, 0.14);
   --input: rgba(255, 255, 255, 0.18);
   --ring: #e22e34;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
-  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 56px -16px rgba(0, 0, 0, 0.7);
+  /* On black a red cast is the only shadow that reads, so it glows rather
+     than darkens. */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 40px -12px rgba(226, 46, 52, 0.4);
+  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 56px -16px rgba(226, 46, 52, 0.5);
 }
 
 .surface-brand {
@@ -386,6 +428,90 @@
 
 .as-wall-footer {
   background: linear-gradient(180deg, #e22e34 0%, #8d1319 42%, #000000 100%);
+}
+
+/* -------------------------------------------------------------------------
+   Homepage flow — one continuous ground between the two walls, so the page
+   reads as a single piece from the hero down into the footer instead of a
+   stack of #ffffff / #fafafa bands with hard seams.
+
+   - The base starts at the hero's closing white and warms very slightly.
+   - Each band carries one soft red glow, alternating left and right. Glows
+     are not clipped per section (that is what drew the hard pink lines), only
+     horizontally by the flow itself — `overflow-x: clip`, not `hidden`, which
+     would make it a scroll container and break the sticky sections inside.
+   - The tail ramps into #e22e34, the footer wall's first stop, so the newsletter
+     dissolves into the footer with no edge.
+   ------------------------------------------------------------------------- */
+.as-flow {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  background: linear-gradient(180deg, #ffffff 0%, #fdf6f6 12%, #fcf3f3 60%, #fbefef 100%);
+}
+
+/* Sections' own clipped glows would re-draw the seams; the flow replaces them.
+   The CTA card's glow is not a direct child of its section and stays. */
+.as-flow section > .as-ambient {
+  display: none;
+}
+
+.as-flow-band {
+  position: relative;
+}
+
+/* The glow layer spans its band; in a pinned band the glow itself is sticky,
+   so it stays on screen for the whole time the band holds the viewport. */
+.as-flow-glow-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.as-flow-glow {
+  position: absolute;
+  top: 50%;
+  width: min(1100px, 95vw);
+  height: min(900px, 110vh);
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklch, var(--primary) 22%, transparent) 0%,
+    color-mix(in oklch, var(--primary) 9%, transparent) 45%,
+    transparent 100%
+  );
+}
+
+.as-flow-glow[data-side="left"] {
+  left: max(-30vw, -420px);
+}
+
+.as-flow-glow[data-side="right"] {
+  right: max(-30vw, -420px);
+}
+
+.as-flow-glow-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.as-flow-tail {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: -1;
+  height: 22rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in oklch, #e22e34 14%, transparent) 35%,
+    color-mix(in oklch, #e22e34 55%, transparent) 70%,
+    #e22e34 100%
+  );
 }
 
 /* Headline accent — the single word the live site renders in red gradient

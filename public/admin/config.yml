@@ -302,6 +302,43 @@ collections:
               - { label: Title, name: title, widget: string }
               - { label: Description, name: description, widget: text }
 
+      - name: stats
+        label: 'Home — numbers under the hero'
+        file: src/content/sections/stats.json
+        fields:
+          - label: Numbers
+            name: items
+            widget: list
+            summary: '{{fields.value}}{{fields.suffix}} {{fields.label}}'
+            hint: Shown left to right. The number counts up from 0 as visitors scroll to it.
+            fields:
+              - { label: Number, name: value, widget: number, value_type: int, min: 0 }
+              - { label: Suffix, name: suffix, widget: string, required: false, hint: 'Shown after the number, e.g. "+"' }
+              - { label: Label, name: label, widget: string }
+
+      - name: testimonials
+        label: 'Home — client testimonials'
+        file: src/content/sections/testimonials.json
+        fields:
+          - label: Testimonials
+            name: items
+            widget: list
+            summary: '{{fields.name}} — {{fields.role}}'
+            hint: >-
+              Only testimonials ticked "Real client, permission to publish" appear on the live
+              site. Unticked ones are shown on the local preview only, marked as samples.
+            fields:
+              - { label: Quote, name: quote, widget: text }
+              - { label: Name, name: name, widget: string }
+              - { label: Role and company, name: role, widget: string, hint: 'e.g. "Founder, e-commerce brand"' }
+              - { label: Location, name: location, widget: string, required: false }
+              - { label: Service used, name: service, widget: string, required: false }
+              - label: 'Real client, permission to publish'
+                name: approved
+                widget: boolean
+                default: false
+                hint: Tick only for a genuine client quote you have written permission to publish.
+
       - name: process
         label: 'Home — how an engagement works'
         file: src/content/sections/process.json
@@ -326,19 +363,6 @@ collections:
             fields:
               - { label: Question, name: question, widget: string }
               - { label: Answer, name: answer, widget: text }
-
-      - name: service_preview
-        label: 'Home — featured services'
-        file: src/content/sections/service-preview.json
-        fields:
-          - label: Featured
-            name: items
-            widget: list
-            summary: '{{fields.title}}'
-            fields:
-              - { label: Title, name: title, widget: string }
-              - { label: Description, name: description, widget: text }
-              - { label: Link, name: href, widget: string }
 
       - name: about_expertise
         label: 'About — what we do'

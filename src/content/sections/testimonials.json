@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "quote": "SAMPLE — replace with a real client's words. We came in asking for a free zone licence and left with a structure that actually fitted how we trade. Licence, visas and the bank account were handled as one process instead of three.",
+      "name": "Client name",
+      "role": "Founder, e-commerce brand",
+      "location": "Dubai",
+      "service": "Free Zone Company Formation",
+      "approved": false
+    },
+    {
+      "quote": "SAMPLE — replace with a real client's words. Corporate tax registration and our first filing were done before the deadline, and every figure came with an explanation we could follow.",
+      "name": "Client name",
+      "role": "Managing Director, trading company",
+      "location": "Abu Dhabi",
+      "service": "Corporate Tax",
+      "approved": false
+    },
+    {
+      "quote": "SAMPLE — replace with a real client's words. Running a UK company from Dubai used to mean two advisors and twice the emails. Now one team handles Companies House, VAT and our UAE side together.",
+      "name": "Client name",
+      "role": "Co-founder, SaaS company",
+      "location": "London & Dubai",
+      "service": "UK Company Formation",
+      "approved": false
+    }
+  ]
+}

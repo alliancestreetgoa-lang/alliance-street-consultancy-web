@@ -14,7 +14,8 @@ import homeFaq from "@/content/sections/home-faq.json";
 import industries from "@/content/sections/industries.json";
 import pricingFactors from "@/content/sections/pricing-factors.json";
 import process_ from "@/content/sections/process.json";
-import servicePreview from "@/content/sections/service-preview.json";
+import stats from "@/content/sections/stats.json";
+import testimonials from "@/content/sections/testimonials.json";
 
 import {
   caseStudySchema,
@@ -65,6 +66,44 @@ describe("content schemas", () => {
     ["process", process_],
   ])("sections/%s.json", (name, value) => check(`sections/${name}.json`, entriesSchema, (value as { items: unknown }).items));
 
+  it("sections/stats.json", () =>
+    check(
+      "sections/stats.json",
+      z
+        .array(
+          z.object({
+            value: z.number().int("the number must be a whole number").min(0, "the number cannot be negative"),
+            suffix: z.string().max(3, "keep the suffix to a symbol such as +").optional(),
+            label: z.string().trim().min(1, "each number needs a label"),
+          })
+        )
+        .min(1, "add at least one number"),
+      stats.items
+    ));
+
+  it("sections/testimonials.json", () =>
+    check(
+      "sections/testimonials.json",
+      z.array(
+        z.object({
+          quote: z.string().trim().min(1, "each testimonial needs a quote"),
+          name: z.string().trim().min(1, "each testimonial needs a name"),
+          role: z.string().trim().min(1, "each testimonial needs a role"),
+          location: z.string().optional(),
+          service: z.string().optional(),
+          approved: z.boolean(),
+        })
+      ),
+      testimonials.items
+    ));
+
+  it("never publishes a sample testimonial", () => {
+    const leaked = testimonials.items.filter(
+      (t) => t.approved && (/sample/i.test(t.quote) || t.name.trim().toLowerCase() === "client name")
+    );
+    expect(leaked, "a testimonial marked for publishing still has sample wording or a placeholder name").toEqual([]);
+  });
+
   it("sections/home-faq.json", () => check("sections/home-faq.json", faqSchema, homeFaq.items));
   it("sections/case-studies.json", () =>
     check("sections/case-studies.json", caseStudySchema, caseStudies.items));
@@ -74,13 +113,6 @@ describe("content schemas", () => {
       "sections/headlines.json",
       z.object({ home: z.string().min(1), about: z.string().min(1), caseStudies: z.string().min(1) }),
       headlines
-    ));
-
-  it("sections/service-preview.json", () =>
-    check(
-      "sections/service-preview.json",
-      z.array(z.object({ title: z.string().min(1), description: z.string().min(1), href: z.string().startsWith("/") })).min(1),
-      servicePreview.items
     ));
 });
 
@@ -130,8 +162,4 @@ describe("content integrity", () => {
     expect(stray).toEqual([]);
   });
 
-  it("links the service preview at real service pages", () => {
-    const orphans = servicePreview.items.map((s) => s.href).filter((h) => !routes.has(h));
-    expect(orphans).toEqual([]);
-  });
 });

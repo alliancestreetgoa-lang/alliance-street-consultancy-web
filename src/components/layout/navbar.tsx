@@ -102,7 +102,7 @@ export function Navbar() {
             <span className="text-lg font-semibold text-foreground">Alliance Street</span>
           </Link>
 
-          <div className="hidden lg:flex">
+          <div className="hidden xl:flex">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -139,7 +139,7 @@ export function Navbar() {
             </NavigationMenu>
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             <Button asChild>
               <Link href="/book-consultation">Book Consultation</Link>
             </Button>
@@ -147,11 +147,11 @@ export function Navbar() {
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button type="button" className="text-foreground lg:hidden" aria-label="Open menu">
+              <button type="button" className="text-foreground xl:hidden" aria-label="Open menu">
                 <Menu size={24} />
               </button>
             </SheetTrigger>
-            <SheetContent className="surface-dark bg-background text-foreground lg:hidden">
+            <SheetContent className="surface-dark bg-background text-foreground xl:hidden">
               <SheetTitle className="sr-only">Site navigation</SheetTitle>
               <Container className="shrink-0">
                 <div className="flex h-20 items-center justify-between">

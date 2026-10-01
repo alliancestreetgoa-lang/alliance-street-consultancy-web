@@ -58,9 +58,9 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="as-wall-hero relative isolate flex min-h-[100dvh] flex-col justify-center overflow-hidden pt-28 pb-20 sm:pt-32 sm:pb-28"
+      className="as-wall-hero relative isolate flex min-h-[100dvh] flex-col justify-center overflow-hidden pt-8 pb-16 sm:pt-16 sm:pb-24 lg:pt-28 lg:pb-28 lg:[@media(max-height:820px)]:pt-10 [@media(max-height:500px)]:pt-6 [@media(max-height:500px)]:pb-10"
     >
-      <Container>
+      <Container className="px-4 sm:px-6">
         <div ref={cardRef} className="relative mx-auto w-full max-w-5xl will-change-transform">
           {/* Outside the card frame: it clips to its own radius, which would
               round the brackets' right angles away. */}
@@ -84,31 +84,34 @@ export function Hero() {
             >
               <source src={asset("/brand/hero-video.mp4")} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-background/70" />
+            <div className="absolute inset-0 bg-background/35" />
             {/* Denser bed under the copy column so the headline never fights the skyline. */}
-            <div className="absolute inset-0 bg-[linear-gradient(100deg,var(--background)_0%,color-mix(in_oklch,var(--background)_88%,transparent)_46%,color-mix(in_oklch,var(--background)_40%,transparent)_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(100deg,color-mix(in_oklch,var(--background)_95%,transparent)_0%,color-mix(in_oklch,var(--background)_82%,transparent)_46%,color-mix(in_oklch,var(--background)_25%,transparent)_100%)]" />
           </div>
 
           <div
             ref={copyRef}
-            className="relative z-10 flex flex-col items-start gap-6 px-6 py-14 will-change-transform sm:px-12 sm:py-20"
+            className="relative z-10 flex flex-col items-start gap-5 px-5 py-10 will-change-transform sm:gap-6 sm:px-12 sm:py-20 lg:[@media(max-height:820px)]:py-12 [@media(max-height:500px)]:py-8"
           >
-            <span className="inline-flex items-center gap-3 rounded-full bg-secondary px-4 py-2 text-sm text-foreground">
+            <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs text-foreground sm:gap-3 sm:px-4 sm:py-2 sm:text-sm">
               UAE &amp; UK company formation, tax &amp; advisory
               <Link href="/services" className="font-semibold underline underline-offset-4">
                 Read more
               </Link>
             </span>
 
-            <DisplayHeading text={headlines.home} className="max-w-3xl text-left text-hero" />
+            <DisplayHeading
+              text={headlines.home}
+              className="max-w-3xl text-left text-hero lg:[@media(max-height:820px)]:text-[3.5rem] [@media(max-height:500px)]:text-4xl"
+            />
 
-            <p className="max-w-xl text-base text-muted-foreground">
+            <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
               Alliance Street handles UAE and UK company setup, tax, accounting, and advisory under
               one roof — so you spend less time on paperwork and more time running the business you
               started it for.
             </p>
 
-            <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
               <Button size="lg" asChild>
                 <Link href="/book-consultation">Book a Consultation</Link>
               </Button>
