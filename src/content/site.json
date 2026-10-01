@@ -84,6 +84,11 @@
           "description": "Accurate, on-time quarterly filings."
         },
         {
+          "label": "E-Invoicing",
+          "href": "/services/uae/e-invoicing",
+          "description": "Readiness, provider selection and implementation support."
+        },
+        {
           "label": "Audit Support",
           "href": "/services/uae/audit-support",
           "description": "Be ready before the auditor arrives."
@@ -167,9 +172,9 @@
     }
   ],
   "seo": {
-    "defaultTitle": "Alliance Street Consultancy | UAE & UK Company Formation, Tax & Accounting",
-    "titleTemplate": "%s | Alliance Street Consultancy",
-    "defaultDescription": "Premium UAE and UK business setup, tax, accounting, and advisory services for founders and enterprises.",
+    "defaultTitle": "UAE & UK Company Formation, Tax & Accounting | Alliance Street",
+    "titleTemplate": "%s | Alliance Street",
+    "defaultDescription": "Alliance Street Consultancy supports UAE and UK businesses with company formation, VAT, corporate tax, accounting and e-invoicing readiness. Based in Dubai.",
     "siteName": "Alliance Street Consultancy"
   }
 }

@@ -2,38 +2,43 @@
   "pages": [
     {
       "route": "/about",
-      "title": "About the Firm",
-      "description": "Why Alliance Street exists, who we work with, and the experience behind our UAE and UK company formation, tax and accounting advice."
+      "title": "About Our UAE & UK Business Consultancy",
+      "description": "Meet Alliance Street Consultancy, a Dubai-based advisory firm supporting UAE and UK company formation, tax, accounting and business planning."
     },
     {
       "route": "/services",
-      "title": "UAE & UK Advisory Services",
-      "description": "UAE free zone, mainland and offshore setup, corporate tax and VAT compliance, UK incorporation and accounting — under one advisory relationship."
+      "title": "UAE & UK Company Setup, Tax & Accounting Services",
+      "description": "Explore UAE company formation, e-invoicing, VAT and corporate tax services, alongside UK incorporation, accounting and business advisory support."
     },
     {
       "route": "/industries",
-      "title": "Industries We Serve",
-      "description": "The industries we work in closely enough to know their regulatory detail — and the same standard of UAE and UK setup, tax and compliance work behind each."
+      "title": "UAE & UK Business Advisory by Industry",
+      "description": "Business setup, tax and accounting support for trading, e-commerce, technology, consulting, real estate and hospitality businesses in the UAE and UK."
     },
     {
       "route": "/case-studies",
-      "title": "Case Studies",
-      "description": "Six recurring client situations across UAE setup, tax and UK services — the problem, the approach we took, and how each one resolved."
+      "title": "UAE & UK Advisory: Illustrative Case Studies",
+      "description": "Explore illustrative UAE and UK company setup, tax and accounting scenarios, showing the questions, approach and practical work an engagement can involve."
     },
     {
       "route": "/pricing",
-      "title": "Pricing",
-      "description": "Company formation and advisory pricing depends on your structure. Here's what actually drives the number — and how to get a real quote rather than a rate card."
+      "title": "Company Formation & Advisory Pricing: UAE & UK",
+      "description": "Understand what shapes the cost of UAE and UK company setup, accounting and tax support. Request a quote matched to your structure and scope."
     },
     {
       "route": "/contact",
-      "title": "Contact",
-      "description": "Tell us what you're working on — by email, WhatsApp, or the form. An Alliance Street advisor replies within one business day."
+      "title": "Contact Our Dubai Business Advisory Team",
+      "description": "Contact Alliance Street Consultancy in Business Bay, Dubai about UAE or UK company formation, e-invoicing, tax, accounting and business advisory."
     },
     {
       "route": "/book-consultation",
       "title": "Book a Consultation",
-      "description": "Talk through UAE or UK company formation, corporate tax and compliance with an Alliance Street advisor. Reach us by email or WhatsApp while calendar booking is being set up."
+      "description": "Request a consultation with Alliance Street. Share your contact details, choose UAE setup, UAE tax and compliance, UK services or advisory, and add your questions."
+    },
+    {
+      "route": "/book-appointment",
+      "title": "Book a Zoom Appointment",
+      "description": "Share your details and choose a time for a Zoom appointment with Stallone Shaikh at Alliance Street."
     },
     {
       "route": "/privacy-policy",

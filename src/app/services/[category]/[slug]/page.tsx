@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { ServiceDetail } from "@/components/sections/service-detail";
 import { BookConsultationCTA } from "@/components/sections/book-consultation-cta";
 import { SERVICES, getService } from "@/lib/services-data";
-import { buildBreadcrumbJsonLd, buildServiceJsonLd, jsonLdScriptProps } from "@/lib/schema";
+import { buildBreadcrumbJsonLd, buildServiceJsonLd, buildFaqJsonLd, absoluteUrl, jsonLdScriptProps } from "@/lib/schema";
+
+import heroImages from "@/content/service-hero-images.json";
 
 type Params = { category: string; slug: string };
 
@@ -17,16 +19,22 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const service = getService(category, slug);
   if (!service) return {};
   const path = `/services/${service.category}/${service.slug}`;
+  const title = service.search?.title ?? service.title;
+  const description = service.search?.description ?? service.tagline;
+  const hero = heroImages.images.find((image) => image.service === `${category}/${slug}`);
+  const images = hero ? [{ url: absoluteUrl(hero.src), alt: hero.alt }] : [];
   return {
     // Bare title — the root layout's `title.template` appends
     // " | Alliance Street Consultancy". Appending it here too would double it.
-    title: service.title,
-    description: service.tagline,
+    title,
+    description,
+    twitter: { card: "summary_large_image", title, description, images },
     alternates: { canonical: path },
     openGraph: {
       url: path,
-      title: `${service.title} | Alliance Street Consultancy`,
-      description: service.tagline,
+      title: `${title} | Alliance Street`,
+      images,
+      description,
     },
   };
 }
@@ -50,6 +58,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
     <>
       <script {...jsonLdScriptProps(buildServiceJsonLd(service))} />
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
+      {service.search && <script {...jsonLdScriptProps(buildFaqJsonLd(service.search.faqs))} />}
       <ServiceDetail service={service} related={related} />
       <BookConsultationCTA />
     </>

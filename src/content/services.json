@@ -13,7 +13,19 @@
         "Corporate bank account introduction",
         "Registered office / flexi-desk arrangement"
       ],
-      "whoFor": "Founders who want full ownership of their UAE company without a local partner, and who trade internationally rather than directly with the UAE mainland market."
+      "whoFor": "Founders who want full ownership of their UAE company without a local partner, and who trade internationally rather than directly with the UAE mainland market.",
+      "search": {
+        "title": "UAE Free Zone Company Formation",
+        "description": "Compare UAE free zones, licence activities, visas and office options. Alliance Street helps founders plan and complete their company formation.",
+        "overview": "A UAE free zone company needs a licence and operating arrangements that fit how it will earn revenue. Alliance Street helps founders compare free zones, define their activities and coordinate incorporation, workspace and visa requirements. We start with your customers, ownership structure and trading model before recommending a setup.",
+        "preparation": "Your proposed activities, shareholder details, residency plans, expected customers and preferred office arrangement.",
+        "faqs": [
+          {
+            "question": "How do I choose a UAE free zone?",
+            "answer": "Compare the activities the authority permits, where your customers are, workspace needs, visa plans and recurring costs. A low initial package price is only useful if the licence supports the business you intend to operate."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -28,7 +40,19 @@
         "Office lease coordination — a physical address is mandatory for mainland",
         "Visa allocation setup"
       ],
-      "whoFor": "Businesses that need to trade directly with the UAE mainland market, bid on government-adjacent contracts, or open multiple branches across the Emirates."
+      "whoFor": "Businesses that need to trade directly with the UAE mainland market, bid on government-adjacent contracts, or open multiple branches across the Emirates.",
+      "search": {
+        "title": "Mainland Company Formation in Dubai & UAE",
+        "description": "Plan UAE mainland company formation with activity selection, trade licence applications, office coordination and visa allocation support.",
+        "overview": "Mainland company formation in Dubai and the UAE begins with the business activity and the authority responsible for licensing it. We help turn your ownership, premises and staffing plans into a coordinated application, with attention to approvals and ongoing obligations.",
+        "preparation": "Proposed activities, shareholder documents, preferred emirate, office requirements and planned staffing.",
+        "faqs": [
+          {
+            "question": "What should I decide before applying for a mainland licence?",
+            "answer": "Decide the activities you will carry out, the ownership structure, the emirate and the premises you need. These choices shape the application and any additional approvals that must be checked."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -43,7 +67,19 @@
         "Nominee director/shareholder options where appropriate",
         "Ongoing renewal management"
       ],
-      "whoFor": "Business owners structuring for asset protection, holding company purposes, or international trade who don't need a physical UAE presence or visas."
+      "whoFor": "Business owners structuring for asset protection, holding company purposes, or international trade who don't need a physical UAE presence or visas.",
+      "search": {
+        "title": "UAE Offshore Company Formation",
+        "description": "Explore UAE offshore company formation for holding and international structures, with jurisdiction selection, incorporation and renewal support.",
+        "overview": "UAE offshore company formation can form part of an international ownership or holding structure. Alliance Street reviews your intended use before coordinating jurisdiction selection, incorporation and administration. The structure should support a clear commercial purpose and be considered alongside your tax and banking position.",
+        "preparation": "Ownership details, intended assets or activities, countries involved and the purpose of the proposed structure.",
+        "faqs": [
+          {
+            "question": "Is an offshore company the same as an operating company?",
+            "answer": "No. We assess whether a holding or international structure fits your objective, rather than assuming it can replace a locally licensed operating business. Activity, residency and banking needs should be reviewed together."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -58,7 +94,19 @@
         "Labour card and MOHRE filings",
         "Government portal liaison so you're not the one in the queue"
       ],
-      "whoFor": "Companies who want visa and licensing admin handled end-to-end instead of navigating GDRFA, MOHRE, and free zone portals themselves."
+      "whoFor": "Companies who want visa and licensing admin handled end-to-end instead of navigating GDRFA, MOHRE, and free zone portals themselves.",
+      "search": {
+        "title": "PRO Services in Dubai & UAE",
+        "description": "UAE PRO support for visas, Emirates ID, labour administration, licence renewals and government liaison, coordinated around your business needs.",
+        "overview": "PRO services help UAE businesses coordinate the government administration behind hiring, residency and licensing. We organise the documents and follow-up for your agreed scope so that employee and company requirements can be managed on a clear calendar.",
+        "preparation": "Your company licence, the task or renewal needed, relevant employee information and existing expiry dates.",
+        "faqs": [
+          {
+            "question": "Can PRO support cover both employees and company renewals?",
+            "answer": "Yes. The scope can include employee and dependent visa administration, Emirates ID coordination, labour requirements and trade licence renewals. We agree which tasks are included before work begins."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -73,7 +121,19 @@
         "Application tracking and follow-up",
         "Guidance on compliance questions before they become rejections"
       ],
-      "whoFor": "Newly formed companies — and existing companies switching banks — who want to avoid the account-opening delays that stall a business in its first months."
+      "whoFor": "Newly formed companies — and existing companies switching banks — who want to avoid the account-opening delays that stall a business in its first months.",
+      "search": {
+        "title": "Corporate Bank Account Assistance in UAE",
+        "description": "Prepare a UAE corporate bank account application with bank selection, KYC documents, business information and application follow-up support.",
+        "overview": "Opening a UAE corporate bank account involves explaining your business to the bank as well as providing incorporation documents. We help prepare a coherent application around ownership, business activity, expected transactions and source of funds, then coordinate follow-up with the selected bank.",
+        "preparation": "Company documents, ownership information, a business summary, expected transaction countries and supporting source-of-funds records.",
+        "faqs": [
+          {
+            "question": "Can you guarantee that a bank will open an account?",
+            "answer": "No. Approval, processing time and account terms remain the bank’s decision. Our service focuses on selecting suitable options and preparing complete, consistent information for the bank’s assessment."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -88,7 +148,19 @@
         "Support through onboarding, activation and card issuance",
         "Guidance where a personal account interacts with your corporate structure"
       ],
-      "whoFor": "Founders, residents and investors who need personal or wealth-management banking alongside their company accounts — particularly where multi-jurisdiction income or a recent move makes a standard retail application harder than it should be."
+      "whoFor": "Founders, residents and investors who need personal or wealth-management banking alongside their company accounts — particularly where multi-jurisdiction income or a recent move makes a standard retail application harder than it should be.",
+      "search": {
+        "title": "Private & Personal Banking Assistance UAE",
+        "description": "Get support selecting UAE personal or private banking options and preparing residency, KYC and source-of-wealth documentation for bank review.",
+        "overview": "UAE personal and private banking assistance helps founders and residents explain their financial circumstances clearly to a prospective bank. We coordinate account selection and documentation, especially where personal income, company ownership or cross-border assets make the application more involved.",
+        "preparation": "Residency and identification documents, income details, intended account use and source-of-wealth records.",
+        "faqs": [
+          {
+            "question": "How does personal banking differ from corporate banking support?",
+            "answer": "The application focuses on your personal residency, income and wealth profile. We keep that information distinct from the company’s finances while helping explain the relationship where a bank requests it."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -103,7 +175,19 @@
         "Group and related-party transaction review",
         "Ongoing filing and deadline management"
       ],
-      "whoFor": "Any UAE-registered business now inside the corporate tax regime, from single free zone entities to multi-company groups."
+      "whoFor": "Any UAE-registered business now inside the corporate tax regime, from single free zone entities to multi-company groups.",
+      "search": {
+        "title": "UAE Corporate Tax Registration & Filing",
+        "description": "UAE corporate tax support for registration, return preparation, accounting records and filing coordination. Discuss your company’s compliance needs.",
+        "overview": "UAE corporate tax compliance connects registration, accounting records and return preparation. Alliance Street helps businesses organise the information needed to assess their position and manage the filing process, with sourced guidance on the rules that apply.",
+        "preparation": "Your trade licence, financial year, ownership structure, accounting records and any existing tax registration or authority correspondence.",
+        "faqs": [
+          {
+            "question": "Does corporate tax support include reviewing the accounts?",
+            "answer": "The engagement can include reviewing the records needed for the tax computation and identifying missing information before filing. We agree the accounting, registration and return-preparation scope at the start."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -118,7 +202,19 @@
         "Post-registration compliance setup",
         "Guidance on invoicing and record-keeping requirements"
       ],
-      "whoFor": "Businesses approaching or past the AED 375,000 mandatory threshold, or founders who want to register voluntarily to reclaim input VAT early."
+      "whoFor": "Businesses approaching or past the AED 375,000 mandatory threshold, or founders who want to register voluntarily to reclaim input VAT early.",
+      "search": {
+        "title": "VAT Registration Services in UAE",
+        "description": "UAE VAT registration assistance with eligibility review, turnover records, application preparation and follow-up through the registration process.",
+        "overview": "UAE VAT registration starts with reviewing the business and its transaction records. We help organise the evidence for an application and identify the practical steps needed to move from registration into routine invoicing, record keeping and return preparation.",
+        "preparation": "Your trade licence, sales and purchase records, turnover information and any existing FTA correspondence.",
+        "faqs": [
+          {
+            "question": "Should I organise my records before applying for VAT?",
+            "answer": "Yes. Consistent turnover and transaction information helps the registration review and reduces avoidable follow-up. We identify the supporting records needed for your circumstances before preparing an application."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -133,7 +229,19 @@
         "Refund claim preparation where applicable",
         "Deadline tracking so nothing is filed late"
       ],
-      "whoFor": "VAT-registered businesses who want filings handled by someone who reviews the numbers, not just submits them."
+      "whoFor": "VAT-registered businesses who want filings handled by someone who reviews the numbers, not just submits them.",
+      "search": {
+        "title": "VAT Return Filing Services in UAE",
+        "description": "Prepare UAE VAT returns with sales and purchase reconciliation, transaction review and filing support aligned with your assigned tax periods.",
+        "overview": "UAE VAT return filing depends on records that reconcile to the business’s actual transactions. We help review sales and purchases, identify missing documents and coordinate return preparation around your assigned periods, so unresolved items are addressed before submission.",
+        "preparation": "Your VAT registration details, filing period, sales and purchase ledgers, invoices, credit notes and prior returns.",
+        "faqs": [
+          {
+            "question": "What is the difference between VAT registration and return filing?",
+            "answer": "Registration establishes the business’s VAT account where required. Return filing is the ongoing work of reviewing period transactions and preparing the information to be submitted. Businesses may need either service or both."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -148,7 +256,19 @@
         "Correction of gaps before they become audit findings",
         "Post-audit compliance follow-up"
       ],
-      "whoFor": "Free zone and mainland companies facing their annual statutory audit requirement, especially first-time filers."
+      "whoFor": "Free zone and mainland companies facing their annual statutory audit requirement, especially first-time filers.",
+      "search": {
+        "title": "Audit Preparation & Support in UAE",
+        "description": "Prepare for a UAE business audit with reconciled records, supporting schedules, document coordination and responses to auditor information requests.",
+        "overview": "Audit support prepares your UAE business for an independent auditor’s review. We help organise records, reconciliations and supporting schedules, then coordinate responses to information requests. Preparation support and the independent audit opinion are separate responsibilities.",
+        "preparation": "The auditor’s information request, financial statements, trial balance, reconciliations and supporting transaction records.",
+        "faqs": [
+          {
+            "question": "Is audit support the same as issuing an audit opinion?",
+            "answer": "No. This service prepares records and coordinates the audit process. The appointed independent auditor performs the audit and is responsible for any audit opinion."
+          }
+        ]
+      }
     },
     {
       "category": "uae",
@@ -163,7 +283,49 @@
         "Management reports you can actually read",
         "A books-ready-for-audit standard, maintained continuously"
       ],
-      "whoFor": "Founders who'd rather run their business than manage a spreadsheet, and want books that are always ready for tax filing or investor due diligence."
+      "whoFor": "Founders who'd rather run their business than manage a spreadsheet, and want books that are always ready for tax filing or investor due diligence.",
+      "search": {
+        "title": "Bookkeeping Services in Dubai & UAE",
+        "description": "UAE bookkeeping support for organised transactions, bank reconciliations and reliable monthly records that support accounting and tax preparation.",
+        "overview": "Bookkeeping services in Dubai and the UAE help turn day-to-day transactions into usable financial records. Alliance Street supports consistent recording and reconciliation so business owners can understand the numbers and prepare information for tax, reporting or audit work.",
+        "preparation": "Accounting-system access, bank statements, sales and purchase documents, payroll summaries and the periods to be reviewed.",
+        "faqs": [
+          {
+            "question": "Can you help bring overdue bookkeeping up to date?",
+            "answer": "We can assess a backlog and agree a catch-up scope before ongoing support begins. The first step is understanding the periods involved, available records and any gaps that need your input."
+          }
+        ]
+      }
+    },
+    {
+      "category": "uae",
+      "group": "UAE Tax & Compliance",
+      "slug": "e-invoicing",
+      "title": "E-Invoicing",
+      "tagline": "Get your business ready for UAE e-invoicing, from your first readiness check to go-live.",
+      "includes": [
+        "Readiness assessment: review your sales, purchasing and invoicing workflows, identify gaps, and agree a practical implementation plan",
+        "Scope and deadline review: assess your business transactions and applicable exclusions against the UAE rollout requirements",
+        "Accredited Service Provider selection support: compare suitable providers, onboarding requirements and integration options",
+        "Accounting and ERP integration coordination: work with your software team and selected provider to connect invoice exchange and reporting",
+        "Invoice data preparation: review customer and supplier records, tax identifiers, invoice fields and credit-note information for PINT-AE requirements",
+        "End-to-end testing support: check invoice and credit-note exchange, validation responses and exception handling before launch",
+        "Finance-team training: document responsibilities, approval steps, correction procedures and day-to-day monitoring",
+        "Go-live and follow-up support: coordinate the transition, resolve implementation issues with your provider, and establish ongoing reconciliation checks"
+      ],
+      "whoFor": "UAE businesses preparing for the phased e-invoicing rollout, including companies trading with other businesses or government entities. Particularly useful if you issue invoices from spreadsheets, use multiple accounting systems, or need help coordinating finance, IT and your Accredited Service Provider. Our role is advisory and implementation coordination; the accredited provider handles the regulated invoice exchange and reporting service.",
+      "search": {
+        "title": "UAE E-Invoicing Readiness & Implementation",
+        "description": "Prepare for UAE e-invoicing with readiness reviews, accredited provider selection, ERP integration coordination, invoice testing and team training.",
+        "overview": "UAE e-invoicing readiness connects finance processes, invoice data and the systems used to exchange invoices. Alliance Street helps map the work from initial assessment to launch, coordinating with your team and selected Accredited Service Provider so responsibilities and next steps are clear.",
+        "preparation": "Your invoicing and ERP systems, transaction types, approximate invoice volumes, entity structure and any provider shortlist.",
+        "faqs": [
+          {
+            "question": "Do you act as the Accredited Service Provider?",
+            "answer": "Our service is advisory and implementation coordination. We help assess readiness and coordinate selection, data preparation and testing; the selected accredited provider handles regulated exchange and reporting."
+          }
+        ]
+      }
     },
     {
       "category": "uk",
@@ -178,7 +340,19 @@
         "SIC code and Companies House compliance setup",
         "Handover to ongoing UK accounting from day one"
       ],
-      "whoFor": "Founders — often based outside the UK — who need a UK Ltd to serve UK clients, hold UK assets, or trade with Companies House-registered counterparties."
+      "whoFor": "Founders — often based outside the UK — who need a UK Ltd to serve UK clients, hold UK assets, or trade with Companies House-registered counterparties.",
+      "search": {
+        "title": "UK Company Formation Services",
+        "description": "UK company formation support covering incorporation information, ownership structure and coordination of the next accounting and compliance steps.",
+        "overview": "UK company formation should connect the incorporation application with how the business will operate afterwards. We help founders organise company details and coordinate formation, then identify the accounting and compliance work that needs a separate or ongoing scope.",
+        "preparation": "Proposed company name, business activity, ownership and director information, and registered-office arrangements.",
+        "faqs": [
+          {
+            "question": "Does UK incorporation include ongoing accounting?",
+            "answer": "Formation and ongoing accounting are different pieces of work. We can coordinate them within one relationship, with the responsibilities and costs of each agreed before the engagement."
+          }
+        ]
+      }
     },
     {
       "category": "uk",
@@ -193,7 +367,19 @@
         "Management accounts on request",
         "Coordination with your UAE entity's accounting, if you have one"
       ],
-      "whoFor": "UK Ltd companies who want statutory compliance handled by someone who also understands the UAE side of a founder's business."
+      "whoFor": "UK Ltd companies who want statutory compliance handled by someone who also understands the UAE side of a founder's business.",
+      "search": {
+        "title": "UK Accounting Services for Businesses",
+        "description": "UK accounting support for bookkeeping coordination, reconciliations, management information and annual accounts preparation for your business.",
+        "overview": "UK accounting services help owners keep financial records useful throughout the year, rather than only at a filing deadline. We coordinate the agreed bookkeeping, reconciliation and accounts work around the company’s reporting needs and the quality of its existing records.",
+        "preparation": "Your accounting software, trial balance, bank reconciliations, prior accounts and reporting timetable.",
+        "faqs": [
+          {
+            "question": "Can you work with my existing bookkeeping records?",
+            "answer": "Yes. We first assess the records, software and reconciliations already available. This identifies any catch-up work and helps define the ongoing accounting responsibilities."
+          }
+        ]
+      }
     },
     {
       "category": "uk",
@@ -208,7 +394,19 @@
         "Payment on account calculations",
         "Deadline reminders so January 31st isn't a surprise"
       ],
-      "whoFor": "UK company directors, sole traders, and UK tax residents with income that needs declaring outside PAYE."
+      "whoFor": "UK company directors, sole traders, and UK tax residents with income that needs declaring outside PAYE.",
+      "search": {
+        "title": "UK Self Assessment Tax Return Support",
+        "description": "UK Self Assessment support for organising income records, reviewing relevant expenses and preparing your personal tax return information.",
+        "overview": "UK Self Assessment support helps individuals organise the information behind a personal tax return. We review the income sources and records within your agreed scope and identify missing information early, including where business ownership or overseas income adds complexity.",
+        "preparation": "Income statements, business records where relevant, supporting expense documents, prior returns and HMRC notices.",
+        "faqs": [
+          {
+            "question": "What should I prepare for a Self Assessment review?",
+            "answer": "Gather records for each relevant income source and the expenses you want reviewed, together with prior returns and HMRC correspondence. We confirm which additional details are needed for your circumstances."
+          }
+        ]
+      }
     },
     {
       "category": "uk",
@@ -223,7 +421,19 @@
         "HMRC correspondence handling",
         "Payment deadline and instalment planning"
       ],
-      "whoFor": "UK limited companies who want their corporation tax filed accurately and want to know what reliefs they're entitled to, not just what they owe."
+      "whoFor": "UK limited companies who want their corporation tax filed accurately and want to know what reliefs they're entitled to, not just what they owe.",
+      "search": {
+        "title": "UK Corporation Tax Services",
+        "description": "UK Corporation Tax support for reviewing company records, preparing tax computations and coordinating returns with the annual accounts process.",
+        "overview": "UK Corporation Tax preparation needs to be coordinated with the company’s accounts and supporting records. We help organise the computation and return work within an agreed scope, with clear follow-up on adjustments and information that needs clarification.",
+        "preparation": "Annual accounts or a trial balance, supporting schedules, prior tax returns and details of transactions needing review.",
+        "faqs": [
+          {
+            "question": "Should Corporation Tax and annual accounts be prepared together?",
+            "answer": "Coordinating the work helps keep the underlying records consistent and highlights differences between accounting figures and the tax computation. We agree responsibilities for both before preparing the return."
+          }
+        ]
+      }
     },
     {
       "category": "uk",
@@ -238,7 +448,19 @@
         "Import/export VAT handling for cross-border trade",
         "Deadline tracking and HMRC correspondence"
       ],
-      "whoFor": "UK-incorporated businesses trading above the VAT threshold, or founders who want to register voluntarily ahead of it."
+      "whoFor": "UK-incorporated businesses trading above the VAT threshold, or founders who want to register voluntarily ahead of it.",
+      "search": {
+        "title": "UK VAT Registration & Return Services",
+        "description": "UK VAT support for registration review, record preparation, return coordination and practical help with your business’s ongoing VAT processes.",
+        "overview": "UK VAT services cover the registration and recurring record work that businesses need to manage. Alliance Street helps review the agreed transaction scope and prepare information for returns, with attention to consistency between accounting records and VAT reporting.",
+        "preparation": "Sales and purchase ledgers, VAT registration details, prior returns and a summary of countries and transaction types involved.",
+        "faqs": [
+          {
+            "question": "Can you support a business with cross-border transactions?",
+            "answer": "We can review the nature of the transactions and agree the records and specialist input needed for your circumstances. Cross-border activity should be assessed directly rather than treated as a standard domestic return."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -253,7 +475,19 @@
         "Growth planning tied to real financial constraints",
         "Direct access to an advisor, not a generic playbook"
       ],
-      "whoFor": "Founders past the initial setup stage who need a sounding board for the next decision — expansion, restructuring, or a new market."
+      "whoFor": "Founders past the initial setup stage who need a sounding board for the next decision — expansion, restructuring, or a new market.",
+      "search": {
+        "title": "Business Consulting for UAE & UK Companies",
+        "description": "Business consulting for UAE and UK founders, covering commercial planning, operating models, priorities and practical implementation support.",
+        "overview": "Business consulting helps founders turn a commercial problem into a plan with clear decisions and responsibilities. We work with UAE and UK businesses on the structure, operations and financial questions within the engagement, using your business information to establish priorities.",
+        "preparation": "Your business model, current challenge, available financial information and the decisions or milestones you want to address.",
+        "faqs": [
+          {
+            "question": "What does the first consulting discussion cover?",
+            "answer": "We start with the decision you need to make, the constraints you face and the information already available. This sets the scope and the practical outputs that would make the engagement useful."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -268,7 +502,19 @@
         "Investor and lender reporting support",
         "Finance function setup as you hire your first internal team"
       ],
-      "whoFor": "Scaling businesses that need senior finance leadership but aren't ready for a full-time CFO hire."
+      "whoFor": "Scaling businesses that need senior finance leadership but aren't ready for a full-time CFO hire.",
+      "search": {
+        "title": "CFO Advisory Services for UAE & UK Businesses",
+        "description": "CFO advisory for UAE and UK businesses needing cash-flow planning, management reporting, budgeting and financial decision support.",
+        "overview": "CFO advisory services bring financial planning and interpretation into business decisions. We help UAE and UK founders use cash-flow forecasts, management reporting and budgets to understand options and priorities, with an agreed scope that complements day-to-day bookkeeping.",
+        "preparation": "Recent accounts, management reports, cash balances, forecasts, financing commitments and the decisions you need support with.",
+        "faqs": [
+          {
+            "question": "How is CFO support different from bookkeeping?",
+            "answer": "Bookkeeping records and reconciles transactions. CFO support uses those records to plan ahead, assess cash requirements and support management decisions. Reliable records make that planning more useful."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -283,7 +529,19 @@
         "Transaction and exit structuring",
         "Coordination with legal counsel where structuring requires it"
       ],
-      "whoFor": "Business owners and groups planning a significant change — a new entity, an exit, or cross-border expansion — who want the tax implications mapped before, not after."
+      "whoFor": "Business owners and groups planning a significant change — a new entity, an exit, or cross-border expansion — who want the tax implications mapped before, not after.",
+      "search": {
+        "title": "Tax Planning Advisory for UAE & UK Businesses",
+        "description": "Tax planning support for UAE and UK business owners reviewing their structure, cross-border activities and future commercial decisions.",
+        "overview": "Tax planning reviews how a proposed business decision interacts with the relevant tax rules. We help UAE and UK business owners assess their structure and activities before implementing changes, coordinating additional jurisdiction-specific advice where the engagement requires it.",
+        "preparation": "Your ownership structure, relevant jurisdictions, recent accounts and a description of the proposed business change.",
+        "faqs": [
+          {
+            "question": "When is it useful to seek tax planning advice?",
+            "answer": "Before a change in ownership, business structure, transaction pattern or country of operation. Reviewing the intended commercial outcome early makes it easier to identify what needs further analysis."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -298,7 +556,19 @@
         "Payslip issuance and record-keeping",
         "End-of-service and leaver calculations"
       ],
-      "whoFor": "Employers running payroll in the UAE, the UK, or both, who want it accurate and compliant without running it themselves."
+      "whoFor": "Employers running payroll in the UAE, the UK, or both, who want it accurate and compliant without running it themselves.",
+      "search": {
+        "title": "Payroll Support for UAE & UK Businesses",
+        "description": "Payroll support for UAE and UK employers, with employee-data preparation, recurring calculations and coordination of agreed reporting tasks.",
+        "overview": "Payroll support helps employers organise the employee information and recurring processes behind pay. We agree the UAE or UK scope, payroll calendar and responsibilities with your team so changes are captured and reviewed before each pay run.",
+        "preparation": "Employee details, pay arrangements, payroll frequency, recent payroll reports and the jurisdictions in which staff are employed.",
+        "faqs": [
+          {
+            "question": "Can payroll support be coordinated with accounting?",
+            "answer": "Yes. Payroll summaries can be coordinated with the business’s accounting records. We agree who supplies employee changes, approves calculations and handles the relevant reporting for each jurisdiction."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -313,7 +583,19 @@
         "Licence cancellation where a business is winding down",
         "Compliance calendar so nothing lapses"
       ],
-      "whoFor": "Existing UAE company owners who want licence admin handled proactively rather than discovered as a deadline that's already passed."
+      "whoFor": "Existing UAE company owners who want licence admin handled proactively rather than discovered as a deadline that's already passed.",
+      "search": {
+        "title": "Business Licensing Advisory in UAE & UK",
+        "description": "Business licensing advisory for UAE and UK operations, with activity review, application preparation and coordination of relevant approvals.",
+        "overview": "Business licensing advisory starts with the activities a company intends to carry out. We help map the relevant authorities and application steps for the agreed UAE or UK scope, then coordinate documents and follow-up rather than assuming one licence covers every activity.",
+        "preparation": "Your proposed activities, operating location, company structure and any existing licences or authority correspondence.",
+        "faqs": [
+          {
+            "question": "Can you help identify which approvals an activity needs?",
+            "answer": "We begin with a detailed description of the activity, location and operating model. That allows the relevant authority requirements and any specialist approvals to be checked before the application is planned."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -328,7 +610,19 @@
         "Lender liaison, from first approach through to offer",
         "Refinancing reviews on facilities you already hold"
       ],
-      "whoFor": "Business owners funding expansion, equipment or a cash-flow gap, and residents financing or refinancing UAE property — anyone who would rather compare lenders through one point of contact than approach them one at a time."
+      "whoFor": "Business owners funding expansion, equipment or a cash-flow gap, and residents financing or refinancing UAE property — anyone who would rather compare lenders through one point of contact than approach them one at a time.",
+      "search": {
+        "title": "Working Capital & Mortgage Finance Advisory UAE",
+        "description": "UAE finance advisory for working capital and mortgage applications, including funding needs, document preparation and lender coordination.",
+        "overview": "Working capital and mortgage finance advisory helps business owners and property applicants organise a funding request. We review the purpose, available records and repayment position, then help prepare information for appropriate lenders. Financing remains subject to the lender’s assessment.",
+        "preparation": "Funding purpose, financial statements, bank records, existing borrowing and property details for a mortgage enquiry.",
+        "faqs": [
+          {
+            "question": "Does finance advisory guarantee a loan offer?",
+            "answer": "No. Lenders decide eligibility, terms and approval. Our role is to help clarify the funding requirement, organise the application and coordinate follow-up on the lender’s questions."
+          }
+        ]
+      }
     },
     {
       "category": "advisory",
@@ -343,7 +637,19 @@
         "Independent valuation review and payment-plan comparison",
         "Coordination with formation, tenancy registration and mortgage where they overlap"
       ],
-      "whoFor": "Founders and investors renting, buying or investing in UAE property — including companies that need premises their licence will actually accept, and buyers who would rather take advice from an adviser than from an agent working on commission."
+      "whoFor": "Founders and investors renting, buying or investing in UAE property — including companies that need premises their licence will actually accept, and buyers who would rather take advice from an adviser than from an agent working on commission.",
+      "search": {
+        "title": "Real Estate & Investment Advisory in UAE",
+        "description": "UAE real estate and investment advisory for ownership structures, financial considerations and coordination of due-diligence information.",
+        "overview": "Real estate and investment advisory helps clients organise the commercial, ownership and financial questions around a proposed UAE transaction. We clarify the intended use, information gaps and advisers needed for the scope so decisions are based on a considered review.",
+        "preparation": "Property or asset details, investment objectives, proposed ownership, funding plans and available due-diligence records.",
+        "faqs": [
+          {
+            "question": "What information helps assess a property investment enquiry?",
+            "answer": "Start with the asset, intended holding period, ownership plan and financing needs. We use these to define the commercial review and identify legal, tax or other specialist input that may be required."
+          }
+        ]
+      }
     }
   ]
 }

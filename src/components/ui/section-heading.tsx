@@ -1,9 +1,9 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
-import { settle } from "@/lib/motion";
+import { MOTION_QUERY, settle } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 
 type SectionHeadingProps = {
   eyebrow?: string;
@@ -25,9 +25,8 @@ export function SectionHeading({
 
   useEffect(() => {
     if (!rootRef.current) return;
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_QUERY, () => {
       // Finish the entrance even when scrolling stops; text must never stay half-hidden.
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -37,33 +36,38 @@ export function SectionHeading({
         },
       });
 
-      tl.fromTo(
-        ".js-heading-eyebrow",
+      const eyebrow = rootRef.current?.querySelector(".js-heading-eyebrow");
+      const words = rootRef.current?.querySelectorAll(".js-heading-word");
+      const description = rootRef.current?.querySelector(".js-heading-description");
+
+      if (eyebrow) tl.fromTo(
+        eyebrow,
         { opacity: 0, x: -12 },
         { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" },
         0
-      )
-        .fromTo(
-          ".js-heading-word",
-          { opacity: 0.35, yPercent: 35 },
+      );
+      if (words?.length) tl.fromTo(
+          words,
+          { opacity: 0.7, yPercent: 20 },
           {
             opacity: 1,
             yPercent: 0,
-            duration: 0.6,
-            stagger: { amount: 0.18 },
+            duration: 0.7,
+            clearProps: "opacity,transform",
+            stagger: { amount: 0.12 },
             ease: settle,
           },
           0.1
-        )
-        .fromTo(
-          ".js-heading-description",
+        );
+      if (description) tl.fromTo(
+          description,
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
           0.18
         );
     }, rootRef);
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   const eyebrowWords = eyebrow ? eyebrow.split(" ") : [];

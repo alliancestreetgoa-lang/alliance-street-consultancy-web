@@ -114,6 +114,11 @@
       "service": "advisory/real-estate-and-investment-advisory",
       "src": "/brand/service-advisory-real-estate-and-investment-advisory.jpg",
       "alt": "Contemporary waterfront property development in the UAE"
+    },
+    {
+      "service": "uae/e-invoicing",
+      "src": "/brand/service-uae-e-invoicing.jpg",
+      "alt": "Laptop and tablet displaying digital invoice workflows on a desk overlooking Dubai"
     }
   ]
 }

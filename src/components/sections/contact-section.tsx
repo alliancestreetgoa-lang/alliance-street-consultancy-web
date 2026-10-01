@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -60,6 +62,11 @@ export function ContactSection() {
                 WhatsApp: {COMPANY.whatsapp}
               </a>
             )}
+          </div>
+          <div className="border-t border-border pt-8">
+            <h2 className="text-2xl font-semibold tracking-tight">Prefer a conversation?</h2>
+            <p className="mt-3 max-w-sm text-muted-foreground">Share your details, then choose a time for a Zoom appointment with Stallone Shaikh.</p>
+            <Button asChild className="mt-5" size="lg"><Link href="/book-appointment"><CalendarDays aria-hidden /> Book Appointment</Link></Button>
           </div>
         </Reveal>
 

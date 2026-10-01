@@ -22,7 +22,7 @@ export function FramedImage({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-2xl border border-glass-border shadow-card transition-shadow duration-300 hover:shadow-card-hover",
+        "as-neon-card relative w-full overflow-hidden rounded-2xl border border-glass-border shadow-card transition-shadow duration-300 hover:shadow-card-hover",
         aspectClassName,
         className
       )}

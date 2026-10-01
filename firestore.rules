@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(leadId) {
+      return request.auth != null && request.auth.uid == leadId;
+    }
+    function validLead(d, leadId) {
+      return d.keys().hasAll(['name', 'country', 'email', 'phone', 'address', 'services', 'notes', 'ownerUid', 'createdAt', 'updatedAt', 'source', 'enquiryRequested', 'bookingRequested', 'consentVersion'])
+        && d.keys().hasOnly(['name', 'country', 'email', 'phone', 'address', 'services', 'notes', 'ownerUid', 'createdAt', 'updatedAt', 'source', 'enquiryRequested', 'bookingRequested', 'consentVersion'])
+        && d.ownerUid == leadId
+        && d.name is string && d.name.size() >= 2 && d.name.size() <= 100
+        && d.country is string && d.country.size() >= 2 && d.country.size() <= 100
+        && d.email is string && d.email.size() <= 254 && d.email.matches('^[^@\\s]+@[^@\\s]+[.][^@\\s]+$')
+        && d.phone is string && d.phone.size() >= 7 && d.phone.size() <= 30 && d.phone.matches('^[+0-9 ().-]+$')
+        && d.address is string && d.address.size() >= 5 && d.address.size() <= 500
+        && d.notes is string && d.notes.size() <= 1500
+        && d.services is list && d.services.size() >= 1 && d.services.size() <= 4
+        && d.services.hasOnly(['UAE Setup', 'UAE Tax & Compliance', 'UK Services', 'Advisory'])
+        && d.source in ['/book-consultation', '/book-appointment']
+        && d.createdAt is timestamp && d.updatedAt == request.time
+        && d.enquiryRequested is bool && d.bookingRequested is bool
+        && d.consentVersion == '2026-10-01';
+    }
+    match /leads/{leadId} {
+      // One lead per anonymous browser session. Staff review via IAM-protected console.
+      allow get: if owner(leadId);
+      allow list, delete: if false;
+      allow create: if owner(leadId) && validLead(request.resource.data, leadId)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.enquiryRequested == false
+        && request.resource.data.bookingRequested == false;
+      allow update: if owner(leadId) && validLead(request.resource.data, leadId)
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && (!resource.data.enquiryRequested || request.resource.data.enquiryRequested)
+        && (!resource.data.bookingRequested || request.resource.data.bookingRequested);
+    }
+  }
+}

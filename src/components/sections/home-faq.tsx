@@ -1,3 +1,4 @@
+import { buildFaqJsonLd, jsonLdScriptProps } from "@/lib/schema";
 import { ChevronDownIcon } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -11,6 +12,7 @@ const FAQS = faqsContent.items;
 export function HomeFAQ() {
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
+      <script {...jsonLdScriptProps(buildFaqJsonLd(FAQS))} />
       <AmbientGlow className="opacity-30" />
       <Container className="relative z-10 mx-auto flex max-w-3xl flex-col gap-16">
         <SectionHeading

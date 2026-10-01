@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { COMPANY } from "@/lib/site-config";
 import { asset } from "@/lib/asset-path";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
+import { MOTION, MOTION_QUERY, settle } from "@/lib/motion";
 
 /**
  * Site footer, matching alliancestreet.ae.
@@ -62,30 +63,29 @@ export function SiteFooter() {
 
   useEffect(() => {
     if (!footerRef.current) return;
-    // Reduced motion: the heading and columns stay at their natural opacity.
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_QUERY, () => {
       gsap.fromTo(
         [headingRef.current, columnsRef.current],
-        { y: 40, opacity: 0 },
+        { y: 18, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.9,
-          stagger: 0.15,
-          ease: "power3.out",
+          duration: MOTION.reveal,
+          stagger: 0.08,
+          ease: settle,
+          clearProps: "opacity,transform",
           scrollTrigger: {
             trigger: footerRef.current,
             start: "top 85%",
-            toggleActions: "play none none reverse",
+            once: true,
           },
         }
       );
     }, footerRef);
 
     // Refresh-on-navigation/load is handled centrally by SmoothScrollProvider.
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (

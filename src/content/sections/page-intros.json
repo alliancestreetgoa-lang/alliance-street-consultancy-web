@@ -4,8 +4,8 @@
       "route": "/services",
       "hero": {
         "badge": "Services",
-        "title": "Everything under one advisory relationship.",
-        "subhead": "UAE setup, UAE tax and compliance, UK services, and advisory — twenty services, one point of contact."
+        "title": "Business setup, tax and accounting for the UAE and UK.",
+        "subhead": "Company formation, e-invoicing, accounting and advisory support, organised around your business."
       },
       "banner": {
         "eyebrowLead": "Our services",
@@ -13,7 +13,7 @@
         "imageSide": "left",
         "imageSrc": "/brand/service-advisory-business-consulting.jpg",
         "imageAlt": "Business strategy models and planning cards on a meeting table",
-        "statement": "Twenty services, four categories, one advisor across all of them.",
+        "statement": "Four service categories, one coordinated advisory relationship.",
         "body": "Browse by what you need — setup, tax, UK compliance, or advisory — or book a call and we'll tell you which ones actually apply to your situation."
       }
     },

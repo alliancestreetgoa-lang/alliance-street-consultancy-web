@@ -10,6 +10,7 @@
 // because it's machine-readable and gets believed.
 import { COMPANY } from "@/lib/site-config";
 import type { Service } from "@/lib/services-data";
+import heroImages from "@/content/service-hero-images.json";
 import { SITE_URL } from "@/lib/site-url";
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
@@ -112,7 +113,9 @@ export function buildServiceJsonLd(service: Service) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: service.title,
-    description: service.tagline,
+    "@id": absoluteUrl(`/services/${service.category}/${service.slug}#service`),
+    description: service.search?.description ?? service.tagline,
+    image: absoluteUrl(heroImages.images.find((image) => image.service === `${service.category}/${service.slug}`)?.src ?? "/brand/logo-mark.png"),
     serviceType: service.title,
     provider: { "@id": ORGANIZATION_ID },
     areaServed: SERVICE_AREA[service.category],
@@ -120,5 +123,18 @@ export function buildServiceJsonLd(service: Service) {
     audience: { "@type": "Audience", audienceType: service.whoFor },
     // No `offers`/`price`: /pricing publishes no figures by design. Inventing
     // one to win a rich result would be a spam-policy problem, not a shortcut.
+  };
+}
+
+/** Must mirror questions and answers displayed on the page. Rich results are not guaranteed. */
+export function buildFaqJsonLd(faqs: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
   };
 }

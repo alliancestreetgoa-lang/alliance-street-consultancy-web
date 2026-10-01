@@ -87,6 +87,26 @@
         }
       ],
       "verifiedOn": "2026-08-11"
+    },
+    {
+      "slug": "e-invoicing",
+      "question": "What is UAE e-invoicing, and when should my business prepare?",
+      "answer": "UAE e-invoicing uses structured invoice data exchanged electronically between suppliers and buyers and reported to the Federal Tax Authority through Accredited Service Providers. Sending a PDF or scanned invoice by email does not meet that definition. The framework covers business-to-business and business-to-government transactions, subject to specific exclusions. The pilot began on 1 July 2026, with mandatory implementation phased from 1 January 2027; later business and government phases follow in July and October 2027. The Ministry has extended the first-phase deadline for appointing an Accredited Service Provider to 30 October 2026 while retaining the January 2027 implementation date. We review which phase applies to your business, assess your systems and data, and coordinate a practical transition with your selected provider.",
+      "sources": [
+        {
+          "label": "UAE Ministry of Finance — eInvoicing portal",
+          "url": "https://mof.gov.ae/en/about-us/initiatives/einvoicing/"
+        },
+        {
+          "label": "UAE Ministry of Finance — updated provider appointment deadline",
+          "url": "https://mof.gov.ae/en/news/ministry-of-finance-announces-targeted-amendments-to-einvoicing-system-decisions/"
+        },
+        {
+          "label": "UAE Ministry of Finance — implementation guidelines",
+          "url": "https://mof.gov.ae/wp-content/uploads/2026/06/UAE-Electronic-Invoicing-Guidelines_V-1.1-01June2026.pdf"
+        }
+      ],
+      "verifiedOn": "2026-10-01"
     }
   ]
 }

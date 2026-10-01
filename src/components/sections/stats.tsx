@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { Container } from "@/components/ui/container";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
+import { MOTION_QUERY } from "@/lib/motion";
 import statsContent from "@/content/sections/stats.json";
 
 const STATS: { value: number; suffix?: string; label: string }[] = statsContent.items;
@@ -19,9 +20,10 @@ export function Stats() {
   const rootRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!rootRef.current || prefersReducedMotion()) return;
+    if (!rootRef.current) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_QUERY, () => {
       const items = gsap.utils.toArray<HTMLElement>(".js-stat");
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -52,9 +54,15 @@ export function Stats() {
           at
         );
       });
+      return () => {
+        items.forEach((item, index) => {
+          const number = item.querySelector<HTMLElement>(".js-stat-value");
+          if (number) number.textContent = String(STATS[index].value);
+        });
+      };
     }, rootRef);
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (

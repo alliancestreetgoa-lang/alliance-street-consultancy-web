@@ -64,10 +64,10 @@ export default function Home() {
         <FlowBand side="left">
           <WhyAllianceStreet />
         </FlowBand>
-        <FlowBand side="right" pinned>
+        <FlowBand side="right">
           <ServicePreview />
         </FlowBand>
-        <FlowBand side="left" pinned>
+        <FlowBand side="left">
           <Process />
         </FlowBand>
         <FlowBand side="right">

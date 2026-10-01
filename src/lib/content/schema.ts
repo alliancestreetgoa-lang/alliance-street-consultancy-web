@@ -64,6 +64,13 @@ export const serviceSchema = z.object({
   tagline: nonEmpty("tagline"),
   includes: z.array(nonEmpty("an included item")).min(1, "list at least one thing included"),
   whoFor: nonEmpty("whoFor"),
+  search: z.object({
+    title: nonEmpty("search title"),
+    description: nonEmpty("search description"),
+    overview: nonEmpty("service overview"),
+    preparation: nonEmpty("preparation checklist"),
+    faqs: z.array(z.object({ question: nonEmpty("question"), answer: nonEmpty("answer") })).min(1),
+  }).optional(),
 });
 
 export const servicesSchema = z

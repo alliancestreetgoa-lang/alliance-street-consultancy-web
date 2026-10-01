@@ -1,9 +1,9 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-export const cardClassName = "rounded-2xl border border-glass-border bg-secondary p-8 shadow-card transition-all duration-300";
-export const cardHoverClassName = "hover:-translate-y-1 hover:border-primary/25 hover:shadow-card-hover";
-export const cardGlassClassName = "rounded-2xl border border-border bg-card p-8 shadow-card";
+export const cardClassName = "as-neon-card rounded-2xl border border-glass-border bg-secondary p-8 shadow-card transition-[transform,border-color,box-shadow] duration-250 motion-reduce:transition-none";
+export const cardHoverClassName = "motion-safe:hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-card-hover";
+export const cardGlassClassName = "as-neon-card rounded-2xl border border-border bg-card p-8 shadow-card";
 
 type CardProps = HTMLAttributes<HTMLDivElement> & {
   hover?: boolean;

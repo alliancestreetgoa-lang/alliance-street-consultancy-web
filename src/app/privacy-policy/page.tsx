@@ -14,15 +14,15 @@ const SECTIONS = [
   },
   {
     heading: "Information We Collect",
-    body: "When you submit a form on this site (such as the contact or newsletter form), we collect the information you provide directly — typically your name, email address, and message. We do not currently collect information automatically through cookies or tracking scripts beyond standard hosting logs.",
+    body: "When you press Continue on our consultation or appointment form, we save your name, country, address, email, contact number, selected services and any notes you provide. We also record the submission time and whether you request an enquiry follow-up or choose appointment booking. These details are saved even if you do not finish the booking. A temporary authentication identifier is kept for the browser session to protect and update your submission.",
   },
   {
     heading: "How We Use Information",
-    body: "Information submitted through this site is used only to respond to your enquiry or, for newsletter sign-ups, to send occasional updates you can unsubscribe from at any time. We do not sell or rent your information to third parties.",
+    body: "We use the details you submit to respond to your service enquiry, follow up on your request and coordinate appointments. We do not sell or rent your information to third parties.",
   },
   {
     heading: "Data Sharing",
-    body: "We do not share your information with third parties except where required to deliver the service you've requested (for example, a regulator or bank as part of a formation engagement you've explicitly instructed us on) or where required by law.",
+    body: "We use Google Firebase to store consultation and appointment enquiries. The enquiry database is hosted in London, United Kingdom. Access is restricted through authentication and database rules. If you choose to book an appointment, you open Zoom’s scheduling service and provide booking information there under Zoom’s own privacy terms. Form details are not automatically transferred to Zoom.",
   },
   {
     heading: "Data Retention",
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       <PageHero {...pageHero("/privacy-policy")} />
-      <LegalContent lastUpdated="21 July 2026" sections={SECTIONS} />
+      <LegalContent lastUpdated="1 October 2026" sections={SECTIONS} />
     </>
   );
 }

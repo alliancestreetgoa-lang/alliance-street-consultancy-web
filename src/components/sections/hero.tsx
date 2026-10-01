@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { asset } from "@/lib/asset-path";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
+import { MOTION_QUERY, settle } from "@/lib/motion";
 import headlines from "@/content/sections/headlines.json";
 
 
@@ -54,31 +55,11 @@ export function Hero() {
 
   useEffect(() => {
     if (!sectionRef.current) return;
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // One timeline, one ScrollTrigger — two separately-triggered tweens on the
-      // same scroll range would each measure and update independently.
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.25,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // The card sinks slowly; the copy inside it leaves faster. The difference
-      // between the two rates is the parallax.
-      tl.to(cardRef.current, { yPercent: 4, scale: 0.99, ease: "none" }, 0).to(
-        copyRef.current,
-        { yPercent: -7, opacity: 0.8, ease: "none" },
-        0
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_QUERY, () => {
+      gsap.fromTo(cardRef.current, { y: 16 }, { y: 0, duration: 0.9, ease: settle, clearProps: "transform" });
+    });
+    return () => mm.revert();
   }, []);
 
   return (
@@ -87,8 +68,8 @@ export function Hero() {
       className="as-wall-hero relative isolate flex min-h-[100dvh] flex-col justify-center overflow-hidden pt-8 pb-16 sm:pt-16 sm:pb-24 lg:pt-28 lg:pb-28 lg:[@media(max-height:820px)]:pt-10 [@media(max-height:500px)]:pt-6 [@media(max-height:500px)]:pb-10"
     >
       <Container className="px-4 sm:px-6">
-        <div className="as-intro-hero">
-        <div ref={cardRef} className="relative mx-auto w-full max-w-5xl will-change-transform">
+        <div className="relative">
+        <div ref={cardRef} className="relative mx-auto w-full max-w-5xl">
           {/* Outside the card frame: it clips to its own radius, which would
               round the brackets' right angles away. */}
           <span className="as-bracket" data-corner="top-left" aria-hidden />
@@ -118,7 +99,7 @@ export function Hero() {
 
           <div
             ref={copyRef}
-            className="relative z-10 flex flex-col items-start gap-5 px-5 py-10 will-change-transform sm:gap-6 sm:px-12 sm:py-20 lg:[@media(max-height:820px)]:py-12 [@media(max-height:500px)]:py-8"
+            className="relative z-10 flex flex-col items-start gap-5 px-5 py-10 sm:gap-6 sm:px-12 sm:py-20 lg:[@media(max-height:820px)]:py-12 [@media(max-height:500px)]:py-8"
           >
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs text-foreground sm:gap-3 sm:px-4 sm:py-2 sm:text-sm">
               UAE &amp; UK company formation, tax &amp; advisory

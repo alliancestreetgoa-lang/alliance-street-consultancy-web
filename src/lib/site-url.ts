@@ -37,3 +37,7 @@ export const SITE_URL = `${SITE_ORIGIN}${BASE_PATH}`;
 
 /** True once a real production domain has been configured via env. */
 export const HAS_PRODUCTION_DOMAIN = Boolean(process.env.NEXT_PUBLIC_SITE_URL);
+
+/** Review hosts must not compete with the client's public domain in search. */
+export const IS_PREVIEW_SITE = new URL(SITE_ORIGIN).hostname.endsWith("github.io") ||
+  ["localhost", "127.0.0.1"].includes(new URL(SITE_ORIGIN).hostname);

@@ -55,13 +55,11 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
 
-  /* Neutral shadows. The live site tints nothing with red — red is an accent
-     colour there, never a light source. */
-  /* Every card on the site casts the brand red, not a neutral grey. */
-  --shadow-card: 0 2px 6px rgba(226, 46, 52, 0.12), 0 12px 32px -8px rgba(226, 46, 52, 0.32),
-    0 28px 64px -20px rgba(226, 46, 52, 0.38);
-  --shadow-card-hover: 0 3px 8px rgba(226, 46, 52, 0.16), 0 18px 44px -10px rgba(226, 46, 52, 0.42),
-    0 40px 84px -24px rgba(226, 46, 52, 0.48);
+  /* A fine red edge with a compact halo; keep the surrounding surface neutral. */
+  --shadow-card: 0 0 0 1px rgb(255 24 48 / 22%), 0 0 8px rgb(255 24 48 / 8%),
+    0 8px 22px -10px rgb(0 0 0 / 12%);
+  --shadow-card-hover: 0 0 0 1px rgb(255 24 48 / 55%), 0 0 14px rgb(255 24 48 / 18%),
+    0 10px 26px -10px rgb(0 0 0 / 14%);
 
   /* --------------------------------------------------------------------
      Type scale, lifted from the live site's published stylesheet:
@@ -307,15 +305,6 @@
   background: var(--primary);
 }
 
-@keyframes ambient-breathe {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-}
-
-.animate-ambient-breathe {
-  animation: ambient-breathe 8s ease-in-out infinite alternate;
-}
-
 /* -------------------------------------------------------------------------
    Section surfaces — the page alternates white → black → red.
 
@@ -361,8 +350,8 @@
   --ring: #e22e34;
   /* On black a red cast is the only shadow that reads, so it glows rather
      than darkens. */
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 40px -12px rgba(226, 46, 52, 0.4);
-  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 56px -16px rgba(226, 46, 52, 0.5);
+  --shadow-card: 0 0 0 1px rgb(255 24 48 / 28%), 0 0 10px rgb(255 24 48 / 12%);
+  --shadow-card-hover: 0 0 0 1px rgb(255 24 48 / 65%), 0 0 18px rgb(255 24 48 / 28%);
 }
 
 .surface-brand {
@@ -435,7 +424,7 @@
    reads as a single piece from the hero down into the footer instead of a
    stack of #ffffff / #fafafa bands with hard seams.
 
-   - The base starts at the hero's closing white and warms very slightly.
+   - The base stays neutral white so red accents never tint the reading area.
    - Each band carries one soft red glow, alternating left and right. Glows
      are not clipped per section (that is what drew the hard pink lines), only
      horizontally by the flow itself — `overflow-x: clip`, not `hidden`, which
@@ -447,7 +436,7 @@
   position: relative;
   isolation: isolate;
   overflow-x: clip;
-  background: linear-gradient(180deg, #ffffff 0%, #fdf6f6 12%, #fcf3f3 60%, #fbefef 100%);
+  background: #ffffff;
 }
 
 /* Sections' own clipped glows would re-draw the seams; the flow replaces them.
@@ -472,24 +461,26 @@
 .as-flow-glow {
   position: absolute;
   top: 50%;
-  width: min(1100px, 95vw);
-  height: min(900px, 110vh);
+  width: clamp(180px, 35vw, 560px);
+  height: min(560px, 70vh);
   transform: translateY(-50%);
   border-radius: 50%;
   background: radial-gradient(
     closest-side,
-    color-mix(in oklch, var(--primary) 22%, transparent) 0%,
-    color-mix(in oklch, var(--primary) 9%, transparent) 45%,
-    transparent 100%
+    rgb(255 24 48 / 72%) 0%,
+    rgb(255 24 48 / 42%) 10%,
+    rgb(255 24 48 / 12%) 32%,
+    rgb(255 24 48 / 3%) 52%,
+    transparent 76%
   );
 }
 
 .as-flow-glow[data-side="left"] {
-  left: max(-30vw, -420px);
+  left: clamp(-280px, -17.5vw, -90px);
 }
 
 .as-flow-glow[data-side="right"] {
-  right: max(-30vw, -420px);
+  right: clamp(-280px, -17.5vw, -90px);
 }
 
 .as-flow-glow-sticky {
@@ -514,113 +505,6 @@
   );
 }
 
-/* -------------------------------------------------------------------------
-   Site intro — first page load only (see components/layout/site-intro.tsx).
-   0.00–0.83s  mark + wordmark rise in on the dark-red wall
-   0.38–1.35s  red rule draws beneath them
-   1.28–2.03s  the wall lifts like a curtain; the home hero card rises into it
-   ------------------------------------------------------------------------- */
-.as-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  background: linear-gradient(180deg, #1a0407 0%, #5a0c11 55%, #8d1319 100%);
-  clip-path: inset(0 0 0 0);
-  animation: as-intro-lift 0.75s cubic-bezier(0.76, 0, 0.24, 1) 1.275s forwards;
-}
-.as-intro-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-  animation: as-intro-inner-out 0.6s cubic-bezier(0.76, 0, 0.24, 1) 1.275s forwards;
-}
-.as-intro-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-}
-.as-intro-mark {
-  opacity: 0;
-  transform: translateY(14px) scale(0.9);
-  animation: as-intro-rise 0.825s cubic-bezier(0.16, 1, 0.3, 1) 0.075s forwards;
-}
-.as-intro-word {
-  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
-  font-weight: 600;
-  color: #ffffff;
-  opacity: 0;
-  transform: translateY(14px);
-  animation: as-intro-rise 0.825s cubic-bezier(0.16, 1, 0.3, 1) 0.225s forwards;
-}
-.as-intro-rule {
-  display: block;
-  width: min(220px, 50vw);
-  height: 2px;
-  border-radius: 2px;
-  background: #e22e34;
-  transform: scaleX(0);
-  transform-origin: left center;
-  animation: as-intro-rule 0.975s cubic-bezier(0.65, 0, 0.35, 1) 0.375s forwards;
-}
-
-@keyframes as-intro-rise {
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes as-intro-rule {
-  to {
-    transform: scaleX(1);
-  }
-}
-@keyframes as-intro-inner-out {
-  to {
-    opacity: 0;
-    transform: translateY(-24px);
-  }
-}
-@keyframes as-intro-lift {
-  to {
-    clip-path: inset(0 0 100% 0);
-    visibility: hidden;
-  }
-}
-
-/* The home hero card rises into the space the curtain uncovers. On a wrapper,
-   not the card itself, so it never fights the card's scroll parallax.
-   `backwards` holds the start state during the delay and hands control back
-   to the page once it ends. */
-.as-intro-hero {
-  animation: as-intro-hero 1.35s cubic-bezier(0.16, 1, 0.3, 1) 1.425s backwards;
-}
-@keyframes as-intro-hero {
-  from {
-    opacity: 0;
-    transform: translateY(48px) scale(0.97);
-  }
-}
-
-/* Already seen in this tab, or the visitor asked for less motion: no intro. */
-html[data-intro="skip"] .as-intro {
-  display: none;
-}
-html[data-intro="skip"] .as-intro-hero {
-  animation: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .as-intro {
-    display: none;
-  }
-  .as-intro-hero {
-    animation: none;
-  }
-}
-
 /* Headline accent — the single word the live site renders in red gradient
    inside an otherwise white/black headline ("Are you next?"). */
 .text-accent-gradient {
@@ -630,25 +514,6 @@ html[data-intro="skip"] .as-intro-hero {
   background-clip: text;
 }
 
-/* Short screens and reduced motion get the complete, naturally flowing list. */
-@media (prefers-reduced-motion: reduce), (max-height: 739px) {
-  .as-service-track, .as-process-track { height: auto; }
-  .as-service-sticky, .as-process-sticky {
-    position: static;
-    height: auto;
-    padding-block: 6rem;
-  }
-  .as-service-clip { overflow: visible; padding-inline: 1.5rem; }
-  .as-service-rail {
-    width: auto;
-    max-width: 80rem;
-    margin-inline: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-    padding-right: 0;
-  }
-  .as-service-rail .js-service-card { width: auto; }
-}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -666,4 +531,100 @@ html[data-intro="skip"] .as-intro-hero {
   align-items: center;
   padding-block: clamp(3rem, 8vh, 7rem);
   padding-block: clamp(3rem, 8dvh, 7rem);
+}
+
+/* Small control responses share one timing curve; scrolling stays native. */
+:root { --motion-ease: cubic-bezier(0.22, 1, 0.36, 1); }
+html { scroll-padding-top: 6rem; }
+.as-service-link {
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.as-service-link:hover, .as-service-link:focus-visible { background-color: color-mix(in oklch, var(--foreground) 4%, transparent); }
+[data-slot="button"] {
+  transition: background-color 180ms ease, color 180ms ease, border-color 220ms ease, box-shadow 260ms ease, transform 220ms var(--motion-ease);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-slot="button"]:hover { transform: translateY(-2px); }
+  [data-slot="button"]:active { transform: translateY(0); }
+}
+
+/* Logo flight uses the real navbar geometry; this CSS also dismisses without JS. */
+.as-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  animation: as-intro-dismiss 1000ms ease-in-out 3600ms both;
+}
+.as-intro[data-active="true"] { animation: none; }
+.as-intro-backdrop {
+  position: absolute;
+  inset: 0;
+  background: #100507;
+}
+.as-intro-brand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  transform: translate(-50%, -50%) scale(1.6);
+  transform-origin: center;
+}
+@keyframes as-intro-dismiss {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .as-intro { display: none; }
+}
+
+.as-intro-rule {
+  position: absolute;
+  left: calc(50% - min(110px, 25vw));
+  top: calc(50% + 38px);
+  width: min(220px, 50vw);
+  height: 2px;
+  border-radius: 2px;
+  background: #e00025;
+  transform-origin: left center;
+}
+
+/* Red neon navigation feedback, shared by mouse and keyboard interaction. */
+.as-nav-chip,
+.as-menu-service {
+  transition: background-color 220ms ease, box-shadow 260ms ease, color 220ms ease;
+}
+.as-nav-chip:hover,
+.as-nav-chip:focus-visible,
+.as-nav-chip[data-state="open"] {
+  color: #fff;
+  background-color: #6b0718;
+  box-shadow: inset 0 0 0 1px #ff3657, 0 0 10px #ff163c80, 0 0 22px #ff163c40;
+}
+.as-menu-service:hover,
+.as-menu-service:focus-visible {
+  background-color: #470811;
+  box-shadow: inset 0 0 0 1px #ff3657, 0 0 12px #ff163c55;
+}
+.as-menu-service:hover > span:first-child,
+.as-menu-service:focus-visible > span:first-child { color: #fff; }
+.as-menu-service:hover > span + span,
+.as-menu-service:focus-visible > span + span { color: #ffd5dd; }
+
+/* Keep button fills legible; the neon treatment lives on the edge. */
+[data-slot="button"]:not([data-variant="link"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible) {
+  border-color: #ff3657;
+  box-shadow: 0 0 0 1px #ff365799, 0 0 12px #ff163c80, 0 0 26px #ff163c40;
+}
+
+/* Clearly red card borders, with a small halo instead of a broad coloured wash. */
+.as-neon-card,
+.as-card-frame {
+  border: 1px solid #ff2846;
+  box-shadow: 0 0 8px rgb(255 24 48 / 16%), 0 5px 18px -8px rgb(0 0 0 / 10%);
+}
+.as-neon-card:hover,
+.as-neon-card:focus-within {
+  border-color: #ff163c;
+  box-shadow: 0 0 12px rgb(255 24 48 / 28%), 0 6px 20px -8px rgb(0 0 0 / 12%);
 }

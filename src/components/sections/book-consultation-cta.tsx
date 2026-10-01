@@ -11,7 +11,7 @@ export function BookConsultationCTA() {
       <Container>
         <Reveal
           scale
-          className="relative flex flex-col items-center gap-8 overflow-hidden rounded-3xl border border-border bg-card px-8 py-16 text-center shadow-card"
+          className="as-neon-card relative flex flex-col items-center gap-8 overflow-hidden rounded-3xl border border-border bg-card px-8 py-16 text-center shadow-card"
         >
           <AmbientGlow className="opacity-40" />
           <SectionHeading

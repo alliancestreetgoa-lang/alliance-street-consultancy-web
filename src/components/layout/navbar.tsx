@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { m, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { NAV_GROUPS, PRIMARY_NAV, type NavLink } from "@/lib/site-config";
 import { Container } from "@/components/ui/container";
@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 
 // The live site's nav links are dark chips on the black bar, not bare text.
 const NAV_CHIP =
-  "rounded-full bg-white/10 px-4 text-sm font-medium text-foreground hover:bg-white/20 data-[state=open]:bg-white/20";
+  "as-nav-chip rounded-full bg-white/10 px-4 text-sm font-medium text-foreground";
 
 function ServiceLink({ link }: { link: NavLink }) {
   return (
@@ -32,7 +32,7 @@ function ServiceLink({ link }: { link: NavLink }) {
       <NavigationMenuLink asChild>
         <Link
           href={link.href}
-          className="block rounded-xl px-2.5 py-2 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none"
+          className="as-menu-service block rounded-xl px-2.5 py-2 focus:outline-none"
         >
           <span className="block text-sm font-medium leading-snug text-foreground">{link.label}</span>
           {/* Dropped on short screens so all four groups fit without scrolling. */}
@@ -51,6 +51,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollYProgress } = useScroll();
+  const reduceMotion = useReducedMotion();
   const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
 
   useEffect(() => {
@@ -90,10 +91,10 @@ export function Navbar() {
         scrolled ? "border-b border-border shadow-card" : ""
       )}
     >
-      <m.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: progress }} />
+      <m.div className="absolute inset-x-0 top-0 h-[2px] origin-left bg-primary" style={{ scaleX: reduceMotion ? scrollYProgress : progress }} />
       <Container>
         <nav className="flex h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" data-nav-brand className="flex items-center gap-2.5">
             <Image
               src={asset("/brand/logo-mark.png")}
               alt=""

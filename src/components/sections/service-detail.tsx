@@ -39,7 +39,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
             <Link href="/services" data-hero-item className="text-sm text-white/80 underline-offset-4 hover:text-white hover:underline">
               All services / {service.group}
             </Link>
-            <DisplayHeading text={service.title} className="max-w-3xl text-4xl sm:text-5xl lg:text-6xl" />
+            <DisplayHeading text={service.search?.title ?? service.title} className="max-w-3xl text-4xl sm:text-5xl lg:text-6xl" />
             <p data-hero-item className="max-w-xl text-lg text-white/85">
               {service.tagline}
             </p>
@@ -53,6 +53,12 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
       <section className="py-24 sm:py-32">
         <Container className="max-w-4xl">
           <Reveal className="flex flex-col gap-6">
+            {service.search && (
+              <div className="flex flex-col gap-4">
+                <h2 className="text-2xl font-semibold">How we help</h2>
+                <p className="leading-relaxed text-foreground/90">{service.search.overview}</p>
+              </div>
+            )}
             {/*
               The direct answer sits above "What's Included" deliberately: it is
               the thing the visitor searched for, and the thing an AI engine can
@@ -119,6 +125,23 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                 ))}
               </Stagger>
             </ScrubRail>
+            {service.search && (
+              <div className="flex flex-col gap-6">
+                <div>
+                  <h2 className="mb-3 text-2xl font-semibold">What to prepare for your consultation</h2>
+                  <p className="leading-relaxed text-foreground/90">{service.search.preparation}</p>
+                </div>
+                <div>
+                  <h2 className="mb-4 text-2xl font-semibold">Common questions</h2>
+                  {service.search.faqs.map((faq) => (
+                    <div key={faq.question} className="mb-5">
+                      <h3 className="mb-2 text-lg font-semibold">{faq.question}</h3>
+                      <p className="leading-relaxed text-foreground/90">{faq.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             <Card variant="glass" hover={false} className="mt-2 flex flex-col gap-3">
               <h3 className="text-lg font-semibold text-foreground">Who This Is For</h3>
               <p className="text-sm text-muted-foreground">{service.whoFor}</p>

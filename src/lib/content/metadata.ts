@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+import { absoluteUrl } from "@/lib/schema";
+import intros from "@/content/sections/page-intros.json";
+
 import pagesJson from "@/content/pages.json";
 import siteJson from "@/content/site.json";
 
@@ -32,7 +35,7 @@ export function pageMetadata(route: string): Metadata {
   if (!page) {
     // Canonical still has to be self-referencing — see the note in layout.tsx
     // about why no canonical is set at the layout level.
-    return { alternates: { canonical: route }, openGraph: { url: route } };
+    return { alternates: { canonical: route }, openGraph: { url: route, images: [{ url: absoluteUrl("/brand/about-hero.jpg"), alt: site.seo.siteName }] } };
   }
 
   const { title, description } = page;
@@ -40,11 +43,22 @@ export function pageMetadata(route: string): Metadata {
   // literal string, so the brand suffix is applied here rather than left off.
   const fullTitle = title ? site.seo.titleTemplate.replace("%s", title) : undefined;
 
+  const imagePaths: Record<string, string> = {
+    "/about": "/brand/about-hero.jpg", "/contact": "/brand/contact-hero.jpg",
+    "/case-studies": "/brand/case-studies-hero.jpg",
+  };
+  const intro = intros.intros.find((entry) => entry.route === route);
+  const image = imagePaths[route] ?? (intro && "banner" in intro ? intro.banner?.imageSrc : undefined) ?? "/brand/about-hero.jpg";
+  const images = [{ url: absoluteUrl(image), alt: fullTitle ?? site.seo.siteName }];
   return {
+    twitter: { card: "summary_large_image", title: fullTitle, description, images },
     ...(title ? { title } : {}),
     ...(description ? { description } : {}),
     alternates: { canonical: route },
     openGraph: {
+      images,
+      type: "website",
+      siteName: site.seo.siteName,
       url: route,
       ...(fullTitle ? { title: fullTitle } : {}),
       ...(description ? { description } : {}),

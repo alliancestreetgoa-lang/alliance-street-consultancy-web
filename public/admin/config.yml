@@ -41,7 +41,7 @@ collections:
         label: Service catalogue
         file: src/content/services.json
         description: >-
-          The 23 services. Each one becomes its own page and appears in the
+          The service catalogue. Each one becomes its own page and appears in the
           Services menu. Ask a developer before changing a web address.
         fields:
           - label: Services
@@ -77,6 +77,22 @@ collections:
                 widget: list
                 field: { label: Item, name: item, widget: string }
               - { label: Who this is for, name: whoFor, widget: text }
+              - label: Search content
+                name: search
+                widget: object
+                required: false
+                fields:
+                  - { label: Search title, name: title, widget: string }
+                  - { label: Search description, name: description, widget: text }
+                  - { label: Service overview, name: overview, widget: text }
+                  - { label: What to prepare, name: preparation, widget: text }
+                  - label: Customer questions
+                    name: faqs
+                    widget: list
+                    fields:
+                      - { label: Question, name: question, widget: string }
+                      - { label: Answer, name: answer, widget: text }
+
 
   - name: tax_figures
     label: Tax figures & sources
@@ -363,6 +379,24 @@ collections:
             fields:
               - { label: Question, name: question, widget: string }
               - { label: Answer, name: answer, widget: text }
+
+      - name: about_leadership
+        label: 'About — CEO profile'
+        file: src/content/sections/about-leadership.json
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Role, name: role, widget: string }
+          - { label: Organisation, name: organisation, widget: string }
+          - { label: Portrait, name: image, widget: image }
+          - { label: Portrait description, name: imageAlt, widget: string }
+          - { label: Profile website, name: profileUrl, widget: string }
+          - { label: LinkedIn URL, name: linkedinUrl, widget: string }
+          - { label: Instagram URL, name: instagramUrl, widget: string }
+          - { label: YouTube URL, name: youtubeUrl, widget: string }
+          - label: Biography
+            name: paragraphs
+            widget: list
+            field: { label: Paragraph, name: paragraph, widget: text }
 
       - name: about_expertise
         label: 'About — what we do'

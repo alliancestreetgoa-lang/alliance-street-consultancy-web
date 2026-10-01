@@ -1,44 +1,76 @@
+"use client";
+
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { asset } from "@/lib/asset-path";
+import { gsap } from "@/lib/gsap";
+import { MOTION_QUERY } from "@/lib/motion";
 
-/**
- * Opening sequence on a visitor's first page load: the mark and wordmark rise
- * on the dark-red wall, a red rule draws beneath them, then the wall lifts like
- * a curtain to reveal the page (≈2s end to end).
- *
- * Deliberately CSS-only. The overlay animates itself out whether or not any
- * JavaScript runs, so a slow or failed bundle can never leave a visitor stuck
- * behind it, and it never intercepts clicks (`pointer-events: none`).
- *
- * The inline script runs before first paint and marks <html> with
- * `data-intro="skip"` once the intro has played in this tab, so it shows on
- * arrival only — not on every reload or client-side navigation. Reduced-motion
- * visitors never see it (handled in CSS). <html> carries
- * suppressHydrationWarning for this attribute.
- */
-const SKIP_SCRIPT = `try{var k="as-intro-seen";if(sessionStorage.getItem(k)){document.documentElement.dataset.intro="skip"}else{sessionStorage.setItem(k,"1")}}catch(e){}`;
-
+/** The opening brand settles into the real navigation logo on each full load. */
 export function SiteIntro() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const brandRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const ruleRef = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    const brand = brandRef.current;
+    const backdrop = backdropRef.current;
+    const rule = ruleRef.current;
+    const destination = document.querySelector<HTMLElement>("[data-nav-brand]");
+    if (!root || !brand || !backdrop || !rule || !destination) return;
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_QUERY, () => {
+      root.dataset.active = "true";
+      const previousOpacity = destination.style.opacity;
+      destination.style.opacity = "0";
+      const finish = () => {
+        destination.style.opacity = previousOpacity;
+        root.style.visibility = "hidden";
+        brand.style.removeProperty("will-change");
+        backdrop.style.removeProperty("will-change");
+      };
+      const tl = gsap.timeline({ onComplete: finish });
+      gsap.set(brand, { xPercent: -50, yPercent: -50, scale: 1.6, opacity: 0, force3D: true, willChange: "transform,opacity" });
+      gsap.set(backdrop, { willChange: "opacity" });
+      gsap.set(rule, { scaleX: 0, opacity: 1 });
+      tl.to(brand, { opacity: 1, duration: 1, ease: "sine.inOut" })
+        .to(rule, { scaleX: 1, duration: 1.6, ease: "sine.inOut" }, 0.35)
+        .to(rule, { opacity: 0, duration: 0.5, ease: "sine.inOut" }, 2.2)
+        .to(backdrop, { opacity: 0.7, duration: 0.5, ease: "sine.inOut" }, 2.2)
+        .to(brand, {
+          x: () => destination.getBoundingClientRect().left - root.clientWidth / 2,
+          y: () => destination.getBoundingClientRect().top - root.clientHeight / 2,
+          xPercent: 0, yPercent: 0, scale: 1,
+          duration: 1.4, ease: "sine.inOut",
+        }, 2.65)
+        .to(backdrop, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 2.65);
+      // A viewport change ends the flight at the responsive navbar's new position.
+      const onResize = () => { tl.progress(1); };
+      window.addEventListener("resize", onResize, { passive: true });
+      return () => {
+        window.removeEventListener("resize", onResize);
+        destination.style.opacity = previousOpacity;
+        delete root.dataset.active;
+        root.style.removeProperty("visibility");
+      };
+    }, root);
+    return () => mm.revert();
+  }, []);
+
   return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: SKIP_SCRIPT }} />
-      <div aria-hidden className="as-intro">
-        <div className="as-intro-inner">
-          <div className="as-intro-brand">
-            <Image
-              src={asset("/brand/logo-mark.png")}
-              alt=""
-              width={56}
-              height={46}
-              priority
-              className="as-intro-mark"
-              style={{ width: "56px", height: "46px" }}
-            />
-            <span className="as-intro-word">Alliance Street</span>
-          </div>
-          <span className="as-intro-rule" />
-        </div>
+    <div ref={rootRef} aria-hidden className="as-intro">
+      <div ref={backdropRef} className="as-intro-backdrop" />
+      <div ref={brandRef} className="as-intro-brand flex items-center gap-2.5">
+        <Image
+          src={asset("/brand/logo-mark.png")}
+          alt="" width={34} height={28} priority
+          style={{ width: "34px", height: "28px" }}
+        />
+        <span className="whitespace-nowrap text-lg font-semibold text-white">Alliance Street</span>
       </div>
-    </>
+      <span ref={ruleRef} className="as-intro-rule" />
+    </div>
   );
 }
