@@ -32,11 +32,14 @@ function ServiceLink({ link }: { link: NavLink }) {
       <NavigationMenuLink asChild>
         <Link
           href={link.href}
-          className="block rounded-xl p-2.5 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none"
+          className="block rounded-xl px-2.5 py-2 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none"
         >
-          <span className="block text-sm font-medium text-foreground">{link.label}</span>
+          <span className="block text-sm font-medium leading-snug text-foreground">{link.label}</span>
+          {/* Dropped on short screens so all four groups fit without scrolling. */}
           {link.description ? (
-            <span className="mt-1 block text-xs leading-snug text-muted-foreground">{link.description}</span>
+            <span className="mt-0.5 block text-xs leading-snug text-muted-foreground [@media(max-height:820px)]:hidden">
+              {link.description}
+            </span>
           ) : null}
         </Link>
       </NavigationMenuLink>
@@ -108,13 +111,17 @@ export function Navbar() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={NAV_CHIP}>Services</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[760px] grid-cols-4 gap-6 p-8">
+                    {/* Sized to the screen rather than a fixed 760px: wide enough
+                        that titles sit on one line, in rem so it scales with the
+                        large-monitor root size, and never taller than the space
+                        under the nav — it scrolls inside itself if it must. */}
+                    <div className="grid max-h-[calc(100dvh-7rem)] w-[min(64rem,calc(100vw-3rem))] grid-cols-4 gap-x-6 gap-y-4 overflow-y-auto overscroll-contain p-6 2xl:p-8">
                       {NAV_GROUPS.map((group) => (
                         <div key={group.title} className="flex flex-col gap-3">
                           <span className="as-eyebrow as-eyebrow-accent text-[0.6875rem]">
                             {group.title}
                           </span>
-                          <ul className="flex flex-col gap-1">
+                          <ul className="flex flex-col gap-0.5">
                             {group.links.map((link) => (
                               <ServiceLink key={link.href} link={link} />
                             ))}
