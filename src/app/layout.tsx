@@ -5,6 +5,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { Navbar } from "@/components/layout/navbar";
+import { SiteIntro } from "@/components/layout/site-intro";
 import { SiteFooter } from "@/components/ui/site-footer";
 import { SITE_URL } from "@/lib/site-url";
 import { SEO } from "@/lib/content";
@@ -60,8 +61,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceMono.variable} ${inter.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${spaceMono.variable} ${inter.variable} h-full antialiased`}
+      // SiteIntro's pre-paint script sets data-intro on repeat loads.
+      suppressHydrationWarning
+    >
       <body className="flex min-h-full flex-col bg-background text-foreground">
+        <SiteIntro />
         {/* Entity-level schema — rendered on every route so the Organization
             and WebSite nodes other pages reference by @id always resolve. */}
         <script {...jsonLdScriptProps(buildOrganizationJsonLd())} />

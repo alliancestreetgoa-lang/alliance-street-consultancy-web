@@ -514,6 +514,113 @@
   );
 }
 
+/* -------------------------------------------------------------------------
+   Site intro — first page load only (see components/layout/site-intro.tsx).
+   0.00–0.55s  mark + wordmark rise in on the dark-red wall
+   0.25–0.90s  red rule draws beneath them
+   0.85–1.35s  the wall lifts like a curtain; the home hero card rises into it
+   ------------------------------------------------------------------------- */
+.as-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: linear-gradient(180deg, #1a0407 0%, #5a0c11 55%, #8d1319 100%);
+  clip-path: inset(0 0 0 0);
+  animation: as-intro-lift 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.85s forwards;
+}
+.as-intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  animation: as-intro-inner-out 0.4s cubic-bezier(0.76, 0, 0.24, 1) 0.85s forwards;
+}
+.as-intro-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+.as-intro-mark {
+  opacity: 0;
+  transform: translateY(14px) scale(0.9);
+  animation: as-intro-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+.as-intro-word {
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 600;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: as-intro-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+.as-intro-rule {
+  display: block;
+  width: min(220px, 50vw);
+  height: 2px;
+  border-radius: 2px;
+  background: #e22e34;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: as-intro-rule 0.65s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+}
+
+@keyframes as-intro-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes as-intro-rule {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes as-intro-inner-out {
+  to {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+@keyframes as-intro-lift {
+  to {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+  }
+}
+
+/* The home hero card rises into the space the curtain uncovers. On a wrapper,
+   not the card itself, so it never fights the card's scroll parallax.
+   `backwards` holds the start state during the delay and hands control back
+   to the page once it ends. */
+.as-intro-hero {
+  animation: as-intro-hero 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.95s backwards;
+}
+@keyframes as-intro-hero {
+  from {
+    opacity: 0;
+    transform: translateY(48px) scale(0.97);
+  }
+}
+
+/* Already seen in this tab, or the visitor asked for less motion: no intro. */
+html[data-intro="skip"] .as-intro {
+  display: none;
+}
+html[data-intro="skip"] .as-intro-hero {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .as-intro {
+    display: none;
+  }
+  .as-intro-hero {
+    animation: none;
+  }
+}
+
 /* Headline accent — the single word the live site renders in red gradient
    inside an otherwise white/black headline ("Are you next?"). */
 .text-accent-gradient {

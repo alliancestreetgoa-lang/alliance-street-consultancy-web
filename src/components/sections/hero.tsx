@@ -61,6 +61,7 @@ export function Hero() {
       className="as-wall-hero relative isolate flex min-h-[100dvh] flex-col justify-center overflow-hidden pt-8 pb-16 sm:pt-16 sm:pb-24 lg:pt-28 lg:pb-28 lg:[@media(max-height:820px)]:pt-10 [@media(max-height:500px)]:pt-6 [@media(max-height:500px)]:pb-10"
     >
       <Container className="px-4 sm:px-6">
+        <div className="as-intro-hero">
         <div ref={cardRef} className="relative mx-auto w-full max-w-5xl will-change-transform">
           {/* Outside the card frame: it clips to its own radius, which would
               round the brackets' right angles away. */}
@@ -125,6 +126,7 @@ export function Hero() {
             </div>
           </div>
           </div>
+        </div>
         </div>
       </Container>
     </section>
