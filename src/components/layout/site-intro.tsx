@@ -4,7 +4,7 @@ import { asset } from "@/lib/asset-path";
 /**
  * Opening sequence on a visitor's first page load: the mark and wordmark rise
  * on the dark-red wall, a red rule draws beneath them, then the wall lifts like
- * a curtain to reveal the page (≈1.3s end to end).
+ * a curtain to reveal the page (≈2s end to end).
  *
  * Deliberately CSS-only. The overlay animates itself out whether or not any
  * JavaScript runs, so a slow or failed bundle can never leave a visitor stuck

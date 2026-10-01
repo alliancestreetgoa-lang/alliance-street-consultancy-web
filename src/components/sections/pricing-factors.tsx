@@ -19,7 +19,9 @@ export function PricingFactors() {
           align="center"
           className="mx-auto"
         />
-        <Stagger className="grid gap-x-16 gap-y-10 sm:grid-cols-2">
+        {/* Same constraint as WhyAllianceStreet: keeps the two columns centred
+            under the centred heading instead of hugging the container edges. */}
+        <Stagger className="mx-auto grid w-full max-w-5xl gap-x-16 gap-y-10 sm:grid-cols-2">
           {FACTORS.map((factor) => (
             <StaggerItem key={factor.title}>
               <DefinitionList items={[factor]} />

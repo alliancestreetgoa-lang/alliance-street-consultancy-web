@@ -516,9 +516,9 @@
 
 /* -------------------------------------------------------------------------
    Site intro — first page load only (see components/layout/site-intro.tsx).
-   0.00–0.55s  mark + wordmark rise in on the dark-red wall
-   0.25–0.90s  red rule draws beneath them
-   0.85–1.35s  the wall lifts like a curtain; the home hero card rises into it
+   0.00–0.83s  mark + wordmark rise in on the dark-red wall
+   0.38–1.35s  red rule draws beneath them
+   1.28–2.03s  the wall lifts like a curtain; the home hero card rises into it
    ------------------------------------------------------------------------- */
 .as-intro {
   position: fixed;
@@ -529,14 +529,14 @@
   pointer-events: none;
   background: linear-gradient(180deg, #1a0407 0%, #5a0c11 55%, #8d1319 100%);
   clip-path: inset(0 0 0 0);
-  animation: as-intro-lift 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.85s forwards;
+  animation: as-intro-lift 0.75s cubic-bezier(0.76, 0, 0.24, 1) 1.275s forwards;
 }
 .as-intro-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
-  animation: as-intro-inner-out 0.4s cubic-bezier(0.76, 0, 0.24, 1) 0.85s forwards;
+  animation: as-intro-inner-out 0.6s cubic-bezier(0.76, 0, 0.24, 1) 1.275s forwards;
 }
 .as-intro-brand {
   display: flex;
@@ -546,7 +546,7 @@
 .as-intro-mark {
   opacity: 0;
   transform: translateY(14px) scale(0.9);
-  animation: as-intro-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+  animation: as-intro-rise 0.825s cubic-bezier(0.16, 1, 0.3, 1) 0.075s forwards;
 }
 .as-intro-word {
   font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
@@ -554,7 +554,7 @@
   color: #ffffff;
   opacity: 0;
   transform: translateY(14px);
-  animation: as-intro-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  animation: as-intro-rise 0.825s cubic-bezier(0.16, 1, 0.3, 1) 0.225s forwards;
 }
 .as-intro-rule {
   display: block;
@@ -564,7 +564,7 @@
   background: #e22e34;
   transform: scaleX(0);
   transform-origin: left center;
-  animation: as-intro-rule 0.65s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+  animation: as-intro-rule 0.975s cubic-bezier(0.65, 0, 0.35, 1) 0.375s forwards;
 }
 
 @keyframes as-intro-rise {
@@ -596,7 +596,7 @@
    `backwards` holds the start state during the delay and hands control back
    to the page once it ends. */
 .as-intro-hero {
-  animation: as-intro-hero 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.95s backwards;
+  animation: as-intro-hero 1.35s cubic-bezier(0.16, 1, 0.3, 1) 1.425s backwards;
 }
 @keyframes as-intro-hero {
   from {

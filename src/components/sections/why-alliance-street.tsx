@@ -17,7 +17,10 @@ export function WhyAllianceStreet() {
           align="center"
           className="mx-auto"
         />
-        <Stagger className="grid gap-x-16 gap-y-10 sm:grid-cols-2">
+        {/* Constrained and centred so the list sits under the centred heading
+            rather than spreading to the container edges, where the short
+            right-column copy made the whole block read as left-shifted. */}
+        <Stagger className="mx-auto grid w-full max-w-5xl gap-x-16 gap-y-10 sm:grid-cols-2">
           {DIFFERENTIATORS.map((item) => (
             <StaggerItem key={item.title}>
               <DefinitionList items={[item]} />

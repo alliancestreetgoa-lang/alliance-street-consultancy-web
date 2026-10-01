@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { m, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -23,9 +23,26 @@ type DisplayHeadingProps = {
  * word — a trailing margin does not collapse at a line break, so it shifted
  * every wrapped line of a centred heading off-centre by that amount.
  */
+/**
+ * When the site intro is playing (first load in the tab), the curtain doesn't
+ * lift until ~1.4s in — see the as-intro timings in globals.css. The word
+ * stagger must wait for that moment or it plays unseen behind the curtain.
+ * Measured against the page's own clock so hydration time doesn't shift it.
+ */
+const INTRO_REVEAL_AT = 1.45;
+
+function introDelay() {
+  if (typeof document === "undefined") return 0;
+  if (document.documentElement.dataset.intro === "skip") return 0;
+  return Math.max(0, INTRO_REVEAL_AT - performance.now() / 1000);
+}
+
 export function DisplayHeading({ text, className }: DisplayHeadingProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  // Captured once at mount; the transition never reaches the server markup,
+  // so there is no hydration mismatch.
+  const [baseDelay] = useState(introDelay);
 
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
@@ -86,7 +103,11 @@ export function DisplayHeading({ text, className }: DisplayHeadingProps) {
                 : {
                     initial: { opacity: 0.4, y: "0.35em", filter: "blur(6px)" },
                     animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-                    transition: { duration: 0.5, delay: index * 0.035, ease: [0.16, 1, 0.3, 1] },
+                    transition: {
+                      duration: 0.5,
+                      delay: baseDelay + index * 0.035,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
                   })}
               className="inline-block"
             >
