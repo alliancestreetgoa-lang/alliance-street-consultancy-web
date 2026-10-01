@@ -84,9 +84,9 @@ export function Hero() {
             >
               <source src={asset("/brand/hero-video.mp4")} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-background/35" />
+            <div className="absolute inset-0 bg-background/15" />
             {/* Denser bed under the copy column so the headline never fights the skyline. */}
-            <div className="absolute inset-0 bg-[linear-gradient(100deg,color-mix(in_oklch,var(--background)_95%,transparent)_0%,color-mix(in_oklch,var(--background)_82%,transparent)_46%,color-mix(in_oklch,var(--background)_25%,transparent)_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(100deg,color-mix(in_oklch,var(--background)_88%,transparent)_0%,color-mix(in_oklch,var(--background)_62%,transparent)_46%,color-mix(in_oklch,var(--background)_0%,transparent)_100%)]" />
           </div>
 
           <div
@@ -105,7 +105,7 @@ export function Hero() {
               className="max-w-3xl text-left text-hero lg:[@media(max-height:820px)]:text-[3.5rem] [@media(max-height:500px)]:text-4xl"
             />
 
-            <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+            <p className="max-w-xl text-sm text-foreground/75 sm:text-base">
               Alliance Street handles UAE and UK company setup, tax, accounting, and advisory under
               one roof — so you spend less time on paperwork and more time running the business you
               started it for.
