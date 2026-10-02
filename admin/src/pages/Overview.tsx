@@ -4,7 +4,7 @@ const CARDS = [
   { to: "/cms/", external: true, title: "Edit website content", body: "Pages, sections, services, menus, forms, images and brand settings. Saving creates a draft — nothing goes live until it is published." },
   { to: "/publishing", title: "Website publishing", body: "See what is live, preview drafts, approve and publish them, and roll back a change." },
   { to: "/leads", title: "Leads", body: "Consultation and appointment enquiries. Search, filter, record follow-up and export." },
-  { to: "/team", title: "Team & access", body: "Who can see leads, and who can edit or publish the website." },
+  { to: "/account", title: "Account", body: "Change the admin password used for the portal and the content editor." },
   { to: "/help", title: "Help", body: "How editing, previews, publishing, rollback and leads work, step by step." },
 ];
 

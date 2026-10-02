@@ -8,20 +8,17 @@ knowledge is needed.
 
 ## 1. Signing in
 
-| To… | Sign in with | Ask the administrator for |
-| --- | --- | --- |
-| Edit or publish the website | **GitHub** (a free account) | An invitation to the website. Accept it from the email GitHub sends. |
-| See enquiries (leads) | **Google** | Your Google email on the staff list |
+There is **one account**, username **admin**, for everything:
 
-Sign out with the button at the top of each screen. Closing the browser tab
-ends your GitHub session in the portal.
+- **Staff portal** (<https://alliance-street-leads.web.app>): enter the username and password.
+- **Content editor** (portal → *Edit website content*): press **Sign In**, and enter the
+  same username and password in the box that opens.
 
-**Your role decides what you can do.** It is enforced by GitHub and the
-database, not just hidden in the screens:
+Change the password under **Account** in the portal; it changes for both. The account
+can change, publish and roll back anything on the website and see every enquiry, so use
+a long password (a phrase of unrelated words) and don't share it.
 
-- **Editor** can change anything on the site and send it for review, but can't publish.
-- **Publisher** approves and publishes other people's changes. Your own changes need a second publisher or the administrator.
-- **Administrator** can publish anything and manages who has access.
+Sign out from the portal menu. Closing the browser tab also ends the portal session.
 
 ## 2. Editing a page
 
@@ -92,10 +89,9 @@ page and field to fix. Fix it, save, and the preview rebuilds.
 
 ## 6. Publishing
 
-1. When you are happy with the preview, set the draft's status to **Ready**
-   (editor → *Workflow*, or the status menu on the entry).
-2. A **publisher** opens Portal → **Website publishing**, opens the preview,
-   presses **Approve**, then **Publish…** and confirms.
+1. Open Portal → **Website publishing** and open the draft's **preview**.
+2. When it looks right, press **Publish…** and confirm. (You can also publish
+   from the editor's *Workflow* board.)
 3. The status shows **Building**, then **Live**, usually 2–4 minutes. If a
    build fails, the website keeps showing the previous version, and the portal
    says so with a link to the log.
@@ -121,10 +117,10 @@ Portal → **Leads**.
   service and date.
 - Open a lead to record its **status** and **internal notes**. Every change is
   kept in the lead's **history** with your name and the time.
-- **Export** (publishers and administrators) downloads the leads currently
+- **Export** downloads the leads currently
   shown as a spreadsheet. The file contains personal data. Store it securely
   and delete it when you are done.
-- **Delete** (administrators only) is for data-erasure requests and can't be undone.
+- **Delete** is for data-erasure requests and can't be undone.
 
 Visitors' own answers can't be edited by staff; your work is stored beside them.
 

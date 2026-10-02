@@ -3,8 +3,9 @@ import {
   collection, deleteDoc, doc, getDocs, limit, orderBy, query, serverTimestamp, Timestamp, writeBatch,
 } from "firebase/firestore/lite";
 import { db } from "../firebase";
-import { StaffGate } from "../StaffGate";
-import type { StaffRole } from "../hooks";
+import { useSession } from "../session";
+
+type StaffRole = "admin";
 import { Badge, Confirm, Empty, ErrorNotice, Spinner, formatDateTime, timeAgo } from "../ui";
 
 /**
@@ -95,9 +96,14 @@ export function Leads() {
           meeting — tick “meeting confirmed” only once you have seen the booking.
         </p>
       </div>
-      <StaffGate>{(staff) => <LeadTable {...staff} />}</StaffGate>
+      <LeadTableForAdmin />
     </div>
   );
+}
+
+function LeadTableForAdmin() {
+  const { user } = useSession();
+  return <LeadTable email={(user.email ?? "").toLowerCase()} role="admin" />;
 }
 
 function LeadTable({ email, role }: { email: string; role: StaffRole }) {
@@ -139,7 +145,7 @@ function LeadTable({ email, role }: { email: string; role: StaffRole }) {
   }, [data, search, status, service, step, from, to]);
 
   const current = data?.leads.find((l) => l.id === selected) ?? null;
-  const canExport = role === "admin" || role === "publisher";
+  const canExport = role === "admin";
 
   if (loading && !data) return <Spinner label="Loading leads" />;
   if (error) return <ErrorNotice error={explainFirestore(error)} onRetry={reload} />;

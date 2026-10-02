@@ -61,3 +61,5 @@ firebase-debug.log*
 # local CMS test helpers
 /.cms-step.mjs
 /.form-probe.mjs
+firestore-debug.log*
+/admin/auth-worker/.wrangler/

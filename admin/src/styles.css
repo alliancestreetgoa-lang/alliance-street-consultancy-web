@@ -98,3 +98,7 @@ dialog .body { padding: 20px; display: flex; flex-direction: column; gap: 14px; 
 .kv dd { margin: 0; overflow-wrap: anywhere; white-space: pre-line; }
 @media (max-width: 520px) { .kv { grid-template-columns: 1fr; } .kv dd { margin-bottom: 8px; } }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.nav-signout { display: flex; width: 100%; padding: 9px 12px; border-radius: 9px; border: 0; background: transparent; color: #d6d6dc; cursor: pointer; text-align: left; min-height: 40px; }
+.nav-signout:hover { background: #222226; color: #fff; }
+@media (max-width: 860px) { .nav-signout { width: auto; min-height: 44px; padding: 8px 10px; } }

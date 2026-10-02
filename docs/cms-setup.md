@@ -11,7 +11,7 @@ running. The client-facing guide is [client-guide.md](client-guide.md).
 | Content | JSON in `src/content/` + media in `public/brand/`, in this repo | Free | Every version, forever (git history) |
 | Content editor | Sveltia CMS at `https://alliance-street-leads.web.app/cms/` | Free | Nothing — it edits the repo through the GitHub API |
 | Staff portal | `https://alliance-street-leads.web.app/` (Firebase Hosting) | Within Blaze free quota | Nothing — reads GitHub and Firestore as the signed-in person |
-| GitHub sign-in helper | Cloudflare Worker (`sveltia-cms-auth`) | Free tier | Only the OAuth client secret |
+| Sign-in worker | Cloudflare Worker `alliance-street-cms-auth` (code in `admin/auth-worker`) | Free tier | The GitHub token used to save and publish |
 | Leads | Firestore `alliance-street-leads` (London) | Within Blaze free quota | Enquiries + staff follow-up |
 
 ```
@@ -20,7 +20,7 @@ editor saves ──► branch cms/… + pull request ("draft")      live site un
                     ├─► "Validate content" → Publish check (schemas, links, media, types, lint, tests, build)
                     └─► "Deploy to GitHub Pages" → builds main + every draft → /_preview/pr-<n>/
                                                    → "Preview" status on the draft (View Preview button)
-publisher approves (GitHub review) ─► Publish = merge into main ─► rebuild ─► live in ~2–4 min
+admin checks the preview ─► Publish = merge into main ─► rebuild ─► live in ~2–4 min
 rollback = revert pull request ─► previewed and published like any other change
 ```
 
@@ -29,30 +29,35 @@ rollback = revert pull request ─► previewed and published like any other cha
 Draft previews are served from the same origin as the public site
 (`alliancestreetgoa-lang.github.io`). A draft can contain code written by
 anyone with write access. If the editor also ran on that origin, a crafted
-draft preview could read a publisher's stored GitHub login. So the editor and
+draft preview could read the admin's stored sign-in. So the editor and
 staff portal live on `alliance-street-leads.web.app`, a different origin, and
 `/admin/` on the public site is only a redirect. Draft code is built in an
 unprivileged job with a read-only token and no secrets; the deploy job only
 copies the built files.
 
-## Roles and what enforces them
+## The admin account
 
-| Role | Website (enforced by GitHub) | Leads (enforced by `firestore.rules`) |
-| --- | --- | --- |
-| Administrator | Repository owner. Publishes anything; bypasses review; manages access. Must approve tax figures, code and config. | Everything, incl. managing the staff list and deleting leads |
-| Publisher | Collaborator listed for `/src/content/` and `/public/brand/` in `.github/CODEOWNERS`. Approves and publishes other people's drafts. Their own drafts need a second publisher or the administrator. | View, update status, export |
-| Editor | Collaborator not in CODEOWNERS. Edits everything, saves drafts, marks them ready. Cannot publish. | View, update status |
+There is exactly one user, username **admin**, for the staff portal and the
+content editor.
 
-Website and lead access are separate lists on purpose. The portal's
-**Team & access** screen manages both.
-
-GitHub enforces the website roles through the ruleset created by
-`scripts/setup-github-access.sh`. Merges into `main` need an approving code
-owner review and passing checks. Only the repository admin can bypass. A
-personal (non-organisation) repository has no Maintain role, so publishers
-can't publish their own work alone. Moving the repo into a free GitHub
-organisation would let publishers bypass review via the Maintain role. That
-also changes the github.io address, so it's a decision for later.
+- **Password:** stored (hashed) in Firebase Authentication as the user
+  `admin@alliance-street-leads.firebaseapp.com` (Firebase needs an email-shaped
+  identifier; people type `admin`). Changed from the portal's **Account** page.
+  Firebase throttles repeated failures; the worker also limits sign-in attempts
+  to 10 a minute per IP address.
+- **Leads:** `firestore.rules` admit only a verified username/password account on
+  the staff list (`staff/admin@alliance-street-leads.firebaseapp.com`). Google
+  sign-in is switched off. Visitors' anonymous form sessions are unchanged.
+- **Website:** the editor's **Sign In** button opens the sign-in worker
+  (`admin/auth-worker`). After a correct password it hands the editor the GitHub
+  token stored as the worker secret `GITHUB_TOKEN`; the portal gets the same
+  token from the worker's `/token` endpoint using its Firebase session. The token
+  is only ever delivered to `https://alliance-street-leads.web.app`.
+- **What a password guess would expose:** everything — publishing to the live
+  site and every enquiry. Use a long passphrase.
+- The GitHub ruleset on `main` stays on. The token belongs to the repository
+  owner, which bypasses review, so publishing works without a second person;
+  the rules still block force-pushes, branch deletion and failing checks.
 
 ## One-time setup
 
@@ -68,88 +73,54 @@ Creates the "Protect the live site" ruleset on `main` and confirms the workflow
 token is read-only. Re-runnable. Until this has been run, **anyone with write
 access can still merge their own drafts**: the roles are not yet enforced.
 
-### 2. "Sign in with GitHub" — done 2026-10-02
+### 2. Sign-in worker and GitHub token
 
-Current setup: OAuth app **Alliance Street CMS** (owned by `alliancestreetgoa-lang`,
-client ID `Ov23lijnV3zCD1IhSiSn`, expiring user tokens: people sign in again after
-about 8 hours), worker `https://alliance-street-cms-auth.alliance-street.workers.dev`
-on the developer's Cloudflare account (shaukinsv@gmail.com, workers.dev subdomain
-`alliance-street`), `ALLOWED_DOMAINS=alliance-street-leads.web.app`. To hand it to the
-client's own Cloudflare account, repeat steps 2–4 there and update the callback URL.
-To rotate the secret: generate a new one in the OAuth app, then
-`npx wrangler secret put GITHUB_CLIENT_SECRET` and delete the old one.
+The worker is deployed (`cd admin/auth-worker && npx wrangler deploy`) on the
+Cloudflare account shaukinsv@gmail.com (workers.dev subdomain `alliance-street`).
+It needs one secret, a **fine-grained personal access token** created by the
+repository owner — this step has to be done by a person:
 
-Original steps, for reference or a rebuild:
-
-The GitHub OAuth code exchange needs a client secret, which a static host can't
-keep. A tiny Cloudflare Worker does that one step and stores nothing else.
-Until it exists, staff can sign in with a fine-grained personal access token
-(Contents, Pull requests, Commit statuses: read/write; Actions: read) on this
-repository.
-
-1. **Create the OAuth app.** GitHub has no API for this.
-   <https://github.com/settings/developers> → New OAuth App
-   - Application name: `Alliance Street CMS`
-   - Homepage URL: `https://alliance-street-leads.web.app`
-   - Callback URL: `https://alliance-street-cms-auth.<subdomain>.workers.dev/callback` (fix it after step 2b)
-   - Generate a client secret.
-2. **Deploy the worker** to the Cloudflare account the client will own:
+1. <https://github.com/settings/personal-access-tokens/new> (signed in as
+   `alliancestreetgoa-lang`)
+   - Token name: `Alliance Street CMS`; Expiration: the longest allowed (note the date)
+   - Repository access: **Only select repositories** → `alliance-street-consultancy-web`
+   - Repository permissions: **Contents** read & write, **Pull requests** read & write,
+     **Issues** read & write (draft labels), **Commit statuses** read,
+     **Deployments** read, **Actions** read (Metadata read is automatic)
+2. Generate, copy, then in a terminal:
    ```sh
-   git clone --depth 1 https://github.com/sveltia/sveltia-cms-auth.git && cd sveltia-cms-auth
-   sed -i '' 's/^name = "sveltia-cms-auth"/name = "alliance-street-cms-auth"/' wrangler.toml
-   npx wrangler deploy                                 # prints the worker URL
-   npx wrangler secret put GITHUB_CLIENT_ID
-   npx wrangler secret put GITHUB_CLIENT_SECRET
-   npx wrangler secret put ALLOWED_DOMAINS             # alliance-street-leads.web.app
+   cd admin/auth-worker && npx wrangler secret put GITHUB_TOKEN   # paste when asked
    ```
-   Type the secrets yourself; don't paste them into chats or tickets.
-   `ALLOWED_DOMAINS` stops other sites using your OAuth app.
-3. Set the OAuth app's callback to `<worker-url>/callback`.
-4. Put the worker URL in `admin/public/cms/config.yml` → `backend.base_url`
-   (no trailing slash) and merge. The editor and portal read this file from
-   `main`, so nothing needs redeploying.
+3. Before it expires, generate a new one and repeat step 2.
 
-### 3. Firebase (10 minutes)
+The old GitHub OAuth app ("Alliance Street CMS", client ID `Ov23lijnV3zCD1IhSiSn`)
+and the worker secrets `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` and
+`ALLOWED_DOMAINS` are no longer used and can be deleted
+(`npx wrangler secret delete <NAME>`; the OAuth app under GitHub → Settings →
+Developer settings).
 
-Logged in with `npx firebase-tools login` as a project owner:
+### 3. Firebase — done 2026-10-02
 
 ```sh
-npx firebase-tools deploy --only firestore:rules,auth --project alliance-street-leads   # rules + Google sign-in
+npx firebase-tools deploy --only firestore:rules,auth --project alliance-street-leads   # rules + email/password sign-in
 npm run admin:deploy                                                                    # staff portal + editor
 ```
 
-Then add the **first administrator** to the staff list. Nobody can sign in to
-the lead tools until someone is on it. Firebase console → Firestore →
-Start collection `staff` → Document ID = their Google email in lower case →
-fields:
-
-| field | type | value |
-| --- | --- | --- |
-| `role` | string | `admin` |
-| `active` | boolean | `true` |
-| `addedBy` | string | `bootstrap` |
-| `addedAt` | timestamp | now |
-
-Everyone else is then added from the portal's **Team & access** screen.
+Already in place: the `admin` user (`admin@alliance-street-leads.firebaseapp.com`,
+email marked verified, password sign-in only; its uid is `ADMIN_UID` in
+`admin/auth-worker/wrangler.toml`), its `staff` document (role `admin`, active),
+and Google sign-in switched off. If the admin user is ever recreated, update
+`ADMIN_UID` and redeploy the worker, and recreate the `staff` document.
 
 Also in the Firebase console: Authentication → Settings → Authorized domains
 must include `alliance-street-leads.web.app` (present by default) and the
 GitHub Pages host (needed by the public form's anonymous sign-in).
 
-## Inviting and removing people
+## Adding people
 
-Done from the staff portal → **Team & access**; the steps below are the manual equivalent.
-
-- **Website editor:** they create a free GitHub account → an administrator
-  invites the username (repo Settings → Collaborators, or the portal). They must
-  accept the emailed invitation.
-- **Make someone a publisher:** add `@username` to the `/src/content/` and
-  `/public/brand/` lines of `.github/CODEOWNERS` (the portal does this for you).
-- **Lead access:** add their Google email on the staff list with a role.
-- **Remove:** remove the collaborator (and their CODEOWNERS entry); delete or
-  pause their staff-list entry. Both take effect immediately. If someone leaves
-  on bad terms, also revoke their GitHub OAuth authorisation for the app
-  (GitHub → Settings → Applications) and review open drafts they authored.
+By design there is one account. Adding more people (with their own logins and
+roles) is a developer change: the earlier GitHub/Google per-person setup is in
+the git history (before commit "Single admin login").
 
 ## Day-to-day operations
 
@@ -226,10 +197,9 @@ npm run test:portal # staff portal against the Firebase emulators (synthetic dat
 
 | Symptom | Cause |
 | --- | --- |
-| "Sign in with GitHub" loops / redirect_uri mismatch | OAuth app callback isn't exactly `<worker>/callback` |
-| "Failed to authenticate" | `ALLOWED_DOMAINS` lacks `alliance-street-leads.web.app` |
-| Publish button fails "needs approval" | Working as intended — a publisher must approve; see Roles |
+| "Too many attempts" | Wait a minute (worker limit) or a few minutes (Firebase lockout) |
+| Editor/portal says "missing GitHub token" or publishing "expired" | Set or renew `GITHUB_TOKEN` (One-time setup §2) |
 | Draft has no "View Preview" | The preview builds after the publish check (a few minutes). Failing builds show "Preview: failed" with a log link. |
 | Saves succeed, site doesn't change | Draft not published yet, or the publish build failed (Actions tab) |
 | A section shows no fields | `config.yml` drifted from the schema; `npm test` names it |
-| Staff member "not on the staff list" | Their Google email isn't on it, is paused, or differs in spelling |
+| Leads say "no permission" | The admin's `staff` document is missing or inactive, or the account lost its verified flag |

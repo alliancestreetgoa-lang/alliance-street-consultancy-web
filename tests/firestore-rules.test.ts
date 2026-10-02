@@ -17,8 +17,9 @@ const RUN = !!process.env.FIRESTORE_EMULATOR_HOST;
 let env: RulesTestEnvironment;
 
 type Provider = "google.com" | "password" | "anonymous";
+// Staff sign in with the portal's username/password account.
 const google = (email: string, verified = true) => ({
-  email, email_verified: verified, firebase: { sign_in_provider: "google.com" as Provider },
+  email, email_verified: verified, firebase: { sign_in_provider: "password" as Provider },
 });
 const lead = (uid: string) => ({
   name: "Synthetic Visitor", country: "United Arab Emirates", email: "visitor@example.com", phone: "+971500000000",
@@ -87,11 +88,11 @@ describe.skipIf(!RUN)("firestore rules", () => {
         await assertSucceeds(getDoc(doc(as(email), "leads/visitor-1")));
       }
     });
-    it("rejects signed-in users who are not on the list, inactive, unverified or not Google", async () => {
+    it("rejects signed-in users who are not on the list, inactive, unverified or not password accounts", async () => {
       await assertFails(getDocs(collection(as("stranger@example.com"), "leads")));
       await assertFails(getDocs(collection(as("gone@example.com"), "leads")));
       await assertFails(getDocs(collection(as("ed@example.com", { verified: false }), "leads")));
-      await assertFails(getDocs(collection(as("ed@example.com", { provider: "password" }), "leads")));
+      await assertFails(getDocs(collection(as("ed@example.com", { provider: "google.com" }), "leads")));
     });
     it("staff cannot change what the visitor submitted", async () => {
       await assertFails(updateDoc(doc(as("admin@example.com"), "leads/visitor-1"), { notes: "edited", updatedAt: serverTimestamp() }));

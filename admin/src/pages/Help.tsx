@@ -1,8 +1,8 @@
 const STEPS: { title: string; items: string[] }[] = [
   { title: "Signing in", items: [
-    "Website content and publishing: “Sign in with GitHub” using the GitHub account the administrator invited.",
-    "Leads: “Sign in with Google” using the email address on the staff list.",
-    "Sign out from the top of each screen. Leaving the browser tab ends the GitHub session in this portal.",
+    "There is one account: username admin. Use it here and in the content editor (its Sign In button opens the same username and password box).",
+    "Change the password under Account. The change applies to both places.",
+    "Sign out from the menu. Closing the browser tab also ends the portal session.",
   ] },
   { title: "Editing a page", items: [
     "Open Edit website content → Pages → choose the page.",
@@ -26,8 +26,8 @@ const STEPS: { title: string; items: string[] }[] = [
     "If the preview or publish check fails, open it: the message names the page and field to fix.",
   ] },
   { title: "Publishing", items: [
-    "In the editor, set the draft’s status to “Ready”.",
-    "A publisher opens Website publishing, checks the preview, approves and publishes. Publishers’ own changes need a second publisher or the administrator.",
+    "Open Website publishing (or the editor’s workflow board) and open the draft’s preview.",
+    "When it looks right, press Publish and confirm.",
     "The status changes to Building, then Live (usually 2–4 minutes). If a build fails, the site keeps the previous version.",
   ] },
   { title: "Rolling back", items: [
@@ -46,7 +46,7 @@ export function Help() {
     <div className="stack">
       <div>
         <h1>Help</h1>
-        <p className="lede">The full guide is in the repository at <code>docs/client-guide.md</code>. What needs a developer is listed at the end of it.</p>
+        <p className="lede">The full guide is in the repository at <code>docs/client-guide.md</code>.</p>
       </div>
       <div className="grid">
         {STEPS.map((s) => (

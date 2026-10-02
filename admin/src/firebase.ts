@@ -1,18 +1,23 @@
 import { initializeApp } from "firebase/app";
 import {
-  GoogleAuthProvider, connectAuthEmulator, getAuth, onAuthStateChanged, signInWithPopup, signOut, type User,
+  EmailAuthProvider, connectAuthEmulator, getAuth, onAuthStateChanged, reauthenticateWithCredential,
+  signInWithEmailAndPassword, signOut, updatePassword, type User,
 } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore/lite";
 import config from "@site/lib/firebase-config.json";
 
 /**
- * Staff sign-in. Separate from the visitors' anonymous sessions on the public
- * site (a different Firebase app name and a different origin), and every read
- * is checked by firestore.rules — this file grants nothing by itself.
+ * The single admin account. People type the username "admin"; Firebase needs
+ * an email-shaped identifier, so it maps to this address. The password is held
+ * (hashed) by Firebase Authentication — never in this code or the website.
+ * firestore.rules and the sign-in worker both check this account.
  *
  * `?emulator` (local only) points the portal at the Firebase emulators so the
- * lead tools can be exercised without touching real leads.
+ * tools can be exercised without touching real data.
  */
+export const ADMIN_USERNAME = "admin";
+export const ADMIN_EMAIL = "admin@alliance-street-leads.firebaseapp.com";
+
 const useEmulator =
   ["localhost", "127.0.0.1"].includes(location.hostname) && new URLSearchParams(location.search).has("emulator");
 
@@ -26,13 +31,33 @@ if (useEmulator) {
   connectFirestoreEmulator(db, "127.0.0.1", 8085);
 }
 
-export function signInWithGoogle() {
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
-  return signInWithPopup(auth, provider);
+export class SignInError extends Error {}
+
+export async function signInAdmin(username: string, password: string) {
+  if (username.trim().toLowerCase() !== ADMIN_USERNAME) throw new SignInError("Incorrect username or password.");
+  try {
+    return await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+  } catch (error) {
+    const code = (error as { code?: string }).code ?? "";
+    if (code.includes("too-many-requests")) throw new SignInError("Too many attempts. Wait a few minutes and try again.");
+    if (code.includes("network")) throw new SignInError("Couldn’t reach the sign-in service. Check your connection.");
+    throw new SignInError("Incorrect username or password.");
+  }
 }
 
-export function signOutStaff() {
+/** Changes the admin password everywhere (portal and content editor). */
+export async function changePassword(current: string, next: string) {
+  const user = auth.currentUser;
+  if (!user?.email) throw new SignInError("Sign in again first.");
+  try {
+    await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, current));
+  } catch {
+    throw new SignInError("Your current password is not correct.");
+  }
+  await updatePassword(user, next);
+}
+
+export function signOutAdmin() {
   return signOut(auth);
 }
 

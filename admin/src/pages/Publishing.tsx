@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { GitHubGate } from "../GitHubGate";
-import { SITE_URL, type GitHubRole } from "../github";
+import { PublishingGate } from "../session";
+import { SITE_URL } from "../github";
 import {
-  approve, describeFile, getDrafts, getHistory, getLiveStatus, publish, rollback,
+  describeFile, getDrafts, getHistory, getLiveStatus, publish, rollback,
   type Check, type Draft, type LiveStatus, type Published,
 } from "../publishing";
 import { Badge, Confirm, Empty, ErrorNotice, Spinner, timeAgo } from "../ui";
@@ -14,11 +14,11 @@ export function Publishing() {
         <h1>Website publishing</h1>
         <p className="lede">
           Saving in the content editor creates a <strong>draft</strong>; the live site does not change. Each draft gets a
-          full preview of the site. A publisher approves it, then it is published and goes live a few minutes later.
-          Every publish can be rolled back.
+          full preview of the site. Check the preview, then publish it — it goes live a few minutes later. Every publish
+          can be rolled back.
         </p>
       </div>
-      <GitHubGate>{(me) => <PublishingBoard login={me.login} role={me.role} />}</GitHubGate>
+      <PublishingGate><PublishingBoard /></PublishingGate>
     </div>
   );
 }
@@ -29,7 +29,7 @@ const STAGE: Record<Draft["stage"], { label: string; tone: "neutral" | "warn" | 
   ready: { label: "Ready to publish", tone: "info" },
 };
 
-function PublishingBoard({ login, role }: { login: string; role: GitHubRole }) {
+function PublishingBoard() {
   const [live, setLive] = useState<LiveStatus | null>(null);
   const [drafts, setDrafts] = useState<Draft[] | null>(null);
   const [history, setHistory] = useState<Published[] | null>(null);
@@ -56,13 +56,7 @@ function PublishingBoard({ login, role }: { login: string; role: GitHubRole }) {
     return () => window.clearInterval(t);
   }, [live, drafts, load]);
 
-  const canPublish = role === "admin" || role === "publisher";
-
-  async function doApprove(draft: Draft) {
-    setBusy(true); setNotice(null);
-    try { await approve(draft.number); setNotice({ tone: "ok", text: `Approved “${draft.title}”.` }); await load(); }
-    catch (e) { setNotice({ tone: "bad", text: (e as Error).message }); } finally { setBusy(false); }
-  }
+  const canPublish = true;
 
   async function confirmPending() {
     if (!pending) return;
@@ -130,15 +124,10 @@ function PublishingBoard({ login, role }: { login: string; role: GitHubRole }) {
             <div className="row small">
               <CheckBadge label="Preview" check={d.preview} />
               <CheckBadge label="Publish check" check={d.publishCheck} />
-              {d.approvals.length ? <Badge tone="ok">Approved by {d.approvals.join(", ")}</Badge> : <Badge tone="neutral">Not approved yet</Badge>}
             </div>
             <div className="row">
               {d.preview.state === "success" && d.preview.url ? (
                 <a className="btn" href={d.preview.url} target="_blank" rel="noreferrer">View preview ↗</a>
-              ) : null}
-              {canPublish && d.author.toLowerCase() !== login.toLowerCase() && !d.approvals.includes(login) ? (
-                <button className="btn" onClick={() => doApprove(d)} disabled={busy || d.preview.state !== "success"}
-                  title={d.preview.state !== "success" ? "Check the preview before approving" : undefined}>Approve</button>
               ) : null}
               {canPublish ? (
                 <button className="btn primary" disabled={busy || d.publishCheck.state !== "success" || d.preview.state !== "success"}
@@ -147,13 +136,6 @@ function PublishingBoard({ login, role }: { login: string; role: GitHubRole }) {
               ) : null}
               <a className="btn small" href={d.url} target="_blank" rel="noreferrer">Details on GitHub</a>
             </div>
-            {!canPublish ? (
-              <p className="small muted" style={{ margin: 0 }}>
-                Set the draft to “Ready” in the editor when you are happy with the preview. A publisher will approve and publish it.
-              </p>
-            ) : role === "publisher" && d.author.toLowerCase() === login.toLowerCase() && !d.approvals.length ? (
-              <p className="small muted" style={{ margin: 0 }}>Your own changes need approval from another publisher or the administrator.</p>
-            ) : null}
           </article>
         ))}
       </section>

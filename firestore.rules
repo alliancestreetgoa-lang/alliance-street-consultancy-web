@@ -29,9 +29,10 @@ service cloud.firestore {
 
     // ------------------------------------------------------------------
     // Staff. Access is an explicit allowlist: a document at staff/{email}
-    // (lower-case email) with active == true. Only a Google account with a
-    // verified email counts, so a visitor's anonymous session — or any other
-    // sign-in method — can never match.
+    // (lower-case email) with active == true. Only a username/password account
+    // that an owner created and verified counts (the portal's "admin" login),
+    // so a visitor's anonymous session — or any other sign-in method — can
+    // never match. Self-registered accounts are unverified and have no entry.
     //   admin     — everything, including managing staff and deleting leads
     //   publisher — view leads, update their status, export
     //   editor    — view leads, update their status
@@ -46,7 +47,7 @@ service cloud.firestore {
     }
     function isStaff() {
       return request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.firebase.sign_in_provider == 'password'
         && request.auth.token.email_verified == true
         && exists(staffPath())
         && get(staffPath()).data.active == true;

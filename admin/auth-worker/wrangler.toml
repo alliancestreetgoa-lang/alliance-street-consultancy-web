@@ -1,0 +1,23 @@
+# Admin sign-in for the content editor and staff portal.
+# Deploy: cd admin/auth-worker && npx wrangler deploy
+# Secret (never commit): npx wrangler secret put GITHUB_TOKEN
+name = "alliance-street-cms-auth"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# The only page allowed to receive the GitHub token.
+ALLOWED_ORIGIN = "https://alliance-street-leads.web.app"
+# Public Firebase web key (also in the public site's bundle); used only to check the password.
+FIREBASE_API_KEY = "AIzaSyBhxFBDNupxk-yaE9Uutp7azoGpZsXVt4k"
+# The one admin account: username "admin" signs in as this Firebase user.
+ADMIN_EMAIL = "admin@alliance-street-leads.firebaseapp.com"
+ADMIN_UID = "XEtgHFSYXxZTWJvVQnAsK6YgGv53"
+
+# Slows password guessing: at most 10 attempts per minute per IP address.
+[[ratelimits]]
+name = "LOGIN_LIMITER"
+namespace_id = "2026"
+  [ratelimits.simple]
+  limit = 10
+  period = 60
