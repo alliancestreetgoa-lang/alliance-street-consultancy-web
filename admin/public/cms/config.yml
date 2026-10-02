@@ -48,6 +48,10 @@ editor:
 media_folder: public/brand
 public_folder: /brand
 media_libraries:
+  # No stock-photo sources: placeholder services (Lorem Picsum) are not real
+  # imagery, and third-party photos need their licence checked by a person.
+  stock_assets:
+    providers: []
   default:
     config:
       max_file_size: 41943040
