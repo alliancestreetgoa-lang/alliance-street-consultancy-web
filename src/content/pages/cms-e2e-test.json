@@ -23,6 +23,15 @@
       "image": null
     },
     {
+      "type": "richText",
+      "hidden": false,
+      "anchor": "",
+      "heading": "Duplicated section, kept visible",
+      "body": "Hidden section body.",
+      "eyebrow": "",
+      "width": "narrow"
+    },
+    {
       "type": "textImage",
       "hidden": false,
       "anchor": "",
@@ -42,15 +51,6 @@
       "hidden": true,
       "anchor": "",
       "heading": "Section that will be hidden",
-      "body": "Hidden section body.",
-      "eyebrow": "",
-      "width": "narrow"
-    },
-    {
-      "type": "richText",
-      "hidden": false,
-      "anchor": "",
-      "heading": "Duplicated section, kept visible",
       "body": "Hidden section body.",
       "eyebrow": "",
       "width": "narrow"
