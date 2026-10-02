@@ -193,6 +193,17 @@ collections:
                 required: false
                 hint: Leave blank if there is no WhatsApp number. The site hides the row.
               - { label: Address, name: address, widget: string }
+              - label: Company social profiles
+                name: socialLinks
+                widget: list
+                summary: '{{fields.platform}}'
+                max: 3
+                fields:
+                  - { label: Platform, name: platform, widget: select, options: [LinkedIn, Instagram, YouTube] }
+                  - label: Profile link
+                    name: url
+                    widget: string
+                    pattern: ['^https://', 'Use a complete HTTPS profile link.']
           - label: Main menu
             name: primaryNav
             widget: list

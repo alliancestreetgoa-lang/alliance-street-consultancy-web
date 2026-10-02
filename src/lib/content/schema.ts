@@ -156,6 +156,10 @@ export const siteSchema = z.object({
     phoneHref: z.string().regex(/^\+\d{7,15}$/, "must be E.164, e.g. +97142627928"),
     whatsapp: z.string().nullable(),
     address: nonEmpty("address"),
+    socialLinks: z.array(z.object({
+      platform: z.enum(["LinkedIn", "Instagram", "YouTube"]),
+      url: z.string().url().startsWith("https://"),
+    })).max(3),
   }),
   primaryNav: z.array(navLinkSchema).min(1),
   navGroups: z

@@ -5,7 +5,21 @@
     "phone": "+971 4 262 7928",
     "phoneHref": "+97142627928",
     "whatsapp": null,
-    "address": "Business Bay, Dubai, United Arab Emirates"
+    "address": "Business Bay, Dubai, United Arab Emirates",
+    "socialLinks": [
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/alliancestreetconsultancy/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/alliancestreetconsultancy"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Alliancestreetconsultancy22"
+      }
+    ]
   },
   "primaryNav": [
     {
