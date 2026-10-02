@@ -1,11 +1,11 @@
 {
   "services": [
     {
-      "category": "uae",
-      "group": "UAE Setup",
-      "slug": "free-zone-company-formation",
       "title": "Free Zone Company Formation",
       "tagline": "Set up in a UAE free zone with 100% foreign ownership.",
+      "group": "UAE Setup",
+      "category": "uae",
+      "slug": "free-zone-company-formation",
       "includes": [
         "Free zone selection matched to your trade licence activity",
         "Licence application and document preparation",
@@ -28,11 +28,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Setup",
-      "slug": "mainland-company-formation",
       "title": "Mainland Company Formation",
       "tagline": "Trade anywhere in the UAE and beyond.",
+      "group": "UAE Setup",
+      "category": "uae",
+      "slug": "mainland-company-formation",
       "includes": [
         "Activity and legal structure selection with the Department of Economic Development",
         "Local service agent arrangement where required",
@@ -55,11 +55,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Setup",
-      "slug": "offshore-company-formation",
       "title": "Offshore Company Formation",
       "tagline": "Asset protection and international structuring.",
+      "group": "UAE Setup",
+      "category": "uae",
+      "slug": "offshore-company-formation",
       "includes": [
         "Jurisdiction selection (JAFZA, RAK ICC, and others)",
         "Company incorporation and share structuring",
@@ -82,11 +82,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Setup",
-      "slug": "pro-services",
       "title": "PRO Services",
       "tagline": "Visas, licensing, and government liaison.",
+      "group": "UAE Setup",
+      "category": "uae",
+      "slug": "pro-services",
       "includes": [
         "Employee and dependent visa processing",
         "Emirates ID and medical test coordination",
@@ -109,11 +109,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Setup",
-      "slug": "corporate-bank-account-assistance",
       "title": "Corporate Bank Account Assistance",
       "tagline": "Get banked faster with the right documentation.",
+      "group": "UAE Setup",
+      "category": "uae",
+      "slug": "corporate-bank-account-assistance",
       "includes": [
         "Bank shortlist matched to your business activity and nationality mix",
         "Document package preparation (KYC, business plan, source of funds)",
@@ -136,11 +136,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Setup",
-      "slug": "private-and-personal-banking",
       "title": "Private & Personal Banking",
       "tagline": "Personal and wealth accounts alongside your company's.",
+      "group": "UAE Setup",
+      "category": "uae",
+      "slug": "private-and-personal-banking",
       "includes": [
         "Bank and account-tier shortlist matched to your residency and asset profile",
         "Personal KYC and source-of-wealth documentation prepared to bank standard",
@@ -163,11 +163,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Tax & Compliance",
-      "slug": "corporate-tax",
       "title": "Corporate Tax",
       "tagline": "Registration, filing, and planning.",
+      "group": "UAE Tax & Compliance",
+      "category": "uae",
+      "slug": "corporate-tax",
       "includes": [
         "Corporate tax registration with the FTA",
         "Taxable income calculation and return preparation",
@@ -190,11 +190,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Tax & Compliance",
-      "slug": "vat-registration",
       "title": "VAT Registration",
       "tagline": "Get VAT-registered correctly the first time.",
+      "group": "UAE Tax & Compliance",
+      "category": "uae",
+      "slug": "vat-registration",
       "includes": [
         "Mandatory vs voluntary registration assessment",
         "FTA portal application and document submission",
@@ -217,11 +217,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Tax & Compliance",
-      "slug": "vat-return-filing",
       "title": "VAT Return Filing",
       "tagline": "Accurate, on-time quarterly filings.",
+      "group": "UAE Tax & Compliance",
+      "category": "uae",
+      "slug": "vat-return-filing",
       "includes": [
         "Quarterly VAT return preparation and FTA submission",
         "Input/output VAT reconciliation",
@@ -244,11 +244,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Tax & Compliance",
-      "slug": "audit-support",
       "title": "Audit Support",
       "tagline": "Be ready before the auditor arrives.",
+      "group": "UAE Tax & Compliance",
+      "category": "uae",
+      "slug": "audit-support",
       "includes": [
         "Books and records review ahead of statutory audit",
         "Supporting documentation preparation",
@@ -271,11 +271,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Tax & Compliance",
-      "slug": "bookkeeping",
       "title": "Bookkeeping",
       "tagline": "Clean books, every month.",
+      "group": "UAE Tax & Compliance",
+      "category": "uae",
+      "slug": "bookkeeping",
       "includes": [
         "Monthly transaction recording and reconciliation",
         "Accounts payable and receivable tracking",
@@ -298,11 +298,11 @@
       }
     },
     {
-      "category": "uae",
-      "group": "UAE Tax & Compliance",
-      "slug": "e-invoicing",
       "title": "E-Invoicing",
-      "tagline": "Get your business ready for UAE e-invoicing, from your first readiness check to go-live.",
+      "tagline": "CMS E2E temporary tagline — not published.",
+      "group": "UAE Tax & Compliance",
+      "category": "uae",
+      "slug": "e-invoicing",
       "includes": [
         "Readiness assessment: review your sales, purchasing and invoicing workflows, identify gaps, and agree a practical implementation plan",
         "Scope and deadline review: assess your business transactions and applicable exclusions against the UAE rollout requirements",
@@ -316,7 +316,7 @@
       "whoFor": "UAE businesses preparing for the phased e-invoicing rollout, including companies trading with other businesses or government entities. Particularly useful if you issue invoices from spreadsheets, use multiple accounting systems, or need help coordinating finance, IT and your Accredited Service Provider. Our role is advisory and implementation coordination; the accredited provider handles the regulated invoice exchange and reporting service.",
       "search": {
         "title": "UAE E-Invoicing Readiness & Implementation",
-        "description": "Prepare for UAE e-invoicing with readiness reviews, accredited provider selection, ERP integration coordination, invoice testing and team training.",
+        "description": "CMS E2E — temporary search description for the e-invoicing page. This draft will be discarded.",
         "overview": "UAE e-invoicing readiness connects finance processes, invoice data and the systems used to exchange invoices. Alliance Street helps map the work from initial assessment to launch, coordinating with your team and selected Accredited Service Provider so responsibilities and next steps are clear.",
         "preparation": "Your invoicing and ERP systems, transaction types, approximate invoice volumes, entity structure and any provider shortlist.",
         "faqs": [
@@ -328,11 +328,11 @@
       }
     },
     {
-      "category": "uk",
-      "group": "UK Services",
-      "slug": "company-formation",
       "title": "UK Company Formation",
       "tagline": "Incorporate with Companies House.",
+      "group": "UK Services",
+      "category": "uk",
+      "slug": "company-formation",
       "includes": [
         "Company name check and incorporation filing",
         "Registered office address service",
@@ -355,11 +355,11 @@
       }
     },
     {
-      "category": "uk",
-      "group": "UK Services",
-      "slug": "accounting",
       "title": "UK Accounting",
       "tagline": "Statutory accounts, done right.",
+      "group": "UK Services",
+      "category": "uk",
+      "slug": "accounting",
       "includes": [
         "Monthly or quarterly bookkeeping",
         "Statutory annual accounts preparation",
@@ -382,11 +382,11 @@
       }
     },
     {
-      "category": "uk",
-      "group": "UK Services",
-      "slug": "self-assessment",
       "title": "Self Assessment",
       "tagline": "Personal tax returns, filed on time.",
+      "group": "UK Services",
+      "category": "uk",
+      "slug": "self-assessment",
       "includes": [
         "Self Assessment registration with HMRC",
         "Income, dividend, and expense review",
@@ -409,11 +409,11 @@
       }
     },
     {
-      "category": "uk",
-      "group": "UK Services",
-      "slug": "corporation-tax",
       "title": "Corporation Tax",
       "tagline": "Compliance and relief planning.",
+      "group": "UK Services",
+      "category": "uk",
+      "slug": "corporation-tax",
       "includes": [
         "Corporation tax computation and CT600 filing",
         "Reliefs and allowances review (R&D, capital allowances, and others)",
@@ -436,11 +436,11 @@
       }
     },
     {
-      "category": "uk",
-      "group": "UK Services",
-      "slug": "vat",
       "title": "UK VAT",
       "tagline": "Registration and quarterly returns.",
+      "group": "UK Services",
+      "category": "uk",
+      "slug": "vat",
       "includes": [
         "VAT registration assessment and application",
         "Making Tax Digital-compliant quarterly returns",
@@ -463,11 +463,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "business-consulting",
       "title": "Business Consulting",
       "tagline": "Strategy for growth-stage founders.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "business-consulting",
       "includes": [
         "Business model and market-entry review",
         "Jurisdiction and structuring strategy across UAE and UK",
@@ -490,11 +490,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "cfo-services",
       "title": "CFO Services",
       "tagline": "Fractional finance leadership.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "cfo-services",
       "includes": [
         "Monthly management accounts and board-ready reporting",
         "Cash flow forecasting and runway modeling",
@@ -517,11 +517,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "tax-planning",
       "title": "Tax Planning",
       "tagline": "Structure for what's next.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "tax-planning",
       "includes": [
         "Cross-border UAE/UK tax exposure review",
         "Corporate structure optimization",
@@ -544,11 +544,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "payroll",
       "title": "Payroll",
       "tagline": "Accurate, compliant payroll runs.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "payroll",
       "includes": [
         "Monthly payroll processing across UAE and/or UK entities",
         "WPS (Wage Protection System) compliance for UAE payroll",
@@ -571,11 +571,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "business-licensing",
       "title": "Business Licensing",
       "tagline": "Renewals and amendments, handled.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "business-licensing",
       "includes": [
         "Trade licence renewal tracking and processing",
         "Activity amendments and additions",
@@ -598,11 +598,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "working-capital-and-mortgage-finance",
       "title": "Working Capital & Mortgage Finance",
       "tagline": "Lending options, sourced and negotiated for you.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "working-capital-and-mortgage-finance",
       "includes": [
         "Lender comparison across mortgage, business loan and trade finance options",
         "Affordability and eligibility review before anything is submitted",
@@ -625,11 +625,11 @@
       }
     },
     {
-      "category": "advisory",
-      "group": "Advisory",
-      "slug": "real-estate-and-investment-advisory",
       "title": "Real Estate & Investment Advisory",
       "tagline": "Property advice from someone not paid on the sale.",
+      "group": "Advisory",
+      "category": "advisory",
+      "slug": "real-estate-and-investment-advisory",
       "includes": [
         "Requirement brief agreed up front: budget, use, location and hold period",
         "Commercial space matched to what your trade licence and visa quota require",
