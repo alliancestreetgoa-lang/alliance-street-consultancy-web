@@ -101,7 +101,8 @@ export async function getDrafts(): Promise<Draft[]> {
   }));
 }
 
-export type Published = { number: number; nodeId: string; title: string; url: string; author: string; mergedAt: string; isRollback: boolean };
+/** `content` = made in the content editor (a cms/ branch); only those can be rolled back from the portal. */
+export type Published = { number: number; nodeId: string; title: string; url: string; author: string; mergedAt: string; isRollback: boolean; content: boolean };
 
 export async function getHistory(): Promise<Published[]> {
   const prs = await gh<PR[]>(`${R}/pulls?state=closed&per_page=40&sort=updated&direction=desc`);
@@ -112,6 +113,7 @@ export async function getHistory(): Promise<Published[]> {
     .map((pr) => ({
       number: pr.number, nodeId: pr.node_id, title: pr.title, url: pr.html_url, author: pr.user.login, mergedAt: pr.merged_at!,
       isRollback: /^Revert "|^Roll back/.test(pr.title),
+      content: pr.head.ref.startsWith("cms/"),
     }));
 }
 

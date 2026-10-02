@@ -141,8 +141,8 @@ function PublishingBoard({ login, role }: { login: string; role: GitHubRole }) {
                   title={d.preview.state !== "success" ? "Check the preview before approving" : undefined}>Approve</button>
               ) : null}
               {canPublish ? (
-                <button className="btn primary" disabled={busy || d.publishCheck.state !== "success"}
-                  title={d.publishCheck.state !== "success" ? "The publish check must pass first" : undefined}
+                <button className="btn primary" disabled={busy || d.publishCheck.state !== "success" || d.preview.state !== "success"}
+                  title={d.publishCheck.state !== "success" ? "The publish check must pass first" : d.preview.state !== "success" ? "Wait for the preview, and check it, before publishing" : undefined}
                   onClick={() => setPending({ kind: "publish", draft: d })}>Publish…</button>
               ) : null}
               <a className="btn small" href={d.url} target="_blank" rel="noreferrer">Details on GitHub</a>
@@ -170,9 +170,9 @@ function PublishingBoard({ login, role }: { login: string; role: GitHubRole }) {
                     <td><a href={h.url} target="_blank" rel="noreferrer">{h.title}</a></td>
                     <td className="small">{h.author}</td>
                     <td className="small">{timeAgo(h.mergedAt)}</td>
-                    <td>{canPublish && !h.isRollback ? (
+                    <td>{canPublish && h.content && !h.isRollback ? (
                       <button className="btn small" disabled={busy} onClick={() => setPending({ kind: "rollback", item: h })}>Roll back…</button>
-                    ) : null}</td>
+                    ) : !h.content && !h.isRollback ? <span className="small muted">Developer change</span> : null}</td>
                   </tr>
                 ))}
               </tbody>
