@@ -55,3 +55,9 @@ firebase-debug.log*
 /playwright-report/
 /admin/dist/
 .firebase-test-records.json.ids
+
+# Firebase deploy cache
+/.firebase/
+# local CMS test helpers
+/.cms-step.mjs
+/.form-probe.mjs
