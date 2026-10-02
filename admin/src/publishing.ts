@@ -21,6 +21,8 @@ export type Check = { state: "pending" | "success" | "failure" | "none"; url?: s
 
 export type Draft = {
   number: number; nodeId: string; title: string; url: string; branch: string; sha: string; author: string; updated: string;
+  /** GitHub "draft pull request": the editor opens new drafts this way; GitHub cannot merge one until it is marked ready. */
+  githubDraft: boolean;
   stage: DraftStage; isRollback: boolean; files: string[]; approvals: string[];
   preview: Check; publishCheck: Check;
 };
@@ -94,7 +96,7 @@ export async function getDrafts(): Promise<Draft[]> {
     reviews.forEach((r) => latest.set(r.user.login, r));
     const approvals = [...latest].filter(([, r]) => r.state === "APPROVED" && r.commit_id === pr.head.sha).map(([login]) => login);
     return {
-      number: pr.number, nodeId: pr.node_id, title: pr.title, url: pr.html_url, branch: pr.head.ref, sha: pr.head.sha, author: pr.user.login,
+      number: pr.number, nodeId: pr.node_id, title: pr.title, url: pr.html_url, branch: pr.head.ref, sha: pr.head.sha, author: pr.user.login, githubDraft: pr.draft,
       updated: pr.updated_at, stage: stageFrom(pr.labels), isRollback: /^revert-|^Roll back|^Revert "/.test(pr.head.ref + pr.title),
       files: files.map((f) => f.filename), approvals, ...checks,
     };
@@ -122,6 +124,9 @@ export function approve(number: number) {
 }
 
 export async function publish(draft: Draft) {
+  if (draft.githubDraft) {
+    await graphql(`mutation($id: ID!) { markPullRequestReadyForReview(input: { pullRequestId: $id }) { pullRequest { isDraft } } }`, { id: draft.nodeId });
+  }
   await gh(`${R}/pulls/${draft.number}/merge`, {
     // `sha` makes GitHub refuse the merge if the draft changed after it was
     // previewed and approved, so what goes live is exactly what was checked.
