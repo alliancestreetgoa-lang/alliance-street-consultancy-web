@@ -4,9 +4,7 @@ import { useEffect, useRef } from "react";
 import { Container } from "@/components/ui/container";
 import { gsap } from "@/lib/gsap";
 import { MOTION_QUERY } from "@/lib/motion";
-import statsContent from "@/content/sections/stats.json";
-
-const STATS: { value: number; suffix?: string; label: string }[] = statsContent.items;
+import type { SectionOf } from "@/lib/content/page-schema";
 
 /**
  * The numbers strip under the home hero.
@@ -16,7 +14,8 @@ const STATS: { value: number; suffix?: string; label: string }[] = statsContent.
  * figure counts up from 0 and rises into place as the strip scrolls into view —
  * then stays at its final value, even when the visitor stops scrolling.
  */
-export function Stats() {
+export function Stats({ section }: { section: SectionOf<"stats"> }) {
+  const STATS = section.items;
   const rootRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -63,7 +62,7 @@ export function Stats() {
     }, rootRef);
 
     return () => mm.revert();
-  }, []);
+  }, [STATS]);
 
   return (
     <section ref={rootRef} className="relative pb-16 sm:pb-20">

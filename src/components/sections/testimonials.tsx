@@ -3,7 +3,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { cardGlassClassName } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import testimonialsContent from "@/content/sections/testimonials.json";
+import testimonialsContent from "@/content/testimonials.json";
+import type { SectionOf } from "@/lib/content/page-schema";
 
 type Testimonial = {
   quote: string;
@@ -34,15 +35,15 @@ const initials = (name: string) =>
     .map((part) => part[0]?.toUpperCase())
     .join("");
 
-export function Testimonials() {
+export function Testimonials({ section }: { section: SectionOf<"testimonials"> }) {
   if (TESTIMONIALS.length === 0) return null;
 
   return (
     <section className="relative py-24 sm:py-32">
       <Container className="flex flex-col gap-14">
         <SectionHeading
-          eyebrow="Client stories"
-          title="What founders say once the paperwork is done."
+          eyebrow={section.eyebrow || undefined}
+          title={section.heading}
           align="center"
           className="mx-auto"
         />

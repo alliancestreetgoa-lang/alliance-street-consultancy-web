@@ -1,0 +1,66 @@
+{
+  "title": "Services",
+  "path": "/services",
+  "status": "published",
+  "layout": "standard",
+  "seo": {
+    "title": "UAE & UK Company Setup, Tax & Accounting Services",
+    "description": "Explore UAE company formation, e-invoicing, VAT and corporate tax services, alongside UK incorporation, accounting and business advisory support.",
+    "image": {
+      "src": "/brand/service-advisory-business-consulting.jpg",
+      "alt": "Business strategy models and planning cards on a meeting table",
+      "position": "center"
+    },
+    "noindex": false,
+    "lastReviewed": "2026-10-01"
+  },
+  "sections": [
+    {
+      "type": "pageHero",
+      "hidden": false,
+      "anchor": "",
+      "badge": "Services",
+      "heading": "Business setup, tax and accounting for the UAE and UK.",
+      "subhead": "Company formation, e-invoicing, accounting and advisory support, organised around your business.",
+      "badgeStyle": "eyebrow",
+      "size": "standard",
+      "image": {
+        "src": "/brand/service-advisory-business-consulting.jpg",
+        "alt": "Business strategy models and planning cards on a meeting table",
+        "position": "center"
+      }
+    },
+    {
+      "type": "statement",
+      "hidden": false,
+      "anchor": "",
+      "eyebrowLead": "Our services",
+      "eyebrowAccent": "in full",
+      "statement": "Four service categories, one coordinated advisory relationship.",
+      "body": "Browse by what you need — setup, tax, UK compliance, or advisory — or book a call and we'll tell you which ones actually apply to your situation.",
+      "image": {
+        "src": "",
+        "alt": "",
+        "position": "center"
+      },
+      "imageSide": "left"
+    },
+    {
+      "type": "servicesIndex",
+      "hidden": false,
+      "anchor": ""
+    },
+    {
+      "type": "cta",
+      "hidden": false,
+      "anchor": "",
+      "eyebrow": "Get Started",
+      "heading": "Ready to talk it through?",
+      "description": "Book a call with an advisor — no obligation, no sales script, just a clear read on what setup makes sense for your business.",
+      "button": {
+        "label": "Book Consultation",
+        "href": "/book-consultation"
+      }
+    }
+  ]
+}

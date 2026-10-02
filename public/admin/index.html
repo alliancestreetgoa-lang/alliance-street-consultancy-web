@@ -3,16 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- noindex, and deliberately NOT a robots.txt Disallow. See the note at
-         the foot of src/app/robots.ts: a disallowed URL is never fetched, so
-         the noindex tag is never read, and the URL can still surface in
-         results as a bare link. Crawling stays allowed so this tag is seen. -->
+    <!-- noindex, and deliberately NOT a robots.txt Disallow: a disallowed URL is
+         never fetched, so this tag would never be read. -->
     <meta name="robots" content="noindex, nofollow" />
-    <title>Alliance Street — Content Editor</title>
+    <!-- The editor and staff portal moved to their own origin so that draft
+         previews published on this site can never read an editor's login.
+         See docs/cms-setup.md → "Why the admin is separate". -->
+    <meta http-equiv="refresh" content="0; url=https://alliance-street-leads.web.app/" />
+    <title>Alliance Street — Staff portal</title>
+    <style>body{font:16px/1.5 system-ui,sans-serif;margin:0;display:grid;place-items:center;min-height:100vh;background:#fff;color:#111}a{color:#b0171d}</style>
   </head>
   <body>
-    <!-- No type="module": Sveltia CMS is not distributed as an ES module, and
-         adding it breaks the JavaScript API. -->
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <p>The staff portal has moved to <a href="https://alliance-street-leads.web.app/">alliance-street-leads.web.app</a>.</p>
   </body>
 </html>

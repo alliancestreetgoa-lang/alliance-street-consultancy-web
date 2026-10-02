@@ -1,0 +1,47 @@
+{
+  "title": "Contact",
+  "path": "/contact",
+  "status": "published",
+  "layout": "standard",
+  "seo": {
+    "title": "Contact Our Dubai Business Advisory Team",
+    "description": "Contact Alliance Street Consultancy in Business Bay, Dubai about UAE or UK company formation, e-invoicing, tax, accounting and business advisory.",
+    "image": {
+      "src": "/brand/contact-hero.jpg",
+      "alt": "Illustrative consultation lounge with two chairs and a coffee table overlooking Dubai Business Bay",
+      "position": "center"
+    },
+    "noindex": false,
+    "lastReviewed": "2026-10-01"
+  },
+  "sections": [
+    {
+      "type": "pageHero",
+      "hidden": false,
+      "anchor": "",
+      "badge": "Contact",
+      "heading": "Tell us what you're working on.",
+      "subhead": "Email, WhatsApp, or the form below — an advisor replies within one business day.",
+      "badgeStyle": "eyebrow",
+      "size": "standard",
+      "image": {
+        "src": "/brand/contact-hero.jpg",
+        "alt": "Illustrative consultation lounge with two chairs and a coffee table overlooking Dubai Business Bay",
+        "position": "center"
+      }
+    },
+    {
+      "type": "contact",
+      "hidden": false,
+      "anchor": "",
+      "eyebrow": "Reach Us Directly",
+      "conversationHeading": "Prefer a conversation?",
+      "conversationBody": "Share your details, then choose a time for a Zoom appointment with Stallone Shaikh.",
+      "conversationButton": {
+        "label": "Book Appointment",
+        "href": "/book-appointment"
+      },
+      "showMessageForm": true
+    }
+  ]
+}

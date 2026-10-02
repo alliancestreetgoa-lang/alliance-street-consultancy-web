@@ -16,19 +16,25 @@ Database: `(default)`, Standard edition, London (`europe-west2`), free tier, del
 
 ## Reviewing leads
 
-Use the Firebase console, open Firestore Database, then the `leads` collection. Access is through the project's existing Google account permissions. There are no email alerts or client-facing lead lists.
+Staff use the **staff portal → Leads** (<https://alliance-street-leads.web.app/leads>), signing in with a Google account on the staff list (`staff/{email}` in Firestore, managed in the portal's Team & access screen). See [client-guide.md](client-guide.md) §8 and [cms-setup.md](cms-setup.md) for roles and the first-administrator bootstrap. The Firebase console still works for project owners.
+
+Staff follow-up (status, meeting confirmed, internal notes) is stored in `leadAdmin/{leadId}`, with an append-only `history` subcollection. It is never written into the visitor's own document.
 
 ## Security
 
-`firestore.rules` permits a visitor to create, read and update only their own session's lead. It rejects listing, deletion, invalid fields, unsupported services, ownership changes, changes to creation time, and reversing recorded choices. All other collections default to denied. Owner access is used for transactional, idempotent writes. Firebase SDK diagnostic payload logs are silenced so failed writes do not print contact details.
+`firestore.rules` permits a visitor to create, read and update only their own session's lead, exactly as before. It rejects listing, deletion, invalid fields, unsupported services, ownership changes, changes to creation time, and reversing recorded choices.
+
+Staff access is an explicit allowlist: a Google account with a verified email whose lower-case address has an active `staff/{email}` document. Staff can list and read leads and write `leadAdmin`; they cannot change visitor-submitted fields. Only `admin` can delete leads or manage the staff list, and an admin cannot change or remove their own entry. Everything else is denied by default. Tested in `tests/firestore-rules.test.ts` (`npm run test:rules`).
 
 `src/lib/firebase-config.json` is the public web application configuration, not an administrator credential. It is intentionally included in the static build. Never add service-account keys or Firebase CLI tokens to this repository or browser bundle.
 
-Deploy only database/auth configuration with:
+Deploy database rules and sign-in providers with:
 
 ```sh
-firebase deploy --only auth,firestore:rules --project alliance-street-leads
+npx firebase-tools deploy --only auth,firestore:rules --project alliance-street-leads
 ```
+
+Firebase Hosting on this project serves only the staff portal and content editor (`alliance-street-leads.web.app`); the public website and the client's domain are not on it.
 
 The site uses the existing GitHub Pages review deployment. Firebase Hosting and the client’s custom domain are not changed by this integration.
 

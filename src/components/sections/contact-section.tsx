@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,6 +11,10 @@ import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { COMPANY } from "@/lib/site-config";
+import { FORMS } from "@/lib/content/settings";
+import { fill } from "@/lib/content/fill";
+import { SmartLink } from "@/components/ui/smart-link";
+import type { SectionOf } from "@/lib/content/page-schema";
 import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
@@ -22,7 +25,8 @@ const contactSchema = z.object({
 
 type ContactValues = z.infer<typeof contactSchema>;
 
-export function ContactSection() {
+export function ContactSection({ section }: { section: SectionOf<"contact"> }) {
+  const copy = FORMS.contact;
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -44,7 +48,7 @@ export function ContactSection() {
       <Container className="relative z-10 grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
         <Reveal className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">
-            <span className="text-sm font-medium uppercase tracking-widest text-primary">Reach Us Directly</span>
+            {section.eyebrow ? <span className="text-sm font-medium uppercase tracking-widest text-primary">{section.eyebrow}</span> : null}
             <p className="text-muted-foreground">{COMPANY.address}</p>
           </div>
           <div className="flex flex-col gap-3 text-sm">
@@ -64,27 +68,21 @@ export function ContactSection() {
             )}
           </div>
           <div className="border-t border-border pt-8">
-            <h2 className="text-2xl font-semibold tracking-tight">Prefer a conversation?</h2>
-            <p className="mt-3 max-w-sm text-muted-foreground">Share your details, then choose a time for a Zoom appointment with Stallone Shaikh.</p>
-            <Button asChild className="mt-5" size="lg"><Link href="/book-appointment"><CalendarDays aria-hidden /> Book Appointment</Link></Button>
+            <h2 className="text-2xl font-semibold tracking-tight">{section.conversationHeading}</h2>
+            <p className="mt-3 max-w-sm text-muted-foreground">{section.conversationBody}</p>
+            <Button asChild className="mt-5" size="lg"><SmartLink href={section.conversationButton.href}><CalendarDays aria-hidden /> {section.conversationButton.label}</SmartLink></Button>
           </div>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        {section.showMessageForm ? <Reveal delay={0.1}>
         <Card variant="glass" hover={false}>
           {submitted ? (
-            <p className="text-primary">
-              Thanks — this form isn&apos;t wired to send yet. Email{" "}
-              <a href={`mailto:${COMPANY.email}`} className="underline">
-                {COMPANY.email}
-              </a>{" "}
-              directly and we&apos;ll reply within one business day.
-            </p>
+            <p className="text-primary">{fill(copy.notConnectedMessage)}</p>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
               <div>
                 <label htmlFor="contact-name" className="mb-2 block text-sm text-foreground/90">
-                  Name
+                  {copy.labels.name}
                 </label>
                 <input
                   id="contact-name"
@@ -105,7 +103,7 @@ export function ContactSection() {
               </div>
               <div>
                 <label htmlFor="contact-email" className="mb-2 block text-sm text-foreground/90">
-                  Email
+                  {copy.labels.email}
                 </label>
                 <input
                   id="contact-email"
@@ -126,7 +124,7 @@ export function ContactSection() {
               </div>
               <div>
                 <label htmlFor="contact-message" className="mb-2 block text-sm text-foreground/90">
-                  Message
+                  {copy.labels.message}
                 </label>
                 <textarea
                   id="contact-message"
@@ -145,11 +143,11 @@ export function ContactSection() {
                   </p>
                 ) : null}
               </div>
-              <Button size="lg" className="self-start" onClick={handleSubmit(onSubmit)}>{isSubmitting ? "Sending..." : "Send Message"}</Button>
+              <Button size="lg" className="self-start" onClick={handleSubmit(onSubmit)}>{isSubmitting ? copy.sendingButton : copy.submitButton}</Button>
             </form>
           )}
         </Card>
-        </Reveal>
+        </Reveal> : null}
       </Container>
     </section>
   );

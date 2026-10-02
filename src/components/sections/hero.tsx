@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SmartLink } from "@/components/ui/smart-link";
 import { Container } from "@/components/ui/container";
 import { DisplayHeading } from "@/components/ui/display-heading";
 import { asset } from "@/lib/asset-path";
 import { gsap } from "@/lib/gsap";
 import { MOTION_QUERY, settle } from "@/lib/motion";
-import headlines from "@/content/sections/headlines.json";
+import type { SectionOf } from "@/lib/content/page-schema";
+import { THEME } from "@/lib/theme";
 
 
 /**
@@ -22,7 +23,7 @@ import headlines from "@/content/sections/headlines.json";
  * the video reproduce the live card's black-on-light contrast so the type
  * reads the same way.
  */
-export function Hero() {
+export function Hero({ section }: { section: SectionOf<"homeHero"> }) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
@@ -35,7 +36,7 @@ export function Hero() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let visible = false;
     const sync = () => {
-      if (visible && !document.hidden && !reduced.matches) void video.play().catch(() => {});
+      if (visible && !document.hidden && !reduced.matches && THEME.motion !== "off") void video.play().catch(() => {});
       else video.pause();
     };
     const observer = new IntersectionObserver(([entry]) => {
@@ -81,17 +82,22 @@ export function Hero() {
               will-change, so it is not a stacking context, and a negative
               z-index would paint the video behind the card's own fill. */}
           <div aria-hidden className="absolute inset-0 z-0">
-            <video
-              ref={videoRef}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={asset("/brand/hero-video-poster.jpg")}
-              className="absolute inset-0 h-full w-full object-cover object-[center_40%]"
-            >
-              <source src={asset("/brand/hero-video.mp4")} type="video/mp4" />
-            </video>
+            {section.video ? (
+              <video
+                ref={videoRef}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={asset(section.poster)}
+                className="absolute inset-0 h-full w-full object-cover object-[center_40%]"
+              >
+                <source src={asset(section.video)} type={section.video.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+              </video>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- decorative poster, same treatment as the video
+              <img src={asset(section.poster)} alt="" className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
+            )}
             <div className="absolute inset-0 bg-background/15" />
             {/* Denser bed under the copy column so the headline never fights the skyline. */}
             <div className="absolute inset-0 bg-[linear-gradient(100deg,color-mix(in_oklch,var(--background)_88%,transparent)_0%,color-mix(in_oklch,var(--background)_62%,transparent)_46%,color-mix(in_oklch,var(--background)_0%,transparent)_100%)]" />
@@ -102,34 +108,36 @@ export function Hero() {
             className="relative z-10 flex flex-col items-start gap-5 px-5 py-10 sm:gap-6 sm:px-12 sm:py-20 lg:[@media(max-height:820px)]:py-12 [@media(max-height:500px)]:py-8"
           >
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs text-foreground sm:gap-3 sm:px-4 sm:py-2 sm:text-sm">
-              UAE &amp; UK company formation, tax &amp; advisory
-              <Link href="/services" className="font-semibold underline underline-offset-4">
-                Read more
-              </Link>
+              {section.badge}
+              {section.badgeLink?.label ? (
+                <SmartLink href={section.badgeLink.href} className="font-semibold underline underline-offset-4">
+                  {section.badgeLink.label}
+                </SmartLink>
+              ) : null}
             </span>
 
             <DisplayHeading
-              text={headlines.home}
+              text={section.heading}
               className="max-w-3xl text-left text-hero lg:[@media(max-height:820px)]:text-[3.5rem] [@media(max-height:500px)]:text-4xl"
             />
 
             <p className="max-w-xl text-sm text-foreground/75 sm:text-base">
-              Alliance Street handles UAE and UK company setup, tax, accounting, and advisory under
-              one roof — so you spend less time on paperwork and more time running the business you
-              started it for.
+              {section.body}
             </p>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
               <Button size="lg" asChild>
-                <Link href="/book-consultation">Book a Consultation</Link>
+                <SmartLink href={section.primaryButton.href}>{section.primaryButton.label}</SmartLink>
               </Button>
-              <Link
-                href="/services"
-                className="group inline-flex items-center gap-2 text-base font-semibold text-foreground"
-              >
-                View services
-                <ArrowRight className="size-4 transition-transform duration-350 group-hover:translate-x-1" />
-              </Link>
+              {section.secondaryButton?.label ? (
+                <SmartLink
+                  href={section.secondaryButton.href}
+                  className="group inline-flex items-center gap-2 text-base font-semibold text-foreground"
+                >
+                  {section.secondaryButton.label}
+                  <ArrowRight className="size-4 transition-transform duration-350 group-hover:translate-x-1" />
+                </SmartLink>
+              ) : null}
             </div>
           </div>
           </div>

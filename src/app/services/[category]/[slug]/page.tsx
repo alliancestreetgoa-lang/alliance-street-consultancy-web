@@ -2,7 +2,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServiceDetail } from "@/components/sections/service-detail";
-import { BookConsultationCTA } from "@/components/sections/book-consultation-cta";
+import { Cta } from "@/components/sections/content-sections";
+import { getPageByPath } from "@/lib/content/pages";
+import { SERVICE_PAGE } from "@/lib/content/settings";
+import type { SectionOf } from "@/lib/content/page-schema";
 import { SERVICES, getService } from "@/lib/services-data";
 import { buildBreadcrumbJsonLd, buildServiceJsonLd, buildFaqJsonLd, absoluteUrl, jsonLdScriptProps } from "@/lib/schema";
 
@@ -44,6 +47,12 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
   const service = getService(category, slug);
   if (!service) notFound();
 
+  // The closing call to action mirrors the one on the Services page, so it is
+  // edited in one place.
+  const closingCta = SERVICE_PAGE.showClosingCta
+    ? getPageByPath("/services")?.sections.find((s): s is SectionOf<"cta"> => s.type === "cta" && !s.hidden)
+    : undefined;
+
   const related = SERVICES.filter((item) => item.group === service.group && item.slug !== service.slug).slice(0, 4);
 
   // 3-level trail, not 4: there is no /services/[category] index route, and a
@@ -60,7 +69,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
       <script {...jsonLdScriptProps(breadcrumbJsonLd)} />
       {service.search && <script {...jsonLdScriptProps(buildFaqJsonLd(service.search.faqs))} />}
       <ServiceDetail service={service} related={related} />
-      <BookConsultationCTA />
+      {closingCta ? <Cta section={closingCta} /> : null}
     </>
   );
 }

@@ -1,0 +1,14 @@
+{
+  "breadcrumbPrefix": "All services",
+  "bookButton": { "label": "Book a Consultation", "href": "/book-consultation" },
+  "howWeHelpHeading": "How we help",
+  "sourcesLabel": "Sources:",
+  "verifiedLabel": "Figures verified",
+  "disclaimer": "General information, not tax advice — thresholds and deadlines change.",
+  "includedHeading": "What's Included",
+  "preparationHeading": "What to prepare for your consultation",
+  "faqHeading": "Common questions",
+  "whoForHeading": "Who This Is For",
+  "relatedHeading": "Related Services",
+  "showClosingCta": true
+}

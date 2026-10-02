@@ -50,3 +50,7 @@ firebase-debug.log*
 .firestore-debug.log*
 
 .firebase-test-records.json
+/e2e-out/
+/test-results/
+/playwright-report/
+/admin/dist/

@@ -1,21 +1,18 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ServicesOverviewHeader } from "@/components/sections/content-sections";
+import type { SectionOf } from "@/lib/content/page-schema";
 import { Container } from "@/components/ui/container";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SERVICES } from "@/lib/content";
 
 const GROUPS = [...new Set(SERVICES.map((service) => service.group))];
 
-export function ServicePreview() {
+export function ServicePreview({ section }: { section: SectionOf<"servicesOverview"> }) {
   return (
     <section className="relative py-24 sm:py-32">
       <Container className="flex flex-col gap-12 sm:gap-16">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-          <SectionHeading eyebrow="Services" title="Everything we do, in one place." />
-          <Button variant="ghost" size="lg" asChild><Link href="/services">View All Services</Link></Button>
-        </div>
+        <ServicesOverviewHeader section={section} />
         <Stagger className="grid items-start gap-10 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-14">
           {GROUPS.map((group) => (
             <StaggerItem key={group} className="as-neon-card rounded-2xl border border-border bg-card p-6 sm:p-8">

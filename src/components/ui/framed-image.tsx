@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { asset } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
+import { OBJECT_POSITION } from "@/lib/image-position";
 
 type FramedImageProps = {
   src: string;
@@ -9,6 +10,7 @@ type FramedImageProps = {
   aspectClassName?: string;
   sizes?: string;
   className?: string;
+  position?: keyof typeof OBJECT_POSITION;
 };
 
 export function FramedImage({
@@ -18,6 +20,7 @@ export function FramedImage({
   aspectClassName = "aspect-video",
   sizes = "(min-width: 1024px) 800px, 100vw",
   className,
+  position = "center",
 }: FramedImageProps) {
   return (
     <div
@@ -29,7 +32,7 @@ export function FramedImage({
     >
       {/* Static fill image. The live site does not parallax its photography —
           images sit still inside their frame and only the section reveals. */}
-      <Image src={asset(src)} alt={alt} fill sizes={sizes} className="object-cover" />
+      <Image src={asset(src)} alt={alt} fill sizes={sizes} className={cn("object-cover", OBJECT_POSITION[position])} />
       {caption ? (
         <div className="absolute bottom-0 left-0 p-5">
           <span className="text-xs font-semibold uppercase tracking-widest text-white/80">{caption}</span>

@@ -7,7 +7,7 @@
  */
 import type { SiteContent } from "@/lib/content";
 
-export { COMPANY, NAV_GROUPS, PRIMARY_NAV } from "@/lib/content";
+export { COMPANY, NAV_GROUPS, PRIMARY_NAV, HEADER, FOOTER } from "@/lib/content";
 
 export type NavLink = SiteContent["primaryNav"][number];
 export type NavGroup = SiteContent["navGroups"][number];

@@ -1,0 +1,54 @@
+{
+  "appointmentUrl": "https://scheduler.zoom.us/stallone-shaikh/strategic-advisory-call",
+  "consultation": {
+    "stepOneNote": "Step 1 of 2 — Your details. Press Continue to save your details with Alliance Street, then choose an enquiry or a Zoom appointment.",
+    "labels": {
+      "name": "Full name",
+      "country": "Country",
+      "email": "Email address",
+      "phone": "Contact number",
+      "address": "Address",
+      "services": "Which services do you need?",
+      "notes": "Additional information"
+    },
+    "phoneHint": "Include your country code, for example +971 or +44.",
+    "servicesHint": "Choose one or more.",
+    "optionalLabel": "(optional)",
+    "notesPlaceholder": "Tell us about your business, your questions, or anything you would like us to know.",
+    "consentText": "By pressing Continue, you ask Alliance Street to save these details and contact you about your selected services, even if you do not finish booking. Read our",
+    "privacyLinkLabel": "privacy policy",
+    "continueButton": "Continue",
+    "savingButton": "Saving your details…",
+    "saveError": "We couldn’t save your details. Please check your connection and try Continue again. Your entries are still here.",
+    "stepTwoHeading": "Step 2 of 2 — How would you like to connect?",
+    "stepTwoIntro": "Your details have been saved. Choose an enquiry or a scheduled conversation.",
+    "reviewDetails": "Review your details",
+    "enquiryHeading": "Send an enquiry",
+    "enquiryBody": "Ask our team to follow up about the services you selected. We’ll record your request alongside your saved details.",
+    "enquiryButton": "Send enquiry",
+    "enquirySavedButton": "Enquiry saved",
+    "enquirySavedMessage": "Your enquiry has been saved for our team. You can also book a Zoom appointment.",
+    "appointmentHeading": "Book an appointment",
+    "appointmentBody": "Choose a time for a 30-minute Zoom call with Stallone Shaikh. Confirm your booking in Zoom to reserve the appointment.",
+    "appointmentButton": "Book appointment",
+    "appointmentSavedMessage": "Your appointment preference is saved. Choose and confirm your time in Zoom next.",
+    "openCalendarButton": "Open Zoom calendar",
+    "appointmentFootnote": "Your details remain saved with Alliance Street. Zoom asks for booking details separately; a booking is confirmed only after you complete its calendar steps.",
+    "choiceSaving": "Saving your choice…",
+    "choiceError": "Your contact details are saved, but we couldn’t save this choice. Please try again.",
+    "editDetails": "Edit details"
+  },
+  "contact": {
+    "labels": { "name": "Name", "email": "Email", "message": "Message" },
+    "submitButton": "Send Message",
+    "sendingButton": "Sending...",
+    "notConnectedMessage": "Thanks — this form isn't wired to send yet. Email {{company.email}} directly and we'll reply within one business day."
+  },
+  "newsletter": {
+    "emailLabel": "Email address",
+    "placeholder": "you@company.com",
+    "button": "Subscribe",
+    "submittingButton": "Submitting...",
+    "thanksMessage": "Thanks — you're on the list."
+  }
+}

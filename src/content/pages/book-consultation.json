@@ -1,0 +1,28 @@
+{
+  "title": "Book a Consultation",
+  "path": "/book-consultation",
+  "status": "published",
+  "layout": "standard",
+  "seo": {
+    "title": "Book a Consultation",
+    "description": "Request a consultation with Alliance Street. Share your contact details, choose UAE setup, UAE tax and compliance, UK services or advisory, and add your questions.",
+    "image": {
+      "src": "",
+      "alt": "",
+      "position": "center"
+    },
+    "noindex": false,
+    "lastReviewed": "2026-08-10"
+  },
+  "sections": [
+    {
+      "type": "consultationForm",
+      "hidden": false,
+      "anchor": "",
+      "badge": "Book a Consultation",
+      "heading": "Let’s talk about your business.",
+      "intro": "Share your contact details and choose the services you need. Add a note if there’s anything you’d like us to know before we speak.",
+      "requiredNote": "Fields marked * are required."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Book an Appointment",
+  "path": "/book-appointment",
+  "status": "published",
+  "layout": "standard",
+  "seo": {
+    "title": "Book a Zoom Appointment",
+    "description": "Share your details and choose a time for a Zoom appointment with Stallone Shaikh at Alliance Street.",
+    "image": {
+      "src": "",
+      "alt": "",
+      "position": "center"
+    },
+    "noindex": false,
+    "lastReviewed": "2026-10-01"
+  },
+  "sections": [
+    {
+      "type": "consultationForm",
+      "hidden": false,
+      "anchor": "",
+      "badge": "Book an Appointment",
+      "heading": "Book a conversation with Stallone.",
+      "intro": "Enter your contact details and select your services first. Then choose to send an enquiry or book a time on Stallone Shaikh’s Zoom calendar.",
+      "requiredNote": "Fields marked * are required."
+    }
+  ]
+}

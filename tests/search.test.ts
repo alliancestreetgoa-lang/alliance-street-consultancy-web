@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { SERVICES } from "@/lib/services-data";
 import { buildFaqJsonLd, buildServiceJsonLd, jsonLdScriptProps } from "@/lib/schema";
 import { pageMetadata } from "@/lib/content/metadata";
-import pages from "@/content/pages.json";
+import { getPublishedPages } from "@/lib/content/pages";
 
 describe("search content", () => {
   it("gives every service distinct search copy and a visible answer", () => {
@@ -25,11 +25,11 @@ describe("search content", () => {
   });
 
   it("keeps page sharing metadata specific to each route", () => {
-    for (const page of pages.pages) {
-      const meta = pageMetadata(page.route);
-      expect(meta.alternates?.canonical).toBe(page.route);
-      expect(meta.openGraph?.title).toContain(page.title);
-      expect(meta.twitter?.description).toBe(page.description);
+    for (const page of getPublishedPages()) {
+      const meta = pageMetadata(page);
+      expect(meta.alternates?.canonical).toBe(page.path);
+      if (page.seo.title) expect(meta.openGraph?.title).toContain(page.seo.title);
+      if (page.seo.description) expect(meta.twitter?.description).toBe(page.seo.description);
       expect(meta.openGraph?.images).toBeTruthy();
     }
   });

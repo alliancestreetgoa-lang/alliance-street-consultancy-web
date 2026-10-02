@@ -11,4 +11,4 @@
  * verification date fails the build rather than relying on discipline.
  */
 export type { DirectAnswer, Service } from "@/lib/content";
-export { SERVICES, DIRECT_ANSWERS, GROUP_IMAGES, getService } from "@/lib/content";
+export { SERVICES, DIRECT_ANSWERS, getService } from "@/lib/content";

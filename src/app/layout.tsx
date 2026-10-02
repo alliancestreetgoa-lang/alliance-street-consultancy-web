@@ -10,6 +10,9 @@ import { SiteFooter } from "@/components/ui/site-footer";
 import { SITE_URL, IS_PREVIEW_SITE } from "@/lib/site-url";
 import { SEO } from "@/lib/content";
 import { buildOrganizationJsonLd, buildWebsiteJsonLd, jsonLdScriptProps } from "@/lib/schema";
+import { THEME, accentCss } from "@/lib/theme";
+
+const PREVIEW_LABEL = process.env.NEXT_PUBLIC_PREVIEW_LABEL;
 
 // Space Mono carries the live site's eyebrows and small-caps labels.
 const spaceMono = Space_Mono({
@@ -52,13 +55,13 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SEO.siteName,
     locale: "en_GB",
-    images: [{ url: `${SITE_URL}/brand/about-hero.jpg`, alt: "Alliance Street Consultancy — UAE and UK business advisory" }],
+    images: [{ url: `${SITE_URL}${SEO.shareImage.src}`, alt: SEO.shareImage.alt }],
     title: SEO.defaultTitle,
     description: SEO.defaultDescription,
   },
   twitter: {
     card: "summary_large_image",
-    images: [`${SITE_URL}/brand/about-hero.jpg`],
+    images: [`${SITE_URL}${SEO.shareImage.src}`],
     title: SEO.defaultTitle,
     description: SEO.defaultDescription,
   },
@@ -73,13 +76,21 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceMono.variable} ${inter.variable} h-full antialiased`}
+      data-motion={THEME.motion}
+      data-spacing={THEME.sectionSpacing}
+      data-text-size={THEME.textSize}
+      data-font={THEME.font}
     >
+      <head>
+        {/* Brand accent from the CMS theme settings — a vetted preset, see lib/theme.ts. */}
+        <style>{accentCss()}</style>
+      </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         {/* Entity-level schema — rendered on every route so the Organization
             and WebSite nodes other pages reference by @id always resolve. */}
         <script {...jsonLdScriptProps(buildOrganizationJsonLd())} />
         <script {...jsonLdScriptProps(buildWebsiteJsonLd())} />
-        <SiteIntro />
+        {THEME.openingAnimation ? <SiteIntro /> : null}
         <LazyMotion features={domAnimation} strict>
           <SmoothScrollProvider>
             <Navbar />
@@ -87,6 +98,12 @@ export default function RootLayout({
             <SiteFooter />
           </SmoothScrollProvider>
         </LazyMotion>
+        {PREVIEW_LABEL ? (
+          // Draft previews only (set by deploy-pages.yml). Never in the live build.
+          <div role="note" className="fixed inset-x-0 bottom-0 z-[90] bg-black px-4 py-2 text-center text-sm text-white">
+            Preview of an unpublished change ({PREVIEW_LABEL}) — not the live website.
+          </div>
+        ) : null}
       </body>
     </html>
   );

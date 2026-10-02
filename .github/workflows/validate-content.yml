@@ -1,12 +1,8 @@
 name: Validate content
 
-# Runs on every pull request, which is what the CMS opens when someone edits a
-# tax figure (see publish_mode: editorial_workflow in public/admin/config.yml).
-#
-# Without this, a reviewer merging a content change would be approving blind:
-# the content schema is only enforced at build time, and the build only runs
-# after the merge. This moves that check in front of the merge, so the pull
-# request itself says whether the change is publishable.
+# Runs on every draft (pull request) — the CMS opens one for each saved change.
+# "Publish check" is a required status on main: a draft that fails it cannot be
+# published. When it finishes, deploy-pages.yml rebuilds the draft's preview.
 on:
   pull_request:
     branches: ["main"]
@@ -20,30 +16,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate:
+  publish-check:
+    name: Publish check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+      - uses: actions/checkout@v7
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      # Content schemas first and on its own: this is the check a content
-      # editor's pull request is actually about, and naming it separately means
-      # the failure in the PR's checks list reads "Content schemas", not
-      # "Build".
-      - name: Content schemas
+      # Content first and on its own: this is the check an editor's draft is
+      # about, so its failure reads "Content schemas", not "Build".
+      - name: Content schemas, links and media
         run: npm run validate:content
 
       - name: Types
-        run: npx tsc --noEmit
+        run: npx tsc --noEmit && npx tsc -p admin/tsconfig.json
 
       - name: Lint
         run: npm run lint
@@ -58,13 +50,18 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://alliancestreetgoa-lang.github.io
         run: npm run build
 
-      # So a reviewer can look at the built pages rather than reading a diff of
-      # JSON. GitHub Pages only serves one branch, so a real preview deployment
-      # would mean a second host; an artifact is the honest version of this on
-      # the current stack.
-      - name: Upload built site for review
-        uses: actions/upload-artifact@v7
+  security-rules:
+    name: Database security rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          name: site-preview
-          path: out
-          retention-days: 7
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: npm ci
+      - run: npm run test:rules
