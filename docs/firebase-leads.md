@@ -2,7 +2,7 @@
 
 Project: `alliance-street-leads` (Alliance Street Leads)
 Console: https://console.firebase.google.com/project/alliance-street-leads/firestore
-Database: `(default)`, Standard edition, London (`europe-west2`), on the Blaze (pay-as-you-go) plan — usage within the free quotas costs nothing — deletion protection enabled.
+Database: `(default)`, Standard edition, London (`europe-west2`), on the Blaze (pay-as-you-go) plan — usage within the free quotas costs nothing — deletion protection enabled, daily backups (14-day retention) and 7-day point-in-time recovery enabled 2026-10-02.
 
 ## Flow
 

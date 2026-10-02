@@ -159,15 +159,17 @@ Done from the staff portal → **Team & access**; the steps below are the manual
   portal's rollback).
 - **Media:** in `public/brand/`, versioned the same way.
 - **Leads:** the project is on the Blaze (pay-as-you-go) plan with deletion
-  protection on. As of 2026-10-02 there are **no scheduled backups and
-  point-in-time recovery is off**. Both are available on Blaze and cost very
-  little at this volume:
-  ```sh
-  npx firebase-tools firestore:backups:schedules:create --project alliance-street-leads --recurrence DAILY --retention 14d
-  npx firebase-tools firestore:databases:update "(default)" --project alliance-street-leads --enable-pitr
-  ```
-  Restore with `firestore:databases:restore` (backups) or a point-in-time
-  read/export (PITR, last 7 days). Admins can also export CSV from the portal.
+  protection on. Since 2026-10-02:
+  - **Daily backups**, kept 14 days (`firestore:backups:schedules:list` to check).
+  - **Point-in-time recovery**, which keeps every version from the last 7 days.
+
+  Restore a backup into a new database with
+  `npx firebase-tools firestore:databases:restore --backup <backup-name> --database <new-db> --project alliance-street-leads`
+  (list backups with `firestore:backups:list`), then copy back what is needed.
+  For PITR, export or read the database as of an earlier time (see Google's
+  "Firestore point-in-time recovery" guide). When changing database settings
+  from the CLI, always pass `--delete-protection ENABLED`: the update command
+  defaults it to disabled. Admins can also export CSV from the portal.
 - **Configuration:** `firebase.json`, `firestore.rules` and
   `admin/public/cms/config.yml` are in the repo; redeploy with the commands in
   step 3.
