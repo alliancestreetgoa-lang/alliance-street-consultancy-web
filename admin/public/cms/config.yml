@@ -72,7 +72,7 @@ collections:
   delete: true
   identifier_field: title
   slug: '{{title}}'
-  summary: '{{title}} — {{path}}{{status | ternary(" (hidden)", "")}}'
+  summary: '{{title}} — {{path}}'
   sortable_fields:
   - title
   - path

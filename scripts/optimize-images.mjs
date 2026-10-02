@@ -28,7 +28,7 @@ async function main() {
   }
   await mkdir(OUT_DIR, { recursive: true });
 
-  const files = (await readdir(SOURCE_DIR)).filter((f) => /\.(jpe?g|png)$/i.test(f));
+  const files = (await readdir(SOURCE_DIR)).filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
   let generated = 0;
   let skipped = 0;
   const manifest = {};

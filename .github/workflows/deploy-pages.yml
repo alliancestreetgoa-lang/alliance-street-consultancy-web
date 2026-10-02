@@ -120,7 +120,7 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ env.BASE_PATH }}/_preview/pr-${{ matrix.draft.number }}
           NEXT_PUBLIC_SITE_URL: ${{ env.SITE_ORIGIN }}
-          NEXT_PUBLIC_PREVIEW_LABEL: Draft #${{ matrix.draft.number }}
+          NEXT_PUBLIC_PREVIEW_LABEL: "Draft #${{ matrix.draft.number }}"
         run: npm run build
       # Packaged inside its own pr-<n> folder: download-artifact unpacks a
       # single matching artifact without a sub-folder, so the name has to live
