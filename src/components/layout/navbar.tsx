@@ -6,7 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { m, useScroll, useSpring, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { NAV_GROUPS, PRIMARY_NAV, type NavLink } from "@/lib/site-config";
+import { HEADER, NAV_GROUPS, PRIMARY_NAV, type NavLink } from "@/lib/site-config";
+import { SmartLink } from "@/components/ui/smart-link";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -96,21 +97,21 @@ export function Navbar() {
         <nav className="flex h-20 items-center justify-between">
           <Link href="/" data-nav-brand className="flex items-center gap-2.5">
             <Image
-              src={asset("/brand/logo-mark.png")}
+              src={asset(HEADER.logo)}
               alt=""
               width={34}
               height={28}
               priority
               style={{ width: "34px", height: "28px" }}
             />
-            <span className="text-lg font-semibold text-foreground">Alliance Street</span>
+            <span className="text-lg font-semibold text-foreground">{HEADER.brandName}</span>
           </Link>
 
           <div className="hidden xl:flex">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={NAV_CHIP}>Services</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className={NAV_CHIP}>{HEADER.servicesMenuLabel}</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     {/* Sized to the screen rather than a fixed 760px: wide enough
                         that titles sit on one line, in rem so it scales with the
@@ -149,7 +150,7 @@ export function Navbar() {
 
           <div className="hidden xl:block">
             <Button asChild>
-              <Link href="/book-consultation">Book Consultation</Link>
+              <SmartLink href={HEADER.button.href}>{HEADER.button.label}</SmartLink>
             </Button>
           </div>
 
@@ -165,13 +166,13 @@ export function Navbar() {
                 <div className="flex h-20 items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <Image
-                      src={asset("/brand/logo-mark.png")}
+                      src={asset(HEADER.logo)}
                       alt=""
                       width={24}
                       height={20}
                       style={{ width: "24px", height: "20px" }}
                     />
-                    <span className="text-lg font-semibold text-foreground">Alliance Street</span>
+                    <span className="text-lg font-semibold text-foreground">{HEADER.brandName}</span>
                   </div>
                   <SheetClose asChild>
                     <button type="button" className="text-foreground" aria-label="Close menu">
@@ -219,9 +220,9 @@ export function Navbar() {
                     </div>
                   ))}
                   <Button asChild className="w-full">
-                    <Link href="/book-consultation" onClick={() => setMobileOpen(false)}>
-                      Book Consultation
-                    </Link>
+                    <SmartLink href={HEADER.button.href} onClick={() => setMobileOpen(false)}>
+                      {HEADER.button.label}
+                    </SmartLink>
                   </Button>
                 </div>
               </Container>

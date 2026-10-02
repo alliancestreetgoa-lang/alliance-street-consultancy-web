@@ -18,6 +18,3 @@ export const consultationSchema = z.object({
 });
 
 export type ConsultationValues = z.infer<typeof consultationSchema>;
-
-// Published booking destination linked from Stallone Shaikh’s personal profile.
-export const APPOINTMENT_URL = "https://scheduler.zoom.us/stallone-shaikh/strategic-advisory-call";

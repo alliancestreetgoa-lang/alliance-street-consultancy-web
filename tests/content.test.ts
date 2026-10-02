@@ -1,49 +1,39 @@
 import { describe, expect, it } from "vitest";
-import { existsSync } from "node:fs";
-import heroImages from "@/content/service-hero-images.json";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { z } from "zod";
 
+import heroImages from "@/content/service-hero-images.json";
 import services from "@/content/services.json";
 import directAnswers from "@/content/direct-answers.json";
-import groupImages from "@/content/group-images.json";
 import site from "@/content/site.json";
-import aboutExpertise from "@/content/sections/about-expertise.json";
-import aboutPrinciples from "@/content/sections/about-principles.json";
-import caseStudies from "@/content/sections/case-studies.json";
-import differentiators from "@/content/sections/differentiators.json";
-import headlines from "@/content/sections/headlines.json";
-import homeFaq from "@/content/sections/home-faq.json";
-import industries from "@/content/sections/industries.json";
-import pricingFactors from "@/content/sections/pricing-factors.json";
-import process_ from "@/content/sections/process.json";
-import stats from "@/content/sections/stats.json";
-import testimonials from "@/content/sections/testimonials.json";
+import forms from "@/content/forms.json";
+import servicePage from "@/content/service-page.json";
+import theme from "@/content/theme.json";
+import testimonials from "@/content/testimonials.json";
 
 import {
-  caseStudySchema,
   directAnswersSchema,
-  entriesSchema,
-  faqSchema,
-  groupImagesSchema,
+  formsSchema,
   serviceHeroImagesSchema,
+  servicePageSchema,
   servicesSchema,
   siteSchema,
+  testimonialsSchema,
+  themeSchema,
   SERVICE_GROUPS,
 } from "@/lib/content/schema";
+import { CORE_PAGES, RESERVED_PATHS, pageSchema } from "@/lib/content/page-schema";
 
 /**
  * The publish gate.
  *
- * After handover the client edits these files through the CMS with nobody
- * reviewing the diff, so this suite is the only thing standing between a
- * malformed edit and production. It runs in `npm test` and again in `prebuild`,
- * which means a bad edit fails the build rather than deploying.
- *
- * Failures here should read as instructions to a non-developer, which is why
- * the schemas carry human-readable messages.
+ * Every CMS change is a pull request, and this suite runs on it (Validate
+ * content workflow) and again in `prebuild`. A change that fails here cannot
+ * be published and cannot be deployed — the live site keeps serving the
+ * previous version. Failures name the file and field in plain words, because
+ * the person reading them is an editor, not a developer.
  */
 
-/** Reports zod's path + message rather than a wall of JSON. */
 function check(label: string, schema: z.ZodType, value: unknown) {
   const result = schema.safeParse(value);
   if (!result.success) {
@@ -54,70 +44,127 @@ function check(label: string, schema: z.ZodType, value: unknown) {
   }
 }
 
+const PAGE_DIR = "src/content/pages";
+const pageFiles = readdirSync(PAGE_DIR).filter((f) => f.endsWith(".json"));
+const rawPages = pageFiles.map((file) => ({
+  id: file.replace(/\.json$/, ""),
+  file,
+  data: JSON.parse(readFileSync(`${PAGE_DIR}/${file}`, "utf8")) as Record<string, unknown> & {
+    path: string; status?: string; title: string;
+  },
+}));
+
 describe("content schemas", () => {
   it("services.json", () => check("services.json", servicesSchema, services.services));
   it("direct-answers.json", () => check("direct-answers.json", directAnswersSchema, directAnswers.answers));
-  it("group-images.json", () => check("group-images.json", groupImagesSchema, groupImages.images));
   it("service-hero-images.json", () => check("service-hero-images.json", serviceHeroImagesSchema, heroImages.images));
   it("site.json", () => check("site.json", siteSchema, site));
+  it("forms.json", () => check("forms.json", formsSchema, forms));
+  it("service-page.json", () => check("service-page.json", servicePageSchema, servicePage));
+  it("theme.json", () => check("theme.json", themeSchema, theme));
+  it("testimonials.json", () => check("testimonials.json", testimonialsSchema, testimonials.items));
+  it.each(pageFiles)("pages/%s", (file) =>
+    check(`pages/${file}`, pageSchema, JSON.parse(readFileSync(`${PAGE_DIR}/${file}`, "utf8"))));
+});
 
-  it.each([
-    ["about-expertise", aboutExpertise],
-    ["about-principles", aboutPrinciples],
-    ["differentiators", differentiators],
-    ["industries", industries],
-    ["pricing-factors", pricingFactors],
-    ["process", process_],
-  ])("sections/%s.json", (name, value) => check(`sections/${name}.json`, entriesSchema, (value as { items: unknown }).items));
-
-  it("sections/stats.json", () =>
-    check(
-      "sections/stats.json",
-      z
-        .array(
-          z.object({
-            value: z.number().int("the number must be a whole number").min(0, "the number cannot be negative"),
-            suffix: z.string().max(3, "keep the suffix to a symbol such as +").optional(),
-            label: z.string().trim().min(1, "each number needs a label"),
-          })
-        )
-        .min(1, "add at least one number"),
-      stats.items
-    ));
-
-  it("sections/testimonials.json", () =>
-    check(
-      "sections/testimonials.json",
-      z.array(
-        z.object({
-          quote: z.string().trim().min(1, "each testimonial needs a quote"),
-          name: z.string().trim().min(1, "each testimonial needs a name"),
-          role: z.string().trim().min(1, "each testimonial needs a role"),
-          location: z.string().optional(),
-          service: z.string().optional(),
-          approved: z.boolean(),
-        })
-      ),
-      testimonials.items
-    ));
-
-  it("never publishes a sample testimonial", () => {
-    const leaked = testimonials.items.filter(
-      (t) => t.approved && (/sample/i.test(t.quote) || t.name.trim().toLowerCase() === "client name")
-    );
-    expect(leaked, "a testimonial marked for publishing still has sample wording or a placeholder name").toEqual([]);
+describe("page safeguards", () => {
+  it("keeps every core page, at its fixed address", () => {
+    const problems: string[] = [];
+    for (const [id, path] of Object.entries(CORE_PAGES)) {
+      const page = rawPages.find((p) => p.id === id);
+      if (!page) problems.push(`the core page "${id}" (${path}) was deleted — restore it, or hide its sections instead`);
+      else if (page.data.path !== path) problems.push(`the core page "${id}" must stay at ${path}, not ${page.data.path}`);
+      else if (page.data.status === "hidden" && id !== "home") problems.push(`the core page "${id}" is hidden but the site links to it`);
+    }
+    if (rawPages.find((p) => p.id === "home")?.data.status === "hidden") problems.push("the home page cannot be hidden");
+    expect(problems).toEqual([]);
   });
 
-  it("sections/home-faq.json", () => check("sections/home-faq.json", faqSchema, homeFaq.items));
-  it("sections/case-studies.json", () =>
-    check("sections/case-studies.json", caseStudySchema, caseStudies.items));
+  it("gives every page its own address", () => {
+    const seen = new Map<string, string>();
+    const clashes: string[] = [];
+    for (const { file, data } of rawPages) {
+      if (seen.has(data.path)) clashes.push(`${file} and ${seen.get(data.path)} both use ${data.path}`);
+      seen.set(data.path, file);
+    }
+    expect(clashes).toEqual([]);
+  });
 
-  it("sections/headlines.json", () =>
-    check(
-      "sections/headlines.json",
-      z.object({ home: z.string().min(1), about: z.string().min(1), caseStudies: z.string().min(1) }),
-      headlines
-    ));
+  it("keeps new pages off addresses the site already uses", () => {
+    const core = new Set(Object.values(CORE_PAGES));
+    const bad = rawPages
+      .filter(({ data }) => !core.has(data.path))
+      .filter(({ data }) => RESERVED_PATHS.some((r) => data.path === r || data.path.startsWith(`${r}/`)))
+      .map(({ file, data }) => `${file}: ${data.path} is reserved by the site — choose another address`);
+    expect(bad).toEqual([]);
+  });
+});
+
+/** Every string value under a key, anywhere in a JSON tree. */
+function collect(value: unknown, keys: Set<string>, out: { key: string; value: string; where: string }[], where: string) {
+  if (Array.isArray(value)) value.forEach((v, i) => collect(v, keys, out, `${where}[${i}]`));
+  else if (value && typeof value === "object") {
+    for (const [k, v] of Object.entries(value)) {
+      if (typeof v === "string" && keys.has(k)) out.push({ key: k, value: v, where: `${where}.${k}` });
+      else collect(v, keys, out, `${where}.${k}`);
+    }
+  }
+  return out;
+}
+
+/** Markdown-style [label](/path) links typed into text fields. */
+function textLinks(value: unknown, where: string, out: { value: string; where: string }[] = []) {
+  if (typeof value === "string") for (const m of value.matchAll(/\]\((\/[^)\s]*)\)/g)) out.push({ value: m[1], where });
+  else if (Array.isArray(value)) value.forEach((v, i) => textLinks(v, `${where}[${i}]`, out));
+  else if (value && typeof value === "object") for (const [k, v] of Object.entries(value)) textLinks(v, `${where}.${k}`, out);
+  return out;
+}
+
+describe("links and media", () => {
+  const published = new Set(rawPages.filter((p) => p.data.status !== "hidden").map((p) => p.data.path));
+  const hidden = new Set(rawPages.filter((p) => p.data.status === "hidden").map((p) => p.data.path));
+  const serviceRoutes = new Set(services.services.map((s) => `/services/${s.category}/${s.slug}`));
+  const sources: [string, unknown][] = [
+    ...rawPages.map((p) => [`pages/${p.file}`, p.data] as [string, unknown]),
+    ["site.json", site], ["forms.json", forms], ["service-page.json", servicePage],
+  ];
+
+  it("points every internal link at a page that exists and is published", () => {
+    const broken: string[] = [];
+    for (const [label, json] of sources) {
+      const links = [
+        ...collect(json, new Set(["href"]), [], label),
+        ...textLinks(json, label),
+      ];
+      for (const link of links) {
+        if (!link.value.startsWith("/")) continue;
+        const path = link.value.split("#")[0].replace(/\/$/, "") || "/";
+        if (hidden.has(path)) broken.push(`${link.where}: ${link.value} links to a hidden page`);
+        else if (!published.has(path) && !serviceRoutes.has(path)) broken.push(`${link.where}: ${link.value} does not exist on the site`);
+      }
+    }
+    expect(broken).toEqual([]);
+  });
+
+  it("uses media files that exist in the media library", () => {
+    const missing: string[] = [];
+    for (const [label, json] of [...sources, ["service-hero-images.json", heroImages] as [string, unknown]]) {
+      for (const ref of collect(json, new Set(["src", "poster", "video", "logo"]), [], label)) {
+        if (ref.value && !existsSync(`public${ref.value}`)) missing.push(`${ref.where}: ${ref.value} is not in the media library`);
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
+  it("keeps uploaded media small enough to publish", () => {
+    // GitHub refuses files over 100 MB; anything near that also makes the site slow.
+    const tooBig = readdirSync("public/brand", { withFileTypes: true })
+      .filter((e) => e.isFile())
+      .map((e) => ({ name: e.name, size: readFileSync(`public/brand/${e.name}`).byteLength }))
+      .filter((f) => f.size > (/\.(mp4|webm)$/i.test(f.name) ? 40 : 8) * 1024 * 1024)
+      .map((f) => `${f.name} is ${(f.size / 1024 / 1024).toFixed(1)} MB`);
+    expect(tooBig, "upload a smaller version: images under 8 MB, videos under 40 MB").toEqual([]);
+  });
 });
 
 describe("content integrity", () => {
@@ -132,27 +179,6 @@ describe("content integrity", () => {
   it("has exactly one local hero image for every service", () => {
     const expected = services.services.map((s) => `${s.category}/${s.slug}`).sort();
     expect(heroImages.images.map((image) => image.service).sort()).toEqual(expected);
-    for (const image of heroImages.images) {
-      expect(existsSync(`public${image.src}`), `missing hero image: ${image.src}`).toBe(true);
-    }
-  });
-
-  it("has an image for every service group in use", () => {
-    const used = [...new Set(services.services.map((s) => s.group))];
-    const have = new Set(groupImages.images.map((i) => i.group));
-    const missing = used.filter((g) => !have.has(g));
-    expect(missing).toEqual([]);
-  });
-
-  it("points every nav link at a page that exists", () => {
-    const pages = new Set([
-      ...routes,
-      ...site.primaryNav.map((l) => l.href),
-    ]);
-    const orphans = site.navGroups
-      .flatMap((g) => g.links.map((l) => l.href))
-      .filter((href) => !pages.has(href));
-    expect(orphans, "a dropdown link points at a service route that does not exist").toEqual([]);
   });
 
   it("surfaces every service somewhere in the nav", () => {
@@ -174,4 +200,23 @@ describe("content integrity", () => {
     expect(stray).toEqual([]);
   });
 
+  it("never publishes a sample testimonial", () => {
+    const leaked = testimonials.items.filter(
+      (t) => t.approved && (/sample/i.test(t.quote) || t.name.trim().toLowerCase() === "client name")
+    );
+    expect(leaked, "a testimonial marked for publishing still has sample wording or a placeholder name").toEqual([]);
+  });
+
+  it("keeps placeholders in copy to the ones the site understands", () => {
+    const known = new Set(["company.name", "company.email", "company.phone", "company.address", "year"]);
+    const unknown: string[] = [];
+    const scan = (v: unknown, where: string) => {
+      if (typeof v === "string") for (const m of v.matchAll(/\{\{\s*([\w.]+)\s*\}\}/g)) { if (!known.has(m[1])) unknown.push(`${where}: {{${m[1]}}}`); }
+      else if (Array.isArray(v)) v.forEach((x, i) => scan(x, `${where}[${i}]`));
+      else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) scan(x, `${where}.${k}`);
+    };
+    rawPages.forEach((p) => scan(p.data, `pages/${p.file}`));
+    scan(site, "site.json"); scan(forms, "forms.json");
+    expect(unknown, "unknown placeholder — use {{company.name}}, {{company.email}}, {{company.phone}}, {{company.address}} or {{year}}").toEqual([]);
+  });
 });

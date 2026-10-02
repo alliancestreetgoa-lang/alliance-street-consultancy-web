@@ -1,65 +1,47 @@
 import type { Metadata } from "next";
 
 import { absoluteUrl } from "@/lib/schema";
-import intros from "@/content/sections/page-intros.json";
-
-import pagesJson from "@/content/pages.json";
 import siteJson from "@/content/site.json";
+import type { Page } from "./page-schema";
 
 /**
- * Builds a page's metadata from CMS content.
+ * Builds a page's metadata from its CMS entry.
  *
- * Replaces a block that was repeated in every page file, where the title and
- * description each appeared three times — once for the page, once for
- * OpenGraph, once for Twitter. That duplication is how a page ends up with an
- * OG title that no longer matches its real one, and it made the copy
- * effectively uneditable by anyone but a developer.
+ * Title and description each appear three times in the output (page, Open
+ * Graph, Twitter) but once in the content, so they cannot drift apart.
  *
- * A page with no entry in pages.json inherits the site defaults from the root
- * layout, which is what the homepage deliberately does: the layout's
- * `title.default` is already the site's full title, so overriding it there
- * would only duplicate the brand name.
+ * A page whose SEO title/description are left blank inherits the site defaults
+ * from the root layout — which is what the homepage deliberately does, because
+ * the layout's `title.default` is already the site's full title.
+ *
+ * `noindex` is only ever *added* here. Leaving robots unset otherwise lets the
+ * layout's review-host noindex keep applying to every page.
  */
+const site = siteJson as { seo: { siteName: string; titleTemplate: string; shareImage: { src: string; alt: string } } };
+const FALLBACK_IMAGE = site.seo.shareImage;
 
-const site = siteJson as { seo: { siteName: string; titleTemplate: string } };
-/** Indexed by route; stored as a list, because a route is not a legal field name. */
-const pages = Object.fromEntries(
-  (pagesJson.pages as { route: string; title?: string; description?: string }[]).map(
-    ({ route, ...meta }) => [route, meta]
-  )
-);
-
-export function pageMetadata(route: string): Metadata {
-  const page = pages[route];
-
-  if (!page) {
-    // Canonical still has to be self-referencing — see the note in layout.tsx
-    // about why no canonical is set at the layout level.
-    return { alternates: { canonical: route }, openGraph: { url: route, images: [{ url: absoluteUrl("/brand/about-hero.jpg"), alt: site.seo.siteName }] } };
-  }
-
-  const { title, description } = page;
-  // The layout applies `titleTemplate` to page titles, but OpenGraph takes a
-  // literal string, so the brand suffix is applied here rather than left off.
+export function pageMetadata(page: Page): Metadata {
+  const { title, description, noindex } = page.seo;
   const fullTitle = title ? site.seo.titleTemplate.replace("%s", title) : undefined;
+  const image = page.seo.image?.src ? page.seo.image : FALLBACK_IMAGE;
+  const images = [{ url: absoluteUrl(image.src), alt: image.alt || fullTitle || site.seo.siteName }];
 
-  const imagePaths: Record<string, string> = {
-    "/about": "/brand/about-hero.jpg", "/contact": "/brand/contact-hero.jpg",
-    "/case-studies": "/brand/case-studies-hero.jpg",
-  };
-  const intro = intros.intros.find((entry) => entry.route === route);
-  const image = imagePaths[route] ?? (intro && "banner" in intro ? intro.banner?.imageSrc : undefined) ?? "/brand/about-hero.jpg";
-  const images = [{ url: absoluteUrl(image), alt: fullTitle ?? site.seo.siteName }];
   return {
-    twitter: { card: "summary_large_image", title: fullTitle, description, images },
     ...(title ? { title } : {}),
     ...(description ? { description } : {}),
-    alternates: { canonical: route },
+    ...(noindex ? { robots: { index: false, follow: true } } : {}),
+    alternates: { canonical: page.path },
+    twitter: {
+      card: "summary_large_image",
+      ...(fullTitle ? { title: fullTitle } : {}),
+      ...(description ? { description } : {}),
+      images,
+    },
     openGraph: {
       images,
       type: "website",
       siteName: site.seo.siteName,
-      url: route,
+      url: page.path,
       ...(fullTitle ? { title: fullTitle } : {}),
       ...(description ? { description } : {}),
     },

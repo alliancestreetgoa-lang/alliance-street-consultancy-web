@@ -1,0 +1,23 @@
+# Who must approve a change before it can be published to main.
+#
+# Enforced by the "Protect the live site" ruleset (scripts/setup-github-access.sh):
+# a pull request needs an approving review from an owner of every file it
+# changes. The last matching line wins.
+#
+# Publishers are listed on the two content lines below. The staff portal's
+# Team & access screen edits these lines; keep the format "<path> @user @user".
+
+# Code, configuration and anything not listed below: the administrator.
+*                                   @alliancestreetgoa-lang
+
+# Website content and media: any publisher.
+/src/content/ @alliancestreetgoa-lang
+/public/brand/ @alliancestreetgoa-lang
+
+# Tax rates, thresholds and deadlines: the administrator only.
+/src/content/direct-answers.json    @alliancestreetgoa-lang
+
+# Who can approve changes to approvers, workflows and access rules.
+/.github/                           @alliancestreetgoa-lang
+/firestore.rules                    @alliancestreetgoa-lang
+/admin/public/cms/config.yml        @alliancestreetgoa-lang

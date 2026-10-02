@@ -5,6 +5,7 @@ import Image from "next/image";
 import { asset } from "@/lib/asset-path";
 import { gsap } from "@/lib/gsap";
 import { MOTION_QUERY } from "@/lib/motion";
+import { HEADER } from "@/lib/site-config";
 
 /** The opening brand settles into the real navigation logo on each full load. */
 export function SiteIntro() {
@@ -64,11 +65,11 @@ export function SiteIntro() {
       <div ref={backdropRef} className="as-intro-backdrop" />
       <div ref={brandRef} className="as-intro-brand flex items-center gap-2.5">
         <Image
-          src={asset("/brand/logo-mark.png")}
+          src={asset(HEADER.logo)}
           alt="" width={34} height={28} priority
           style={{ width: "34px", height: "28px" }}
         />
-        <span className="whitespace-nowrap text-lg font-semibold text-white">Alliance Street</span>
+        <span className="whitespace-nowrap text-lg font-semibold text-white">{HEADER.brandName}</span>
       </div>
       <span ref={ruleRef} className="as-intro-rule" />
     </div>

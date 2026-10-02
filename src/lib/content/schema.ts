@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { hrefSchema } from "./page-schema";
 
 /**
  * Schemas for everything the CMS can edit.
@@ -138,6 +139,9 @@ const navLinkSchema = z.object({
   description: z.string().trim().optional(),
 });
 
+const buttonSchema = z.object({ label: nonEmpty("button label"), href: hrefSchema });
+const logoSchema = z.string().regex(/^\/brand\/[^/]+\.(png|webp|svg)$/i, "choose a logo from the media library");
+
 export const siteSchema = z.object({
   seo: z.object({
     siteName: nonEmpty("site name"),
@@ -147,6 +151,8 @@ export const siteSchema = z.object({
       .string()
       .includes("%s", { message: "must contain %s, where the page name goes" }),
     defaultDescription: nonEmpty("default description"),
+    /** Fallback social-sharing image for pages without their own. */
+    shareImage: z.object({ src: z.string().regex(/^\/brand\/[^/]+\.(jpe?g|png|webp)$/i, "choose an image from the media library"), alt: nonEmpty("share image description") }),
   }),
   company: z.object({
     name: nonEmpty("company name"),
@@ -161,44 +167,79 @@ export const siteSchema = z.object({
       url: z.string().url().startsWith("https://"),
     })).max(3),
   }),
+  header: z.object({
+    brandName: nonEmpty("brand name"),
+    logo: logoSchema,
+    servicesMenuLabel: nonEmpty("services menu label"),
+    button: buttonSchema,
+  }),
   primaryNav: z.array(navLinkSchema).min(1),
   navGroups: z
     .array(z.object({ title: nonEmpty("group title"), links: z.array(navLinkSchema).min(1) }))
     .min(1),
+  footer: z.object({
+    brandName: nonEmpty("brand name"),
+    logo: logoSchema,
+    heading: nonEmpty("heading"),
+    button: buttonSchema,
+    columns: z.array(z.object({ title: nonEmpty("column title"), links: z.array(z.object({ label: nonEmpty("label"), href: hrefSchema })).min(1) })).min(1).max(4),
+    copyright: nonEmpty("copyright line"),
+  }),
 });
 
-/** A heading plus body, the shape most of the site's section datasets share. */
-export const entrySchema = z.object({
-  title: nonEmpty("title"),
-  description: nonEmpty("description"),
+const copy = (label: string) => nonEmpty(label);
+
+export const formsSchema = z.object({
+  /** Where "Open calendar" sends a visitor. Opening it is not a confirmed booking. */
+  appointmentUrl: z.string().url().startsWith("https://", "must be an https:// link"),
+  consultation: z.object({
+    stepOneNote: copy("step one note"),
+    labels: z.object({
+      name: copy("name label"), country: copy("country label"), email: copy("email label"), phone: copy("phone label"),
+      address: copy("address label"), services: copy("services label"), notes: copy("notes label"),
+    }),
+    phoneHint: copy("phone hint"), servicesHint: copy("services hint"), optionalLabel: copy("optional label"),
+    notesPlaceholder: z.string(), consentText: copy("consent text"), privacyLinkLabel: copy("privacy link label"),
+    continueButton: copy("continue button"), savingButton: copy("saving button"), saveError: copy("save error"),
+    stepTwoHeading: copy("step two heading"), stepTwoIntro: copy("step two introduction"), reviewDetails: copy("review details"),
+    enquiryHeading: copy("enquiry heading"), enquiryBody: copy("enquiry text"), enquiryButton: copy("enquiry button"),
+    enquirySavedButton: copy("enquiry saved button"), enquirySavedMessage: copy("enquiry saved message"),
+    appointmentHeading: copy("appointment heading"), appointmentBody: copy("appointment text"), appointmentButton: copy("appointment button"),
+    appointmentSavedMessage: copy("appointment saved message"), openCalendarButton: copy("open calendar button"),
+    appointmentFootnote: copy("appointment footnote"), choiceSaving: copy("choice saving"), choiceError: copy("choice error"),
+    editDetails: copy("edit details"),
+  }),
+  contact: z.object({
+    labels: z.object({ name: copy("name label"), email: copy("email label"), message: copy("message label") }),
+    submitButton: copy("submit button"), sendingButton: copy("sending button"), notConnectedMessage: copy("message"),
+  }),
+  newsletter: z.object({
+    emailLabel: copy("email label"), placeholder: z.string(), button: copy("button"),
+    submittingButton: copy("submitting button"), thanksMessage: copy("thanks message"),
+  }),
 });
 
-export const entriesSchema = z.array(entrySchema).min(1);
+export const servicePageSchema = z.object({
+  breadcrumbPrefix: copy("breadcrumb prefix"),
+  bookButton: buttonSchema,
+  howWeHelpHeading: copy("heading"), sourcesLabel: copy("sources label"), verifiedLabel: copy("verified label"),
+  disclaimer: copy("disclaimer"), includedHeading: copy("heading"), preparationHeading: copy("heading"),
+  faqHeading: copy("heading"), whoForHeading: copy("heading"), relatedHeading: copy("heading"),
+  showClosingCta: z.boolean(),
+});
 
-export const faqSchema = z
-  .array(z.object({ question: nonEmpty("question"), answer: nonEmpty("answer") }))
-  .min(1);
-
-export const caseStudySchema = z
-  .array(
-    z.object({
-      // Named `category` but holds a service *group* — the label the case study
-      // is filed under in the UI. Kept as-is rather than renamed: the component
-      // and the CMS field label both read fine, and renaming would churn the
-      // content file for no editorial gain.
-      category: z.enum(SERVICE_GROUPS),
-      title: nonEmpty("title"),
-      challenge: nonEmpty("challenge"),
-      approach: nonEmpty("approach"),
-      outcome: nonEmpty("outcome"),
-    })
-  )
-  .min(1);
+export const themeSchema = z.object({
+  accent: z.enum(["alliance-red", "crimson", "burgundy"]),
+  font: z.enum(["inter", "system"]),
+  textSize: z.enum(["standard", "large"]),
+  sectionSpacing: z.enum(["compact", "standard", "spacious"]),
+  motion: z.enum(["full", "off"]),
+  openingAnimation: z.boolean(),
+});
 
 export type Service = z.infer<typeof serviceSchema>;
 export type DirectAnswer = z.infer<typeof directAnswerSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
-export type Entry = z.infer<typeof entrySchema>;
 
 /** Service-specific hero artwork, stored as a CMS-editable list. */
 export const serviceHeroImagesSchema = z.array(z.object({
@@ -206,3 +247,15 @@ export const serviceHeroImagesSchema = z.array(z.object({
   src: nonEmpty("src").regex(/^\/brand\/[^/]+\.(jpe?g|png|webp)$/i, "use a local image in /brand/"),
   alt: nonEmpty("alt"),
 }));
+
+export const testimonialsSchema = z.array(
+  z.object({
+    quote: z.string().trim().min(1, "each testimonial needs a quote"),
+    name: z.string().trim().min(1, "each testimonial needs a name"),
+    role: z.string().trim().min(1, "each testimonial needs a role"),
+    location: z.string().optional(),
+    service: z.string().optional(),
+    /** Only quotes the client agreed to publish. Unapproved ones show only in local development. */
+    approved: z.boolean(),
+  })
+);

@@ -1,0 +1,2039 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# Content editor for the Alliance Street Consultancy website (Sveltia CMS).
+#
+# HOW PUBLISHING WORKS
+#   Every save goes to a draft (a branch + pull request), never straight to the
+#   live site. Each draft gets a real preview build of the whole site. A draft
+#   goes live only when someone allowed to publish merges it; GitHub enforces
+#   who that is (see docs/cms-setup.md → "Roles"). Every publish is a commit, so
+#   every change is attributable and can be rolled back.
+#
+# WHERE THIS FILE IS READ FROM
+#   The admin is hosted separately from the public site (Firebase Hosting), and
+#   loads this file from the main branch on GitHub. Changing it here and
+#   merging is enough; the admin does not need redeploying.
+#
+# Kept out of the CMS on purpose:
+#   - advisor credentials (ACCA numbers and the like) — checkable against public
+#     registers, added in code with the certificate in hand
+#   - the four enquiry service categories — the database rules validate them
+#
+# Everything saved here is validated before it can publish (tests/content.test.ts).
+
+#
+# Written without YAML anchors or merge keys on purpose: the YAML 1.2 parser in
+# the browser does not support `<<:` merges, and fields defined that way vanish.
+
+
+site_url: https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web
+display_url: https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web
+logo_url: https://raw.githubusercontent.com/alliancestreetgoa-lang/alliance-street-consultancy-web/main/public/brand/logo-mark.png
+backend:
+  name: github
+  repo: alliancestreetgoa-lang/alliance-street-consultancy-web
+  branch: main
+  base_url: https://REPLACE-ME.workers.dev
+  squash_merges: true
+  preview_context: Preview
+  commit_messages:
+    create: Create {{collection}} “{{slug}}”
+    update: Update {{collection}} “{{slug}}”
+    delete: Delete {{collection}} “{{slug}}”
+    uploadMedia: Upload “{{path}}”
+    deleteMedia: Delete “{{path}}”
+publish_mode: editorial_workflow
+editor:
+  preview: false
+media_folder: public/brand
+public_folder: /brand
+media_libraries:
+  default:
+    config:
+      max_file_size: 41943040
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2400
+          height: 2400
+collections:
+- name: pages
+  label: Pages
+  label_singular: Page
+  icon: description
+  description: Every page on the site. Open a page to edit its sections — add, reorder (drag), duplicate,
+    hide or remove them. Core pages (Home, About, Services, …) can be edited but not deleted or moved.
+  folder: src/content/pages
+  format: json
+  extension: json
+  create: true
+  delete: true
+  identifier_field: title
+  slug: '{{title}}'
+  summary: '{{title}} — {{path}}{{status | ternary(" (hidden)", "")}}'
+  sortable_fields:
+  - title
+  - path
+  preview_path: '{{path}}'
+  fields:
+  - label: Page name
+    name: title
+    widget: string
+    hint: Used in menus, breadcrumbs and search results.
+  - label: Web address
+    name: path
+    widget: string
+    pattern:
+    - ^/([a-z0-9]+(-[a-z0-9]+)*(/[a-z0-9]+(-[a-z0-9]+)*)*)?$
+    - Start with / then lowercase words and hyphens, e.g. /uae-guide
+    hint: For a new page, e.g. /uae-guide. Do not change the address of an existing page — links and search
+      rankings break.
+  - label: Status
+    name: status
+    widget: select
+    default: published
+    options:
+    - label: Published — visible on the site
+      value: published
+    - label: Hidden — not built, returns “page not found”
+      value: hidden
+    hint: Hide a page before removing it. Menus may not link to a hidden page.
+  - label: Layout
+    name: layout
+    widget: select
+    default: standard
+    options:
+    - label: Standard
+      value: standard
+    - label: Flowing bands (home page style)
+      value: flow
+  - label: Search & sharing
+    name: seo
+    widget: object
+    collapsed: true
+    fields:
+    - label: Search title
+      name: title
+      widget: string
+      required: false
+      hint: About 50–60 characters. Leave blank on the home page to use the site default.
+    - label: Search description
+      name: description
+      widget: text
+      required: false
+      hint: One or two plain sentences, under 160 characters. Describe the page honestly.
+    - label: Social sharing image
+      name: image
+      widget: object
+      summary: '{{fields.alt}}'
+      fields:
+      - label: Image
+        name: src
+        widget: image
+        choose_url: false
+        hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+      - label: Description for screen readers (alt text)
+        name: alt
+        widget: string
+        hint: Say what the image shows, in one sentence.
+      - label: Focus point
+        name: position
+        widget: select
+        default: center
+        options:
+        - label: Centre
+          value: center
+        - label: Top
+          value: top
+        - label: Bottom
+          value: bottom
+        - label: Left
+          value: left
+        - label: Right
+          value: right
+        hint: Which part of the photo stays visible when it is cropped on small screens.
+      required: false
+      hint: Shown when the page is shared on LinkedIn, WhatsApp, etc. Defaults to the site sharing image.
+    - label: Hide from search engines
+      name: noindex
+      widget: boolean
+      default: false
+      hint: Adds noindex and leaves the page out of the sitemap.
+    - label: Last reviewed
+      name: lastReviewed
+      widget: datetime
+      format: YYYY-MM-DD
+      date_format: DD MMMM YYYY
+      time_format: false
+      hint: Update when the content meaningfully changes. Used in the sitemap.
+  - label: Sections
+    name: sections
+    widget: list
+    label_singular: Section
+    typeKey: type
+    hint: Drag to reorder. Use the menu on a section to duplicate or remove it. Only one hero per page.
+    types:
+    - name: homeHero
+      label: Hero — home (video)
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Badge text
+        name: badge
+        widget: string
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+          required: false
+        - label: Link
+          name: href
+          widget: string
+          required: false
+          hint: Leave both blank for no button.
+        required: false
+        label: Badge link
+        name: badgeLink
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Text
+        name: body
+        widget: text
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+          hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site
+            links stop the publish.'
+        label: Main button
+        name: primaryButton
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+          required: false
+        - label: Link
+          name: href
+          widget: string
+          required: false
+          hint: Leave both blank for no button.
+        required: false
+        label: Second link
+        name: secondaryButton
+      - label: Background video (MP4/WebM)
+        name: video
+        widget: file
+        required: false
+        choose_url: false
+        hint: Optional. Keep it short, silent and under 40 MB. Paused for visitors who prefer reduced
+          motion.
+      - label: Still image (shown before / instead of the video)
+        name: poster
+        widget: image
+        choose_url: false
+    - name: pageHero
+      label: Hero — page
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Badge
+        name: badge
+        widget: string
+      - label: Heading
+        name: heading
+        widget: string
+        hint: The page’s main heading (H1).
+      - label: Subheading
+        name: subhead
+        widget: text
+      - label: Badge style
+        name: badgeStyle
+        widget: select
+        default: eyebrow
+        options:
+        - label: Small capitals
+          value: eyebrow
+        - label: Pill
+          value: pill
+      - label: Heading size
+        name: size
+        widget: select
+        default: standard
+        options:
+        - label: Standard
+          value: standard
+        - label: Large
+          value: large
+      - label: Background photo
+        name: image
+        widget: object
+        summary: '{{fields.alt}}'
+        fields:
+        - label: Image
+          name: src
+          widget: image
+          choose_url: false
+          hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+        - label: Description for screen readers (alt text)
+          name: alt
+          widget: string
+          hint: Say what the image shows, in one sentence.
+        - label: Focus point
+          name: position
+          widget: select
+          default: center
+          options:
+          - label: Centre
+            value: center
+          - label: Top
+            value: top
+          - label: Bottom
+            value: bottom
+          - label: Left
+            value: left
+          - label: Right
+            value: right
+          hint: Which part of the photo stays visible when it is cropped on small screens.
+        required: false
+        hint: Optional. Without a photo the hero uses the red-to-black brand wall.
+    - name: statement
+      label: Statement
+      summary: '{{fields.statement}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading (first words)
+        name: eyebrowLead
+        widget: string
+        required: false
+      - label: Small heading (red words)
+        name: eyebrowAccent
+        widget: string
+        required: false
+      - label: Statement
+        name: statement
+        widget: text
+      - label: Text
+        name: body
+        widget: text
+      - label: Image
+        name: image
+        widget: object
+        summary: '{{fields.alt}}'
+        fields:
+        - label: Image
+          name: src
+          widget: image
+          choose_url: false
+          hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+        - label: Description for screen readers (alt text)
+          name: alt
+          widget: string
+          hint: Say what the image shows, in one sentence.
+        - label: Focus point
+          name: position
+          widget: select
+          default: center
+          options:
+          - label: Centre
+            value: center
+          - label: Top
+            value: top
+          - label: Bottom
+            value: bottom
+          - label: Left
+            value: left
+          - label: Right
+            value: right
+          hint: Which part of the photo stays visible when it is cropped on small screens.
+        required: false
+      - label: Image side
+        name: imageSide
+        widget: select
+        default: left
+        options:
+        - left
+        - right
+    - name: textImage
+      label: Text and image
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Text
+        name: body
+        widget: markdown
+        buttons:
+        - bold
+        - italic
+        - link
+        - bulleted-list
+        editor_components: []
+        modes:
+        - rich_text
+        hint: Bold, italic, links and bullet lists are supported.
+      - label: Image
+        name: image
+        widget: object
+        summary: '{{fields.alt}}'
+        fields:
+        - label: Image
+          name: src
+          widget: image
+          choose_url: false
+          hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+        - label: Description for screen readers (alt text)
+          name: alt
+          widget: string
+          hint: Say what the image shows, in one sentence.
+        - label: Focus point
+          name: position
+          widget: select
+          default: center
+          options:
+          - label: Centre
+            value: center
+          - label: Top
+            value: top
+          - label: Bottom
+            value: bottom
+          - label: Left
+            value: left
+          - label: Right
+            value: right
+          hint: Which part of the photo stays visible when it is cropped on small screens.
+      - label: Image side
+        name: imageSide
+        widget: select
+        default: right
+        options:
+        - left
+        - right
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+          required: false
+        - label: Link
+          name: href
+          widget: string
+          required: false
+          hint: Leave both blank for no button.
+        required: false
+        label: Button
+        name: button
+    - name: richText
+      label: Text
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+        required: false
+      - label: Text
+        name: body
+        widget: markdown
+        buttons:
+        - bold
+        - italic
+        - link
+        - bulleted-list
+        editor_components: []
+        modes:
+        - rich_text
+      - label: Width
+        name: width
+        widget: select
+        default: narrow
+        options:
+        - label: Narrow (best for reading)
+          value: narrow
+        - label: Wide
+          value: wide
+    - name: stats
+      label: Statistics
+      summary: Statistics
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Numbers
+        name: items
+        widget: list
+        max: 4
+        summary: '{{fields.value}}{{fields.suffix}} {{fields.label}}'
+        hint: Only publish figures you can substantiate.
+        fields:
+        - label: Number
+          name: value
+          widget: number
+          value_type: int
+          min: 0
+        - label: Suffix
+          name: suffix
+          widget: string
+          required: false
+          hint: e.g. +
+        - label: Label
+          name: label
+          widget: string
+    - name: featureList
+      label: Feature list
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+        required: false
+      - label: Columns
+        name: columns
+        widget: select
+        default: '2'
+        options:
+        - '2'
+        - '3'
+      - label: Items
+        name: items
+        widget: list
+        summary: '{{fields.title}}'
+        fields:
+        - label: Title
+          name: title
+          widget: string
+        - label: Text
+          name: description
+          widget: text
+    - name: numberedList
+      label: Numbered steps
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Style
+        name: style
+        widget: select
+        default: steps
+        options:
+        - label: Steps (with dividers)
+          value: steps
+        - label: Areas (compact)
+          value: areas
+      - label: Items
+        name: items
+        widget: list
+        summary: '{{fields.title}}'
+        fields:
+        - label: Title
+          name: title
+          widget: string
+        - label: Text
+          name: description
+          widget: text
+    - name: cards
+      label: Cards
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Introduction
+        name: intro
+        widget: text
+        required: false
+      - label: Cards
+        name: items
+        widget: list
+        summary: '{{fields.title}}'
+        fields:
+        - label: Title
+          name: title
+          widget: string
+        - label: Text
+          name: description
+          widget: text
+        - label: Image
+          name: image
+          widget: object
+          summary: '{{fields.alt}}'
+          fields:
+          - label: Image
+            name: src
+            widget: image
+            choose_url: false
+            hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+          - label: Description for screen readers (alt text)
+            name: alt
+            widget: string
+            hint: Say what the image shows, in one sentence.
+          - label: Focus point
+            name: position
+            widget: select
+            default: center
+            options:
+            - label: Centre
+              value: center
+            - label: Top
+              value: top
+            - label: Bottom
+              value: bottom
+            - label: Left
+              value: left
+            - label: Right
+              value: right
+            hint: Which part of the photo stays visible when it is cropped on small screens.
+          required: false
+        - widget: object
+          fields:
+          - label: Button text
+            name: label
+            widget: string
+            required: false
+          - label: Link
+            name: href
+            widget: string
+            required: false
+            hint: Leave both blank for no button.
+          required: false
+          label: Link
+          name: link
+    - name: servicesOverview
+      label: Services — grouped overview
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+          required: false
+        - label: Link
+          name: href
+          widget: string
+          required: false
+          hint: Leave both blank for no button.
+        required: false
+        label: Button
+        name: button
+    - name: servicesIndex
+      label: Services — full list
+      summary: All services, grouped
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+    - name: testimonials
+      label: Testimonials
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+        hint: Shows the approved quotes from Settings → Testimonials.
+      - label: Heading
+        name: heading
+        widget: string
+    - name: faq
+      label: FAQ
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Questions
+        name: items
+        widget: list
+        summary: '{{fields.question}}'
+        fields:
+        - label: Question
+          name: question
+          widget: string
+        - label: Answer
+          name: answer
+          widget: text
+      - label: Publish as FAQ structured data
+        name: structuredData
+        widget: boolean
+        default: true
+        hint: Lets search engines read these as questions and answers. One FAQ section per page.
+    - name: pricing
+      label: Pricing
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: What affects the price
+        name: items
+        widget: list
+        summary: '{{fields.title}}'
+        fields:
+        - label: Title
+          name: title
+          widget: string
+        - label: Text
+          name: description
+          widget: text
+      - label: Note
+        name: note
+        widget: text
+        required: false
+    - name: caseStudies
+      label: Case studies
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Case studies
+        name: items
+        widget: list
+        summary: '{{fields.title}}'
+        hint: Illustrative scenarios unless a client has agreed to be named.
+        fields:
+        - label: Category
+          name: category
+          widget: string
+        - label: Title
+          name: title
+          widget: string
+        - label: Challenge
+          name: challenge
+          widget: text
+        - label: Our approach
+          name: approach
+          widget: text
+        - label: Outcome
+          name: outcome
+          widget: text
+    - name: cta
+      label: Call to action
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading above
+        name: eyebrow
+        widget: string
+        required: false
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Text
+        name: description
+        widget: text
+        required: false
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+          hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site
+            links stop the publish.'
+        label: Button
+        name: button
+    - name: leadership
+      label: Leader profile (CEO)
+      summary: '{{fields.name}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading (first words)
+        name: eyebrowLead
+        widget: string
+        required: false
+      - label: Small heading (red words)
+        name: eyebrowAccent
+        widget: string
+        required: false
+      - label: Name
+        name: name
+        widget: string
+      - label: Role
+        name: role
+        widget: string
+      - label: Organisation
+        name: organisation
+        widget: string
+        required: false
+      - label: Photo
+        name: photo
+        widget: object
+        summary: '{{fields.alt}}'
+        fields:
+        - label: Image
+          name: src
+          widget: image
+          choose_url: false
+          hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+        - label: Description for screen readers (alt text)
+          name: alt
+          widget: string
+          hint: Say what the image shows, in one sentence.
+        - label: Focus point
+          name: position
+          widget: select
+          default: center
+          options:
+          - label: Centre
+            value: center
+          - label: Top
+            value: top
+          - label: Bottom
+            value: bottom
+          - label: Left
+            value: left
+          - label: Right
+            value: right
+          hint: Which part of the photo stays visible when it is cropped on small screens.
+      - label: Biography
+        name: paragraphs
+        widget: list
+        field:
+          label: Paragraph
+          name: paragraph
+          widget: text
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+          hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site
+            links stop the publish.'
+        label: Conversation button
+        name: conversationButton
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+          required: false
+        - label: Link
+          name: href
+          widget: string
+          required: false
+          hint: Leave both blank for no button.
+        required: false
+        label: Profile button
+        name: profileButton
+      - label: Personal profile links
+        name: profileLinks
+        widget: list
+        max: 6
+        summary: '{{fields.platform}}'
+        fields:
+        - label: Platform
+          name: platform
+          widget: select
+          options:
+          - LinkedIn
+          - Instagram
+          - YouTube
+          - X
+          - Facebook
+          - Website
+        - label: Link
+          name: url
+          widget: string
+          pattern:
+          - ^https://
+          - Use a complete https:// link
+    - name: story
+      label: Story
+      summary: '{{fields.lead}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading (first words)
+        name: eyebrowLead
+        widget: string
+        required: false
+      - label: Small heading (red words)
+        name: eyebrowAccent
+        widget: string
+        required: false
+      - label: Opening line
+        name: lead
+        widget: text
+      - label: Paragraphs
+        name: paragraphs
+        widget: list
+        field:
+          label: Paragraph
+          name: paragraph
+          widget: text
+      - label: Principles
+        name: principles
+        widget: list
+        summary: '{{fields.title}}'
+        fields:
+        - label: Title
+          name: title
+          widget: string
+        - label: Text
+          name: description
+          widget: text
+        required: false
+    - name: consultationForm
+      label: Consultation / appointment form
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Badge
+        name: badge
+        widget: string
+        hint: The form's labels and messages are in Settings → Forms.
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Introduction
+        name: intro
+        widget: text
+      - label: Required-fields note
+        name: requiredNote
+        widget: string
+        required: false
+    - name: contact
+      label: Contact details
+      summary: '{{fields.conversationHeading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Small heading
+        name: eyebrow
+        widget: string
+        required: false
+        hint: Address, email and phone come from Settings → Company details.
+      - label: Conversation heading
+        name: conversationHeading
+        widget: string
+      - label: Conversation text
+        name: conversationBody
+        widget: text
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+          hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site
+            links stop the publish.'
+        label: Conversation button
+        name: conversationButton
+      - label: Show the message form
+        name: showMessageForm
+        widget: boolean
+        default: true
+        hint: This form does not send anything yet — it asks the visitor to email you. Turn it off to
+          show the contact details only.
+    - name: newsletter
+      label: Newsletter sign-up
+      summary: '{{fields.heading}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Heading
+        name: heading
+        widget: string
+        hint: 'Note: sign-ups are not stored anywhere yet. Hide this section until a mailing list is connected.'
+      - label: Text
+        name: body
+        widget: text
+    - name: legal
+      label: Legal text
+      summary: Legal text — updated {{fields.lastUpdated}}
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Last updated
+        name: lastUpdated
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: DD MMMM YYYY
+        time_format: false
+      - label: Notice
+        name: notice
+        widget: text
+        required: false
+        hint: Shown beside the date. Remove once counsel has reviewed the text.
+      - label: Sections
+        name: items
+        widget: list
+        summary: '{{fields.heading}}'
+        fields:
+        - label: Heading
+          name: heading
+          widget: string
+        - label: Text
+          name: body
+          widget: text
+          hint: You can type {{company.name}}, {{company.email}}, {{company.phone}} or {{company.address}}.
+    - name: image
+      label: Image
+      summary: '{{fields.caption}}'
+      widget: object
+      fields:
+      - label: Hide this section
+        name: hidden
+        widget: boolean
+        default: false
+        hint: Keeps the content but removes the section from the published page.
+      - label: Anchor name (optional)
+        name: anchor
+        widget: string
+        required: false
+        pattern:
+        - ^[a-z0-9-]*$
+        - Lowercase letters, numbers and hyphens
+        hint: 'Lets a button link straight to this section, e.g. #pricing.'
+      - label: Image
+        name: image
+        widget: object
+        summary: '{{fields.alt}}'
+        fields:
+        - label: Image
+          name: src
+          widget: image
+          choose_url: false
+          hint: Upload a JPG, PNG or WebP. It is resized and optimised automatically.
+        - label: Description for screen readers (alt text)
+          name: alt
+          widget: string
+          hint: Say what the image shows, in one sentence.
+        - label: Focus point
+          name: position
+          widget: select
+          default: center
+          options:
+          - label: Centre
+            value: center
+          - label: Top
+            value: top
+          - label: Bottom
+            value: bottom
+          - label: Left
+            value: left
+          - label: Right
+            value: right
+          hint: Which part of the photo stays visible when it is cropped on small screens.
+      - label: Caption
+        name: caption
+        widget: string
+        required: false
+      - label: Shape
+        name: shape
+        widget: select
+        default: wide
+        options:
+        - wide
+        - landscape
+        - square
+- name: services
+  label: Services
+  icon: work
+  files:
+  - name: catalogue
+    label: Service catalogue
+    file: src/content/services.json
+    fields:
+    - label: Services
+      name: services
+      widget: list
+      label_singular: Service
+      summary: '{{fields.title}}'
+      fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: One-line summary
+        name: tagline
+        widget: string
+        hint: Shown under the title in menus and listings.
+      - label: Section
+        name: group
+        widget: select
+        options:
+        - UAE Setup
+        - UAE Tax & Compliance
+        - UK Services
+        - Advisory
+        hint: Which menu column this appears under.
+      - label: Area
+        name: category
+        widget: select
+        options:
+        - uae
+        - uk
+        - advisory
+        hint: Part of the page address. Changing it changes the URL.
+      - label: Web address
+        name: slug
+        widget: string
+        pattern:
+        - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+        - Lowercase words separated by single hyphens
+        hint: Part of the page address. Changing this breaks existing links and search rankings — ask
+          a developer first.
+      - label: What's included
+        name: includes
+        widget: list
+        field:
+          label: Item
+          name: item
+          widget: string
+      - label: Who this is for
+        name: whoFor
+        widget: text
+      - label: Search content
+        name: search
+        widget: object
+        required: false
+        fields:
+        - label: Search title
+          name: title
+          widget: string
+        - label: Search description
+          name: description
+          widget: text
+        - label: Service overview
+          name: overview
+          widget: text
+        - label: What to prepare
+          name: preparation
+          widget: text
+        - label: Customer questions
+          name: faqs
+          widget: list
+          fields:
+          - label: Question
+            name: question
+            widget: string
+          - label: Answer
+            name: answer
+            widget: text
+      hint: Each service becomes its own page and appears in the Services menu. Ask a developer before
+        changing a web address.
+  - name: hero_images
+    label: Service page photos
+    file: src/content/service-hero-images.json
+    fields:
+    - label: Photos
+      name: images
+      widget: list
+      summary: '{{fields.service}}'
+      fields:
+      - label: Service (area/web-address)
+        name: service
+        widget: string
+        pattern:
+        - ^(uae|uk|advisory)/[a-z0-9]+(-[a-z0-9]+)*$
+        - e.g. uae/e-invoicing
+      - label: Photo
+        name: src
+        widget: image
+        choose_url: false
+      - label: Description for screen readers
+        name: alt
+        widget: string
+      hint: The photo at the top of each service page. One per service.
+  - name: page_labels
+    label: Service page labels
+    file: src/content/service-page.json
+    fields:
+    - label: Breadcrumb prefix
+      name: breadcrumbPrefix
+      widget: string
+      hint: Headings and buttons that appear on every service page.
+    - widget: object
+      fields:
+      - label: Button text
+        name: label
+        widget: string
+      - label: Link
+        name: href
+        widget: string
+        hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site links
+          stop the publish.'
+      label: Booking button
+      name: bookButton
+    - label: “How we help” heading
+      name: howWeHelpHeading
+      widget: string
+    - label: Sources label
+      name: sourcesLabel
+      widget: string
+    - label: Verified-date label
+      name: verifiedLabel
+      widget: string
+    - label: Disclaimer
+      name: disclaimer
+      widget: text
+    - label: “What’s included” heading
+      name: includedHeading
+      widget: string
+    - label: Preparation heading
+      name: preparationHeading
+      widget: string
+    - label: Questions heading
+      name: faqHeading
+      widget: string
+    - label: “Who this is for” heading
+      name: whoForHeading
+      widget: string
+    - label: Related services heading
+      name: relatedHeading
+      widget: string
+    - label: Show the closing call to action
+      name: showClosingCta
+      widget: boolean
+      hint: Uses the call-to-action section from the Services page.
+- name: tax_figures
+  # A wrong rate on an accountancy site is something a reader can act on, so
+  # .github/CODEOWNERS makes this file need the administrator's approval.
+  label: Tax figures & sources
+  icon: verified
+  files:
+  - name: direct_answers
+    label: Sourced answers
+    file: src/content/direct-answers.json
+    fields:
+    - label: Answers
+      name: answers
+      widget: list
+      label_singular: Answer
+      summary: '{{fields.question}}'
+      fields:
+      - label: Applies to service
+        name: slug
+        widget: string
+        hint: Must match the web address of an existing service.
+      - label: Question
+        name: question
+        widget: string
+      - label: Answer
+        name: answer
+        widget: text
+        hint: Two to five sentences, readable on its own.
+      - label: Sources
+        name: sources
+        widget: list
+        label_singular: Source
+        summary: '{{fields.label}}'
+        hint: Official sources only — FTA, UAE Ministry of Finance, GOV.UK.
+        fields:
+        - label: Source name
+          name: label
+          widget: string
+        - label: Link
+          name: url
+          widget: string
+      - label: Figures last checked
+        name: verifiedOn
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: DD MMMM YYYY
+        time_format: false
+        hint: The date a person last checked these numbers against the official source.
+      hint: Rates, thresholds and deadlines shown on service pages. Every figure must name the official
+        source and the date someone last checked it. Publishing without a source fails the publish check.
+        Changes here need the administrator's approval.
+- name: settings
+  label: Settings
+  icon: settings
+  files:
+  - name: site
+    label: Company, menus & footer
+    file: src/content/site.json
+    fields:
+    - label: Search engine defaults
+      name: seo
+      widget: object
+      collapsed: true
+      fields:
+      - label: Site name
+        name: siteName
+        widget: string
+      - label: Default page title
+        name: defaultTitle
+        widget: string
+        hint: Used for the home page and anywhere without its own title.
+      - label: Title pattern
+        name: titleTemplate
+        widget: string
+        hint: '%s is replaced by the page name. Keep the %s.'
+      - label: Default description
+        name: defaultDescription
+        widget: text
+      - label: Default sharing image
+        name: shareImage
+        widget: object
+        summary: '{{fields.alt}}'
+        fields:
+        - label: Image
+          name: src
+          widget: image
+          choose_url: false
+        - label: Description
+          name: alt
+          widget: string
+    - label: Company details
+      name: company
+      widget: object
+      fields:
+      - label: Name
+        name: name
+        widget: string
+      - label: Email
+        name: email
+        widget: string
+      - label: Phone (as displayed)
+        name: phone
+        widget: string
+      - label: Phone (international, digits only)
+        name: phoneHref
+        widget: string
+        pattern:
+        - ^\+\d{7,15}$
+        - e.g. +97142627928
+      - label: WhatsApp
+        name: whatsapp
+        widget: string
+        required: false
+        hint: Leave blank to hide.
+      - label: Address
+        name: address
+        widget: string
+      - label: Company social profiles
+        name: socialLinks
+        widget: list
+        summary: '{{fields.platform}}'
+        max: 3
+        fields:
+        - label: Platform
+          name: platform
+          widget: select
+          options:
+          - LinkedIn
+          - Instagram
+          - YouTube
+        - label: Profile link
+          name: url
+          widget: string
+          pattern:
+          - ^https://
+          - Use a complete https:// link.
+    - label: Header
+      name: header
+      widget: object
+      fields:
+      - label: Brand name
+        name: brandName
+        widget: string
+      - label: Logo
+        name: logo
+        widget: image
+        choose_url: false
+        hint: Transparent PNG, about 34×28.
+      - label: Services menu label
+        name: servicesMenuLabel
+        widget: string
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+          hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site
+            links stop the publish.'
+        label: Header button
+        name: button
+    - label: Main menu
+      name: primaryNav
+      widget: list
+      summary: '{{fields.label}} → {{fields.href}}'
+      hint: Drag to reorder. Remove a link to take a page out of the menu.
+      fields:
+      - label: Label
+        name: label
+        widget: string
+      - label: Link
+        name: href
+        widget: string
+    - label: Services menu
+      name: navGroups
+      widget: list
+      label_singular: Menu column
+      summary: '{{fields.title}}'
+      fields:
+      - label: Column heading
+        name: title
+        widget: string
+      - label: Links
+        name: links
+        widget: list
+        summary: '{{fields.label}}'
+        fields:
+        - label: Label
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+        - label: Description
+          name: description
+          widget: string
+          required: false
+    - label: Footer
+      name: footer
+      widget: object
+      fields:
+      - label: Brand name
+        name: brandName
+        widget: string
+      - label: Logo (on dark)
+        name: logo
+        widget: image
+        choose_url: false
+      - label: Heading
+        name: heading
+        widget: string
+      - widget: object
+        fields:
+        - label: Button text
+          name: label
+          widget: string
+        - label: Link
+          name: href
+          widget: string
+          hint: 'A page on this site (/contact), a full https:// address, mailto: or tel:. Broken site
+            links stop the publish.'
+        label: Button
+        name: button
+      - label: Link columns
+        name: columns
+        widget: list
+        max: 4
+        summary: '{{fields.title}}'
+        fields:
+        - label: Column heading
+          name: title
+          widget: string
+        - label: Links
+          name: links
+          widget: list
+          summary: '{{fields.label}}'
+          fields:
+          - label: Label
+            name: label
+            widget: string
+          - label: Link
+            name: href
+            widget: string
+      - label: Copyright line
+        name: copyright
+        widget: string
+        hint: '{{year}} and {{company.name}} are filled in automatically.'
+  - name: forms
+    label: Forms
+    file: src/content/forms.json
+    fields:
+    - label: Appointment calendar link
+      name: appointmentUrl
+      widget: string
+      pattern:
+      - ^https://
+      - Use a complete https:// link
+      hint: Labels, help text and messages on the website's forms. Opened after a visitor chooses “Book
+        appointment”. Opening the calendar is recorded; it is not a confirmed meeting.
+    - label: Consultation & appointment form
+      name: consultation
+      widget: object
+      collapsed: true
+      fields:
+      - label: Step 1 note
+        name: stepOneNote
+        widget: text
+      - label: Field labels
+        name: labels
+        widget: object
+        fields:
+        - label: Name
+          name: name
+          widget: string
+        - label: Country
+          name: country
+          widget: string
+        - label: Email
+          name: email
+          widget: string
+        - label: Phone
+          name: phone
+          widget: string
+        - label: Address
+          name: address
+          widget: string
+        - label: Services
+          name: services
+          widget: string
+        - label: Notes
+          name: notes
+          widget: string
+      - label: Phone help text
+        name: phoneHint
+        widget: string
+      - label: Services help text
+        name: servicesHint
+        widget: string
+      - label: “Optional” label
+        name: optionalLabel
+        widget: string
+      - label: Notes placeholder
+        name: notesPlaceholder
+        widget: string
+        required: false
+      - label: Consent text
+        name: consentText
+        widget: text
+        hint: Followed by a link to the privacy policy.
+      - label: Privacy link text
+        name: privacyLinkLabel
+        widget: string
+      - label: Continue button
+        name: continueButton
+        widget: string
+      - label: Continue button while saving
+        name: savingButton
+        widget: string
+      - label: Save failed message
+        name: saveError
+        widget: text
+      - label: Step 2 heading
+        name: stepTwoHeading
+        widget: string
+      - label: Step 2 introduction
+        name: stepTwoIntro
+        widget: text
+      - label: “Review your details” label
+        name: reviewDetails
+        widget: string
+      - label: Enquiry heading
+        name: enquiryHeading
+        widget: string
+      - label: Enquiry text
+        name: enquiryBody
+        widget: text
+      - label: Enquiry button
+        name: enquiryButton
+        widget: string
+      - label: Enquiry button after saving
+        name: enquirySavedButton
+        widget: string
+      - label: Enquiry saved message
+        name: enquirySavedMessage
+        widget: text
+      - label: Appointment heading
+        name: appointmentHeading
+        widget: string
+      - label: Appointment text
+        name: appointmentBody
+        widget: text
+      - label: Appointment button
+        name: appointmentButton
+        widget: string
+      - label: Appointment preference saved message
+        name: appointmentSavedMessage
+        widget: text
+      - label: Open calendar button
+        name: openCalendarButton
+        widget: string
+      - label: Appointment footnote
+        name: appointmentFootnote
+        widget: text
+      - label: Saving choice message
+        name: choiceSaving
+        widget: string
+      - label: Choice failed message
+        name: choiceError
+        widget: text
+      - label: Edit details link
+        name: editDetails
+        widget: string
+    - label: Contact page message form
+      name: contact
+      widget: object
+      collapsed: true
+      fields:
+      - label: Field labels
+        name: labels
+        widget: object
+        fields:
+        - label: Name
+          name: name
+          widget: string
+        - label: Email
+          name: email
+          widget: string
+        - label: Message
+          name: message
+          widget: string
+      - label: Send button
+        name: submitButton
+        widget: string
+      - label: Send button while sending
+        name: sendingButton
+        widget: string
+      - label: Message after pressing send
+        name: notConnectedMessage
+        widget: text
+        hint: This form does not send yet; keep the message honest about that.
+    - label: Newsletter sign-up
+      name: newsletter
+      widget: object
+      collapsed: true
+      fields:
+      - label: Email label (screen readers)
+        name: emailLabel
+        widget: string
+      - label: Placeholder
+        name: placeholder
+        widget: string
+        required: false
+      - label: Button
+        name: button
+        widget: string
+      - label: Button while submitting
+        name: submittingButton
+        widget: string
+      - label: Thank-you message
+        name: thanksMessage
+        widget: string
+  - name: testimonials
+    label: Testimonials
+    file: src/content/testimonials.json
+    fields:
+    - label: Testimonials
+      name: items
+      widget: list
+      summary: '{{fields.name}} — {{fields.role}}'
+      fields:
+      - label: Quote
+        name: quote
+        widget: text
+      - label: Name
+        name: name
+        widget: string
+      - label: Role / company
+        name: role
+        widget: string
+      - label: Location
+        name: location
+        widget: string
+        required: false
+      - label: Service
+        name: service
+        widget: string
+        required: false
+      - label: Client approved publication
+        name: approved
+        widget: boolean
+        hint: Only tick when the client has agreed to be quoted.
+      hint: Only approved quotes from real clients who agreed to be quoted are published.
+  - name: theme
+    label: Brand & appearance
+    file: src/content/theme.json
+    fields:
+    - label: Accent colour
+      name: accent
+      widget: select
+      options:
+      - label: Alliance red (default)
+        value: alliance-red
+      - label: Deep crimson
+        value: crimson
+      - label: Burgundy
+        value: burgundy
+      hint: Vetted presets only, so every choice stays readable and on-brand. Changes apply to the whole
+        site.
+    - label: Typeface
+      name: font
+      widget: select
+      options:
+      - label: Inter (brand)
+        value: inter
+      - label: System font (fastest)
+        value: system
+    - label: Text size
+      name: textSize
+      widget: select
+      options:
+      - label: Standard
+        value: standard
+      - label: Larger
+        value: large
+    - label: Space between sections
+      name: sectionSpacing
+      widget: select
+      options:
+      - label: Compact
+        value: compact
+      - label: Standard
+        value: standard
+      - label: Spacious
+        value: spacious
+    - label: Animation
+      name: motion
+      widget: select
+      options:
+      - label: Full (visitors who prefer reduced motion still get none)
+        value: full
+      - label: Off for everyone
+        value: 'off'
+    - label: Opening logo animation on first load
+      name: openingAnimation
+      widget: boolean

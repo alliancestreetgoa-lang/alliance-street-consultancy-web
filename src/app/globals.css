@@ -56,9 +56,9 @@
   --radius-3xl: calc(var(--radius) * 2.2);
 
   /* A fine red edge with a compact halo; keep the surrounding surface neutral. */
-  --shadow-card: 0 0 0 1px rgb(255 24 48 / 22%), 0 0 8px rgb(255 24 48 / 8%),
+  --shadow-card: 0 0 0 1px rgb(var(--brand-glow) / 22%), 0 0 8px rgb(var(--brand-glow) / 8%),
     0 8px 22px -10px rgb(0 0 0 / 12%);
-  --shadow-card-hover: 0 0 0 1px rgb(255 24 48 / 55%), 0 0 14px rgb(255 24 48 / 18%),
+  --shadow-card-hover: 0 0 0 1px rgb(var(--brand-glow) / 55%), 0 0 14px rgb(var(--brand-glow) / 18%),
     0 10px 26px -10px rgb(0 0 0 / 14%);
 
   /* --------------------------------------------------------------------
@@ -92,6 +92,16 @@
 }
 
 :root {
+  /* Brand accent. Overridden at build time from src/content/theme.json (see
+     src/lib/theme.ts), so the CMS can switch between vetted presets. */
+  --brand: #e22e34;
+  --brand-deep: #a8171d;
+  --brand-dark: #8d1319;
+  --brand-popover: #c0151b;
+  --brand-neon: #ff2846;
+  --brand-neon-strong: #ff163c;
+  --brand-glow: 255 24 48;
+
   --background: #ffffff;
   --foreground: #000000;
   --card: #fafafa;
@@ -99,10 +109,10 @@
   --popover: #ffffff;
   --popover-foreground: #000000;
 
-  --primary: #e22e34;
+  --primary: var(--brand);
   --primary-foreground: #ffffff;
   /* Shaded end of the red accent gradient (headline accent words, the A mark). */
-  --primary-deep: #a8171d;
+  --primary-deep: var(--brand-deep);
 
   --secondary: #fafafa;
   --secondary-foreground: #000000;
@@ -123,17 +133,17 @@
   --border: #e9e9e9;
   --glass-border: #e9e9e9;
   --input: #d9d9d9;
-  --ring: #e22e34;
+  --ring: var(--brand);
   --radius: 0.75rem;
 
   --sidebar: #fafafa;
   --sidebar-foreground: #000000;
-  --sidebar-primary: #e22e34;
+  --sidebar-primary: var(--brand);
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f9f9fa;
   --sidebar-accent-foreground: #000000;
   --sidebar-border: #e9e9e9;
-  --sidebar-ring: #e22e34;
+  --sidebar-ring: var(--brand);
 }
 
 @layer base {
@@ -341,27 +351,27 @@
   --muted-foreground-light: #afafaf;
   --accent: rgba(255, 255, 255, 0.1);
   --accent-foreground: #ffffff;
-  --primary: #e22e34;
+  --primary: var(--brand);
   --primary-foreground: #ffffff;
-  --primary-deep: #a8171d;
+  --primary-deep: var(--brand-deep);
   --border: rgba(255, 255, 255, 0.12);
   --glass-border: rgba(255, 255, 255, 0.14);
   --input: rgba(255, 255, 255, 0.18);
-  --ring: #e22e34;
+  --ring: var(--brand);
   /* On black a red cast is the only shadow that reads, so it glows rather
      than darkens. */
-  --shadow-card: 0 0 0 1px rgb(255 24 48 / 28%), 0 0 10px rgb(255 24 48 / 12%);
-  --shadow-card-hover: 0 0 0 1px rgb(255 24 48 / 65%), 0 0 18px rgb(255 24 48 / 28%);
+  --shadow-card: 0 0 0 1px rgb(var(--brand-glow) / 28%), 0 0 10px rgb(var(--brand-glow) / 12%);
+  --shadow-card-hover: 0 0 0 1px rgb(var(--brand-glow) / 65%), 0 0 18px rgb(var(--brand-glow) / 28%);
 }
 
 .surface-brand {
-  --background: #e22e34;
+  --background: var(--brand);
   --foreground: #ffffff;
   --card: rgba(255, 255, 255, 0.1);
   --card-foreground: #ffffff;
   --secondary: rgba(255, 255, 255, 0.1);
   --secondary-foreground: #ffffff;
-  --popover: #c0151b;
+  --popover: var(--brand-popover);
   --popover-foreground: #ffffff;
   --muted: rgba(255, 255, 255, 0.1);
   --muted-foreground: rgba(255, 255, 255, 0.82);
@@ -369,7 +379,7 @@
   --accent: rgba(255, 255, 255, 0.16);
   --accent-foreground: #ffffff;
   --primary: #ffffff;
-  --primary-foreground: #e22e34;
+  --primary-foreground: var(--brand);
   --primary-deep: #f1e9e9;
   --border: rgba(255, 255, 255, 0.24);
   --glass-border: rgba(255, 255, 255, 0.26);
@@ -388,8 +398,8 @@
   background: linear-gradient(
     180deg,
     #1a0407 0%,
-    #8d1319 22%,
-    #e22e34 42%,
+    var(--brand-dark) 22%,
+    var(--brand) 42%,
     #f6c9cb 66%,
     #ffffff 88%
   );
@@ -401,22 +411,22 @@
 
    The stops are pushed later than .as-wall-hero's. These heroes set their copy
    directly on the wall (the home hero puts it in a white card), so the band the
-   text occupies has to stay at #e22e34 or darker — white on #e22e34 is 4.5:1,
+   text occupies has to stay at the brand red or darker — white on it is 4.5:1,
    white on the #f6c9cb stop below it is not close. The heroes pair this with
    top-anchored content so nothing lands in the pale zone. */
 .as-wall-page {
   background: linear-gradient(
     180deg,
     #1a0407 0%,
-    #8d1319 24%,
-    #e22e34 68%,
+    var(--brand-dark) 24%,
+    var(--brand) 68%,
     #f6c9cb 88%,
     #ffffff 100%
   );
 }
 
 .as-wall-footer {
-  background: linear-gradient(180deg, #e22e34 0%, #8d1319 42%, #000000 100%);
+  background: linear-gradient(180deg, var(--brand) 0%, var(--brand-dark) 42%, #000000 100%);
 }
 
 /* -------------------------------------------------------------------------
@@ -467,10 +477,10 @@
   border-radius: 50%;
   background: radial-gradient(
     closest-side,
-    rgb(255 24 48 / 72%) 0%,
-    rgb(255 24 48 / 42%) 10%,
-    rgb(255 24 48 / 12%) 32%,
-    rgb(255 24 48 / 3%) 52%,
+    rgb(var(--brand-glow) / 72%) 0%,
+    rgb(var(--brand-glow) / 42%) 10%,
+    rgb(var(--brand-glow) / 12%) 32%,
+    rgb(var(--brand-glow) / 3%) 52%,
     transparent 76%
   );
 }
@@ -499,9 +509,9 @@
   background: linear-gradient(
     180deg,
     transparent 0%,
-    color-mix(in oklch, #e22e34 14%, transparent) 35%,
-    color-mix(in oklch, #e22e34 55%, transparent) 70%,
-    #e22e34 100%
+    color-mix(in oklch, var(--brand) 14%, transparent) 35%,
+    color-mix(in oklch, var(--brand) 55%, transparent) 70%,
+    var(--brand) 100%
   );
 }
 
@@ -585,7 +595,7 @@ html { scroll-padding-top: 6rem; }
   width: min(220px, 50vw);
   height: 2px;
   border-radius: 2px;
-  background: #e00025;
+  background: var(--brand);
   transform-origin: left center;
 }
 
@@ -599,12 +609,12 @@ html { scroll-padding-top: 6rem; }
 .as-nav-chip[data-state="open"] {
   color: #fff;
   background-color: #6b0718;
-  box-shadow: inset 0 0 0 1px #ff3657, 0 0 10px #ff163c80, 0 0 22px #ff163c40;
+  box-shadow: inset 0 0 0 1px var(--brand-neon), 0 0 10px color-mix(in srgb, var(--brand-neon-strong) 50%, transparent), 0 0 22px color-mix(in srgb, var(--brand-neon-strong) 25%, transparent);
 }
 .as-menu-service:hover,
 .as-menu-service:focus-visible {
   background-color: #470811;
-  box-shadow: inset 0 0 0 1px #ff3657, 0 0 12px #ff163c55;
+  box-shadow: inset 0 0 0 1px var(--brand-neon), 0 0 12px color-mix(in srgb, var(--brand-neon-strong) 33%, transparent);
 }
 .as-menu-service:hover > span:first-child,
 .as-menu-service:focus-visible > span:first-child { color: #fff; }
@@ -613,18 +623,46 @@ html { scroll-padding-top: 6rem; }
 
 /* Keep button fills legible; the neon treatment lives on the edge. */
 [data-slot="button"]:not([data-variant="link"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible) {
-  border-color: #ff3657;
-  box-shadow: 0 0 0 1px #ff365799, 0 0 12px #ff163c80, 0 0 26px #ff163c40;
+  border-color: var(--brand-neon);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand-neon) 60%, transparent), 0 0 12px color-mix(in srgb, var(--brand-neon-strong) 50%, transparent), 0 0 26px color-mix(in srgb, var(--brand-neon-strong) 25%, transparent);
 }
 
 /* Clearly red card borders, with a small halo instead of a broad coloured wash. */
 .as-neon-card,
 .as-card-frame {
-  border: 1px solid #ff2846;
-  box-shadow: 0 0 8px rgb(255 24 48 / 16%), 0 5px 18px -8px rgb(0 0 0 / 10%);
+  border: 1px solid var(--brand-neon);
+  box-shadow: 0 0 8px rgb(var(--brand-glow) / 16%), 0 5px 18px -8px rgb(0 0 0 / 10%);
 }
 .as-neon-card:hover,
 .as-neon-card:focus-within {
-  border-color: #ff163c;
-  box-shadow: 0 0 12px rgb(255 24 48 / 28%), 0 6px 20px -8px rgb(0 0 0 / 12%);
+  border-color: var(--brand-neon-strong);
+  box-shadow: 0 0 12px rgb(var(--brand-glow) / 28%), 0 6px 20px -8px rgb(0 0 0 / 12%);
 }
+
+/* -------------------------------------------------------------------------
+   CMS-controlled presentation settings (src/content/theme.json).
+   Each is a vetted preset applied as a data attribute on <html>, so an editor
+   can change the feel without being able to produce an unreadable layout.
+   ------------------------------------------------------------------------- */
+
+/* Motion: "off" applies the reduced-motion treatment for every visitor. The
+   GSAP/JS side reads the same setting through MOTION_QUERY in lib/motion.ts. */
+html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+html[data-motion="off"] .as-intro { display: none; }
+
+/* Section spacing. Every section root sets its own py-24/py-32; the page
+   renderer wraps each one, so the override only reaches the section itself. */
+html[data-spacing="compact"] [data-section]:not([data-section$="Hero"]) > section { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+html[data-spacing="spacious"] [data-section]:not([data-section$="Hero"]) > section { padding-block: clamp(7rem, 12vw, 10rem); }
+
+/* Text size: a uniform step up keeps every rem-based proportion intact. */
+html[data-text-size="large"] { font-size: 106.25%; }
+@media (min-width: 1920px) { html[data-text-size="large"] { font-size: calc(100vw / 113); } }
+
+html[data-font="system"] { --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+html[data-font="system"] body { font-family: var(--font-sans); }

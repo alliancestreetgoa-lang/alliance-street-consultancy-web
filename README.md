@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Alliance Street Consultancy website
 
-## Getting Started
+Next.js 16 static site (GitHub Pages) with a git-based CMS, a staff portal and Firebase lead capture.
 
-First, run the development server:
+| | |
+| --- | --- |
+| Live review site | https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web/ |
+| Staff portal + content editor | https://alliance-street-leads.web.app |
+| Client guide | [docs/client-guide.md](docs/client-guide.md) |
+| Technical setup, roles, backups | [docs/cms-setup.md](docs/cms-setup.md) |
+| Leads | [docs/firebase-leads.md](docs/firebase-leads.md) |
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Develop
+
+```sh
+npm ci
+npm run optimize:images          # once after a fresh clone (generates the image manifest)
+npx next dev -p 3007             # site
+npm run admin:dev                # staff portal + editor on :5175 (add ?emulator to use Firebase emulators)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Content lives in `src/content/` (pages are `src/content/pages/*.json`: an ordered list of typed sections, see
+`src/lib/content/page-schema.ts`). Section components are mapped in `src/components/page/page-renderer.tsx`; the
+editor's forms are `admin/public/cms/config.yml`. Tests keep the three in step.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Check
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sh
+npm test && npx tsc --noEmit && npm run lint && npm run build
+npm run test:rules    # Firestore rules (Java 21)
+npm run test:e2e      # built site, desktop + mobile
+npm run test:portal   # staff portal against the emulators
+```

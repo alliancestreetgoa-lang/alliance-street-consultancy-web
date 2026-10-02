@@ -1,65 +1,191 @@
 name: Deploy to GitHub Pages
 
+# Builds the live site from main AND a full preview of every open draft (pull
+# request from this repository — the CMS opens one per saved change), then
+# deploys them together:
+#
+#   https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web/                 live
+#   https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web/_preview/pr-<n>/ draft <n>
+#
+# Each draft gets a "Preview" commit status pointing at its preview, which is
+# what the CMS's "View Preview" button and the staff portal read.
+#
+# Security model: draft code is only ever built in the `preview` job, which has
+# a read-only token and no secrets. The privileged `deploy` job never runs
+# draft code — it downloads finished files into a fixed sub-folder.
 on:
   push:
     branches: ["main"]
+  # After the publish check runs on a draft (opened or updated), rebuild so the
+  # draft's preview is current. workflow_run always runs on the default branch,
+  # which is what the github-pages environment allows to deploy.
+  workflow_run:
+    workflows: ["Validate content"]
+    types: [completed]
+  # Daily tidy-up: previews of drafts that were discarded disappear.
+  schedule:
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  BASE_PATH: /alliance-street-consultancy-web
+  SITE_ORIGIN: https://alliancestreetgoa-lang.github.io
+
 jobs:
-  build:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: write
+    outputs:
+      drafts: ${{ steps.list.outputs.drafts }}
+    steps:
+      - name: List open drafts
+        id: list
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const prs = await github.paginate(github.rest.pulls.list, { ...context.repo, state: "open", per_page: 100 });
+            const own = prs
+              .filter((pr) => pr.head.repo && pr.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`)
+              .slice(0, 15)
+              .map((pr) => ({ number: pr.number, sha: pr.head.sha }));
+            for (const d of own) {
+              await github.rest.repos.createCommitStatus({
+                ...context.repo, sha: d.sha, state: "pending", context: "Preview",
+                description: "Building the preview of this draft…",
+                target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              });
+            }
+            core.setOutput("drafts", JSON.stringify(own));
+
+  site:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
+      - run: npm ci
       - name: Build static export
         env:
-          NEXT_PUBLIC_BASE_PATH: /alliance-street-consultancy-web
+          NEXT_PUBLIC_BASE_PATH: ${{ env.BASE_PATH }}
           # Absolute origin for canonicals, sitemap <loc> values, OG URLs and
-          # schema @id. Set explicitly so it is a decision rather than a
-          # fallback in src/lib/site-url.ts.
-          #
-          # When moving to a custom domain: change this to that origin, add
-          # public/CNAME, and DELETE the NEXT_PUBLIC_BASE_PATH line above —
-          # basePath must be empty when serving from a domain root, or every
-          # canonical will carry a /alliance-street-consultancy-web segment
-          # that does not exist there.
-          NEXT_PUBLIC_SITE_URL: https://alliancestreetgoa-lang.github.io
+          # schema @id. When moving to a custom domain: set this to that
+          # origin, add public/CNAME, and remove NEXT_PUBLIC_BASE_PATH (and
+          # BASE_PATH above) — basePath must be empty at a domain root.
+          NEXT_PUBLIC_SITE_URL: ${{ env.SITE_ORIGIN }}
         run: npm run build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v6
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
-          path: ./out
+          name: site-main
+          path: out
+          retention-days: 1
+
+  preview:
+    needs: plan
+    if: needs.plan.outputs.drafts != '[]'
+    runs-on: ubuntu-latest
+    # Draft code runs here: read-only token, no secrets, no shared npm cache.
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        draft: ${{ fromJSON(needs.plan.outputs.drafts) }}
+    steps:
+      # The merge ref is what the site will look like if this draft is
+      # published now, including anything published since it was started.
+      - uses: actions/checkout@v7
+        with:
+          ref: refs/pull/${{ matrix.draft.number }}/merge
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Build preview
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ env.BASE_PATH }}/_preview/pr-${{ matrix.draft.number }}
+          NEXT_PUBLIC_SITE_URL: ${{ env.SITE_ORIGIN }}
+          NEXT_PUBLIC_PREVIEW_LABEL: Draft #${{ matrix.draft.number }}
+        run: npm run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: preview-${{ matrix.draft.number }}
+          path: out
+          retention-days: 1
 
   deploy:
+    needs: [plan, site, preview]
+    # Deploy the live site even if a draft's preview failed to build.
+    if: always() && needs.site.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      statuses: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: site-main
+          path: out
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: preview-*
+          path: previews
+      - name: Place previews
+        run: |
+          mkdir -p out/_preview
+          if [ -d previews ]; then
+            for dir in previews/preview-*; do
+              [ -d "$dir" ] || continue
+              n="${dir##*/preview-}"
+              case "$n" in (*[!0-9]*|'') continue;; esac
+              mv "$dir" "out/_preview/pr-$n"
+            done
+          fi
+          ls out/_preview
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./out
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Report preview links on each draft
+        if: always() && needs.plan.outputs.drafts != '[]'
+        uses: actions/github-script@v9
+        env:
+          DRAFTS: ${{ needs.plan.outputs.drafts }}
+          DEPLOYED: ${{ steps.deployment.outcome }}
+        with:
+          script: |
+            const fs = require("fs");
+            const drafts = JSON.parse(process.env.DRAFTS);
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            for (const d of drafts) {
+              const built = fs.existsSync(`out/_preview/pr-${d.number}/index.html`);
+              const ok = built && process.env.DEPLOYED === "success";
+              await github.rest.repos.createCommitStatus({
+                ...context.repo, sha: d.sha, context: "Preview",
+                state: ok ? "success" : "failure",
+                description: ok ? "Preview of this draft is ready" : built ? "Preview built but could not be deployed" : "The preview could not be built — see the log",
+                target_url: ok ? `${process.env.SITE_ORIGIN}${process.env.BASE_PATH}/_preview/pr-${d.number}/` : run,
+              });
+            }

@@ -6,7 +6,9 @@ import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { COMPANY } from "@/lib/site-config";
+import { COMPANY, FOOTER } from "@/lib/site-config";
+import { SmartLink } from "@/components/ui/smart-link";
+import { fill } from "@/lib/content/fill";
 import { asset } from "@/lib/asset-path";
 import { gsap } from "@/lib/gsap";
 import { MOTION, MOTION_QUERY, settle } from "@/lib/motion";
@@ -29,32 +31,6 @@ import { MOTION, MOTION_QUERY, settle } from "@/lib/motion";
  * Drop the files in `public/brand/press/` and add the row if the coverage
  * applies to this site too.
  */
-
-const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
-  {
-    title: "Company",
-    links: [
-      { label: "About us", href: "/about" },
-      { label: "Case Studies", href: "/case-studies" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Solutions",
-    links: [
-      { label: "All Services", href: "/services" },
-      { label: "Industries", href: "/industries" },
-      { label: "Pricing", href: "/pricing" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms & Conditions", href: "/terms-and-conditions" },
-    ],
-  },
-];
 
 const SOCIAL_ICONS = {
   LinkedIn: (<svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8V14.1c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.73H9.51V9.2h2.83v1.3h.04c.4-.76 1.36-1.56 2.79-1.56 2.98 0 3.58 1.96 3.58 4.5v5.31Z" /></svg>),
@@ -108,21 +84,21 @@ export function SiteFooter() {
               {/* White-on-transparent mark, for the footer's red/black wall.
                   The navbar keeps logo-mark.png. */}
               <Image
-                src={asset("/brand/logo-mark-white.png")}
+                src={asset(FOOTER.logo)}
                 alt=""
                 width={34}
                 height={28}
                 style={{ width: "34px", height: "28px" }}
               />
-              <span className="text-lg font-semibold text-foreground">Alliance Street</span>
+              <span className="text-lg font-semibold text-foreground">{FOOTER.brandName}</span>
             </Link>
 
             <h2 ref={headingRef} className="text-5xl text-foreground">
-              Ready to begin?
+              {FOOTER.heading}
             </h2>
 
             <Button size="lg" asChild>
-              <Link href="/book-consultation">Book a Consultation</Link>
+              <SmartLink href={FOOTER.button.href}>{FOOTER.button.label}</SmartLink>
             </Button>
           </div>
 
@@ -130,18 +106,18 @@ export function SiteFooter() {
             ref={columnsRef}
             className="grid flex-1 grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:max-w-2xl"
           >
-            {COLUMNS.map((column) => (
+            {FOOTER.columns.map((column) => (
               <div key={column.title} className="flex flex-col gap-4">
                 <span className="as-eyebrow text-[0.6875rem]">{column.title}</span>
                 <ul className="flex flex-col gap-3">
                   {column.links.map((link) => (
                     <li key={link.href}>
-                      <Link
+                      <SmartLink
                         href={link.href}
                         className="text-sm text-muted-foreground transition-colors duration-350 hover:text-foreground"
                       >
                         {link.label}
-                      </Link>
+                      </SmartLink>
                     </li>
                   ))}
                 </ul>
@@ -152,7 +128,7 @@ export function SiteFooter() {
 
         <div className="mt-16 flex flex-col items-start gap-6 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
+            {fill(FOOTER.copyright)}
           </p>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">

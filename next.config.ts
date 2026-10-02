@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
 
-  // Dev only. The CMS is a static file at public/admin/index.html, which the
-  // export serves correctly at /admin/ (GitHub Pages resolves a directory to
+  // Dev only. /admin is a static redirect page (public/admin/index.html) to the
+  // staff portal, which the export serves at /admin/ (GitHub Pages resolves a directory to
   // its index.html). `next dev` does not: it hands /admin to the app router,
   // which has no such route, so you get the site's own 404 inside the site
   // layout — confusing, and it makes the CMS config impossible to work on

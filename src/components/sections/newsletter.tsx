@@ -10,6 +10,9 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/scroll-reveal";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { cn } from "@/lib/utils";
+import { FORMS } from "@/lib/content/settings";
+import type { SectionOf } from "@/lib/content/page-schema";
+import { useHydrated } from "@/lib/use-hydrated";
 
 const newsletterSchema = z.object({
   email: z.string().email("Enter a valid email address."),
@@ -17,7 +20,9 @@ const newsletterSchema = z.object({
 
 type NewsletterValues = z.infer<typeof newsletterSchema>;
 
-export function Newsletter() {
+export function Newsletter({ section }: { section: SectionOf<"newsletter"> }) {
+  const copy = FORMS.newsletter;
+  const hydrated = useHydrated();
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -39,28 +44,28 @@ export function Newsletter() {
       <Container className="relative z-10">
         <Reveal className="mx-auto flex flex-col items-center gap-6 text-center">
           <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            Stay ahead of UAE and UK compliance changes.
+            {section.heading}
           </h2>
           <p className="max-w-xl text-muted-foreground">
-            Occasional, practical updates on tax and regulatory changes that affect founders — no
-            spam.
+            {section.body}
           </p>
           {submitted ? (
-            <p className="text-primary">Thanks — you&apos;re on the list.</p>
+            <p className="text-primary">{copy.thanksMessage}</p>
           ) : (
             <form
+              method="post"
               onSubmit={handleSubmit(onSubmit)}
               className="flex w-full max-w-md flex-col gap-3 sm:flex-row sm:items-start"
               noValidate
             >
               <div className="flex-1">
                 <label htmlFor="newsletter-email" className="sr-only">
-                  Email address
+                  {copy.emailLabel}
                 </label>
                 <input
                   id="newsletter-email"
                   type="email"
-                  placeholder="you@company.com"
+                  placeholder={copy.placeholder}
                   aria-invalid={errors.email ? "true" : "false"}
                   aria-describedby="newsletter-email-error"
                   className={cn(
@@ -79,7 +84,7 @@ export function Newsletter() {
                   </p>
                 ) : null}
               </div>
-              <Button size="lg" className="shrink-0" onClick={handleSubmit(onSubmit)}>{isSubmitting ? "Submitting..." : "Subscribe"}</Button>
+              <Button size="lg" className="shrink-0" disabled={!hydrated} onClick={handleSubmit(onSubmit)}>{isSubmitting ? copy.submittingButton : copy.button}</Button>
             </form>
           )}
         </Reveal>

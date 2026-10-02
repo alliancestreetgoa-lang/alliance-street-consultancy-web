@@ -1,6 +1,11 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------
+    // Visitors (anonymous Firebase session from the consultation form).
+    // These rules are unchanged from the original lead-capture release.
+    // ------------------------------------------------------------------
     function owner(leadId) {
       return request.auth != null && request.auth.uid == leadId;
     }
@@ -21,19 +26,113 @@ service cloud.firestore {
         && d.enquiryRequested is bool && d.bookingRequested is bool
         && d.consentVersion == '2026-10-01';
     }
+
+    // ------------------------------------------------------------------
+    // Staff. Access is an explicit allowlist: a document at staff/{email}
+    // (lower-case email) with active == true. Only a Google account with a
+    // verified email counts, so a visitor's anonymous session — or any other
+    // sign-in method — can never match.
+    //   admin     — everything, including managing staff and deleting leads
+    //   publisher — view leads, update their status, export
+    //   editor    — view leads, update their status
+    // Export is a convenience restricted in the portal; anyone who can view a
+    // lead could copy it, so the allowlist is the real control.
+    // ------------------------------------------------------------------
+    function staffEmail() {
+      return request.auth.token.email.lower();
+    }
+    function staffPath() {
+      return /databases/$(database)/documents/staff/$(staffEmail());
+    }
+    function isStaff() {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.email_verified == true
+        && exists(staffPath())
+        && get(staffPath()).data.active == true;
+    }
+    function hasRole(roles) {
+      return isStaff() && get(staffPath()).data.role in roles;
+    }
+
+    function validLeadAdmin(d) {
+      return d.keys().hasAll(['status', 'meetingConfirmed', 'notes', 'updatedBy', 'updatedAt'])
+        && d.keys().hasOnly(['status', 'meetingConfirmed', 'meetingAt', 'notes', 'updatedBy', 'updatedAt'])
+        && d.status in ['new', 'contacted', 'qualified', 'proposal', 'won', 'lost', 'spam']
+        && d.meetingConfirmed is bool
+        && (!('meetingAt' in d) || d.meetingAt == null || d.meetingAt is timestamp)
+        && d.notes is string && d.notes.size() <= 5000
+        && d.updatedBy == staffEmail()
+        && d.updatedAt == request.time;
+    }
+    function validHistory(d) {
+      return d.keys().hasAll(['status', 'meetingConfirmed', 'by', 'at'])
+        && d.keys().hasOnly(['status', 'meetingConfirmed', 'note', 'by', 'at'])
+        && d.status in ['new', 'contacted', 'qualified', 'proposal', 'won', 'lost', 'spam']
+        && d.meetingConfirmed is bool
+        && (!('note' in d) || (d.note is string && d.note.size() <= 500))
+        && d.by == staffEmail()
+        && d.at == request.time;
+    }
+    function validStaff(d) {
+      return d.keys().hasAll(['role', 'active', 'addedBy', 'addedAt'])
+        && d.keys().hasOnly(['role', 'active', 'name', 'addedBy', 'addedAt'])
+        && d.role in ['admin', 'publisher', 'editor']
+        && d.active is bool
+        && (!('name' in d) || (d.name is string && d.name.size() <= 100))
+        && d.addedBy is string
+        && d.addedAt is timestamp;
+    }
+
     match /leads/{leadId} {
-      // One lead per anonymous browser session. Staff review via IAM-protected console.
-      allow get: if owner(leadId);
-      allow list, delete: if false;
+      // One lead per anonymous browser session; staff read through the portal.
+      allow get: if owner(leadId) || isStaff();
+      allow list: if isStaff();
+      // Erasure requests. Visitors can never delete.
+      allow delete: if hasRole(['admin']);
       allow create: if owner(leadId) && validLead(request.resource.data, leadId)
         && request.resource.data.createdAt == request.time
         && request.resource.data.enquiryRequested == false
         && request.resource.data.bookingRequested == false;
+      // Staff never edit what the visitor submitted; their work lives in leadAdmin.
       allow update: if owner(leadId) && validLead(request.resource.data, leadId)
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.ownerUid == resource.data.ownerUid
         && (!resource.data.enquiryRequested || request.resource.data.enquiryRequested)
         && (!resource.data.bookingRequested || request.resource.data.bookingRequested);
     }
+
+    // Staff-owned follow-up state, kept apart from the visitor's own record so
+    // the visitor rules above never have to loosen.
+    match /leadAdmin/{leadId} {
+      allow read: if isStaff();
+      allow create, update: if isStaff()
+        && validLeadAdmin(request.resource.data)
+        && exists(/databases/$(database)/documents/leads/$(leadId));
+      allow delete: if hasRole(['admin']);
+
+      // Append-only audit trail of status changes.
+      match /history/{entryId} {
+        allow read: if isStaff();
+        allow create: if isStaff() && validHistory(request.resource.data);
+        allow update: if false;
+        allow delete: if hasRole(['admin']);
+      }
+    }
+
+    match /staff/{email} {
+      // Everyone on the list can see their own entry (to learn their role);
+      // only admins see and manage the list. An admin cannot change or remove
+      // their own entry, so the last admin cannot lock everyone out by mistake.
+      allow get: if isStaff() && (email == staffEmail() || hasRole(['admin']));
+      allow list: if hasRole(['admin']);
+      allow create, update: if hasRole(['admin']) && email != staffEmail()
+        && email == email.lower()
+        && validStaff(request.resource.data)
+        && request.resource.data.addedBy == staffEmail();
+      allow delete: if hasRole(['admin']) && email != staffEmail();
+    }
+
+    // Everything else is denied by default.
   }
 }

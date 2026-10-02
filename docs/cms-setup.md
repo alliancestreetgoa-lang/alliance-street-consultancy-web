@@ -1,176 +1,218 @@
-# CMS setup
+# CMS — technical setup and operations
 
-One-time technical setup for the content editor at `/admin`. Do this before
-handover; the client never needs to repeat it.
+Audience: the developer or administrator who sets the system up and keeps it
+running. The client-facing guide is [client-guide.md](client-guide.md).
 
-## Why a worker is needed at all
+## Architecture in one page
 
-The site is a static export on GitHub Pages — it serves files and runs no
-server code. Logging in with GitHub uses the OAuth authorization code flow,
-whose final step exchanges a code for a token using a **client secret**. That
-exchange must happen somewhere that can hold a secret, which a static host
-cannot.
+| Piece | Where | Cost | Holds |
+| --- | --- | --- | --- |
+| Public website | GitHub Pages (static export of this repo) | Free | Nothing private |
+| Content | JSON in `src/content/` + media in `public/brand/`, in this repo | Free | Every version, forever (git history) |
+| Content editor | Sveltia CMS at `https://alliance-street-leads.web.app/cms/` | Free | Nothing — it edits the repo through the GitHub API |
+| Staff portal | `https://alliance-street-leads.web.app/` (Firebase Hosting) | Free tier | Nothing — reads GitHub and Firestore as the signed-in person |
+| GitHub sign-in helper | Cloudflare Worker (`sveltia-cms-auth`) | Free tier | Only the OAuth client secret |
+| Leads | Firestore `alliance-street-leads` (London) | Free tier | Enquiries + staff follow-up |
 
-GitHub has not shipped client-side PKCE for single-page apps (it was planned
-for Q4 2025 and is on hold), so this cannot currently be avoided. The worker
-below exists only to complete that handshake. It stores nothing, and it sees no
-content.
+```
+editor saves ──► branch cms/… + pull request ("draft")      live site unchanged
+                    │
+                    ├─► "Validate content" → Publish check (schemas, links, media, types, lint, tests, build)
+                    └─► "Deploy to GitHub Pages" → builds main + every draft → /_preview/pr-<n>/
+                                                   → "Preview" status on the draft (View Preview button)
+publisher approves (GitHub review) ─► Publish = merge into main ─► rebuild ─► live in ~2–4 min
+rollback = revert pull request ─► previewed and published like any other change
+```
 
-## You can start without the worker
+### Why the admin is separate from the public site
 
-The sign-in screen offers three routes, and only the first needs anything
-deployed:
+Draft previews are served from the same origin as the public site
+(`alliancestreetgoa-lang.github.io`). A draft can contain code written by
+anyone with write access. If the editor also ran on that origin, a crafted
+draft preview could read a publisher's stored GitHub login. So the editor and
+staff portal live on `alliance-street-leads.web.app`, a different origin, and
+`/admin/` on the public site is only a redirect. Draft code is built in an
+unprivileged job with a read-only token and no secrets; the deploy job only
+copies the built files.
 
-| Option | Needs the worker? | Good for |
+## Roles and what enforces them
+
+| Role | Website (enforced by GitHub) | Leads (enforced by `firestore.rules`) |
 | --- | --- | --- |
-| **Sign In with GitHub** | Yes | The client. Nothing to manage, no token to lose. |
-| **Sign In Using Access Token** | No | Working today, or a small technical team. |
-| **Work with Local Repository** | No | Editing the config locally with `npm run dev`. |
+| Administrator | Repository owner. Publishes anything; bypasses review; manages access. Must approve tax figures, code and config. | Everything, incl. managing the staff list and deleting leads |
+| Publisher | Collaborator listed for `/src/content/` and `/public/brand/` in `.github/CODEOWNERS`. Approves and publishes other people's drafts. Their own drafts need a second publisher or the administrator. | View, update status, export |
+| Editor | Collaborator not in CODEOWNERS. Edits everything, saves drafts, marks them ready. Cannot publish. | View, update status |
 
-The access-token route works immediately: create a fine-grained personal access
-token with **Contents** and **Pull requests** permissions on this repository and
-paste it in. Both are needed — Pull requests because tax figures go through the
-editorial workflow.
+Website and lead access are separate lists on purpose. The portal's
+**Team & access** screen manages both.
 
-It is the right answer for getting started and the wrong one for handover: a
-token is a secret the client has to store and re-create when it expires, and it
-is theirs alone rather than tied to their GitHub identity. Set up OAuth below
-before you hand the site over.
+GitHub enforces the website roles through the ruleset created by
+`scripts/setup-github-access.sh`. Merges into `main` need an approving code
+owner review and passing checks. Only the repository admin can bypass. A
+personal (non-organisation) repository has no Maintain role, so publishers
+can't publish their own work alone. Moving the repo into a free GitHub
+organisation would let publishers bypass review via the Maintain role. That
+also changes the github.io address, so it's a decision for later.
 
-## 1. Create a GitHub OAuth app
+## One-time setup
 
-This is the one step with no CLI: GitHub's API cannot create OAuth apps, only
-the web UI can.
+Steps 1–3 need an account owner; none of them can be done from CI.
 
-<https://github.com/settings/developers> → **New OAuth App**
+### 1. Turn on the GitHub rules (2 minutes)
 
-| Field | Value |
+```sh
+bash scripts/setup-github-access.sh
+```
+
+Creates the "Protect the live site" ruleset on `main` and confirms the workflow
+token is read-only. Re-runnable. Until this has been run, **anyone with write
+access can still merge their own drafts**: the roles are not yet enforced.
+
+### 2. "Sign in with GitHub" (15 minutes)
+
+The GitHub OAuth code exchange needs a client secret, which a static host can't
+keep. A tiny Cloudflare Worker does that one step and stores nothing else.
+Until it exists, staff can sign in with a fine-grained personal access token
+(Contents, Pull requests, Commit statuses: read/write; Actions: read) on this
+repository.
+
+1. **Create the OAuth app.** GitHub has no API for this.
+   <https://github.com/settings/developers> → New OAuth App
+   - Application name: `Alliance Street CMS`
+   - Homepage URL: `https://alliance-street-leads.web.app`
+   - Callback URL: `https://alliance-street-cms-auth.<subdomain>.workers.dev/callback` (fix it after step 2b)
+   - Generate a client secret.
+2. **Deploy the worker** to the Cloudflare account the client will own:
+   ```sh
+   git clone --depth 1 https://github.com/sveltia/sveltia-cms-auth.git && cd sveltia-cms-auth
+   sed -i '' 's/^name = "sveltia-cms-auth"/name = "alliance-street-cms-auth"/' wrangler.toml
+   npx wrangler deploy                                 # prints the worker URL
+   npx wrangler secret put GITHUB_CLIENT_ID
+   npx wrangler secret put GITHUB_CLIENT_SECRET
+   npx wrangler secret put ALLOWED_DOMAINS             # alliance-street-leads.web.app
+   ```
+   Type the secrets yourself; don't paste them into chats or tickets.
+   `ALLOWED_DOMAINS` stops other sites using your OAuth app.
+3. Set the OAuth app's callback to `<worker-url>/callback`.
+4. Put the worker URL in `admin/public/cms/config.yml` → `backend.base_url`
+   (no trailing slash) and merge. The editor and portal read this file from
+   `main`, so nothing needs redeploying.
+
+### 3. Firebase (10 minutes)
+
+Logged in with `npx firebase-tools login` as a project owner:
+
+```sh
+npx firebase-tools deploy --only firestore:rules,auth --project alliance-street-leads   # rules + Google sign-in
+npm run admin:deploy                                                                    # staff portal + editor
+```
+
+Then add the **first administrator** to the staff list. Nobody can sign in to
+the lead tools until someone is on it. Firebase console → Firestore →
+Start collection `staff` → Document ID = their Google email in lower case →
+fields:
+
+| field | type | value |
+| --- | --- | --- |
+| `role` | string | `admin` |
+| `active` | boolean | `true` |
+| `addedBy` | string | `bootstrap` |
+| `addedAt` | timestamp | now |
+
+Everyone else is then added from the portal's **Team & access** screen.
+
+Also in the Firebase console: Authentication → Settings → Authorized domains
+must include `alliance-street-leads.web.app` (present by default) and the
+GitHub Pages host (needed by the public form's anonymous sign-in).
+
+## Inviting and removing people
+
+Done from the staff portal → **Team & access**; the steps below are the manual equivalent.
+
+- **Website editor:** they create a free GitHub account → an administrator
+  invites the username (repo Settings → Collaborators, or the portal). They must
+  accept the emailed invitation.
+- **Make someone a publisher:** add `@username` to the `/src/content/` and
+  `/public/brand/` lines of `.github/CODEOWNERS` (the portal does this for you).
+- **Lead access:** add their Google email on the staff list with a role.
+- **Remove:** remove the collaborator (and their CODEOWNERS entry); delete or
+  pause their staff-list entry. Both take effect immediately. If someone leaves
+  on bad terms, also revoke their GitHub OAuth authorisation for the app
+  (GitHub → Settings → Applications) and review open drafts they authored.
+
+## Day-to-day operations
+
+| Task | How |
 | --- | --- |
-| Application name | `Alliance Street CMS` |
-| Homepage URL | `https://alliancestreetgoa-lang.github.io/alliance-street-consultancy-web` |
-| Authorization callback URL | `https://alliance-street-cms-auth.<your-subdomain>.workers.dev/callback` |
+| See if the site is live / building / failed | Portal → Website publishing, or the repo's Actions tab |
+| A publish failed | The live site keeps the previous version. Open the build log (link in the portal); the failing check names the file and field. |
+| Roll back a published change | Portal → Recently published → Roll back → publish the rollback draft |
+| Roll back a developer's direct commit | `git revert <sha>` and push (administrator) |
+| Rebuild without changes | Actions → Deploy to GitHub Pages → Run workflow |
+| Redeploy the portal after code changes | `npm run admin:deploy` |
 
-You will not know the worker subdomain until step 2, so put anything in the
-callback field for now and come back and correct it. **The callback must match
-exactly**, including `/callback` — a mismatch is the single most common reason
-login fails.
+## Backups and recovery
 
-Generate a **Client secret** and keep the tab open. The secret is shown once.
-
-## 2. Deploy the OAuth worker
-
-Sveltia publishes the worker; it is MIT-licensed and does nothing but complete
-the token exchange. Cloudflare's free tier covers this comfortably — it handles
-a handful of logins a month.
-
-```sh
-git clone --depth 1 https://github.com/sveltia/sveltia-cms-auth.git
-cd sveltia-cms-auth
-sed -i '' 's/^name = "sveltia-cms-auth"/name = "alliance-street-cms-auth"/' wrangler.toml
-npx wrangler deploy
-```
-
-The deploy prints the worker URL. Note it down.
-
-## 3. Set the secrets
-
-Run these yourself — the client secret should not be pasted into a chat, a
-ticket, or anything that keeps a transcript.
-
-```sh
-npx wrangler secret put GITHUB_CLIENT_ID       # from step 1
-npx wrangler secret put GITHUB_CLIENT_SECRET   # from step 1
-npx wrangler secret put ALLOWED_DOMAINS        # alliancestreetgoa-lang.github.io
-```
-
-`ALLOWED_DOMAINS` is not optional in practice: without it the worker will
-complete a login for any site that points at it, which makes your OAuth app a
-free authentication service for anyone who finds the URL.
-
-Now go back to the OAuth app and set the callback URL to
-`<worker-url>/callback`.
-
-## 4. Point the CMS at the worker
-
-In `public/admin/config.yml`:
-
-```yaml
-backend:
-  base_url: https://alliance-street-cms-auth.<your-subdomain>.workers.dev
-```
-
-Commit and push. `npm test` will confirm the placeholder is gone — there is a
-test asserting `base_url` is a real `https://` URL and not `REPLACE-ME`.
-
-## 5. Check it
-
-Open `<site>/admin/`, click **Sign In with GitHub**, and authorise. You should
-land in the editor with five collections listed.
-
-## 6. Give the client access
-
-Editing commits to this repository, so the client needs a GitHub account with
-**write access** to it. Repo settings → Collaborators → add them.
-
-Write access is the base permission, but it is not the whole model. The **Tax
-figures & sources** collection runs `publish_mode: editorial_workflow` with
-`publish: false`, so an editor can draft a change and send it for review but
-cannot publish it — a second person merges the pull request. Every other
-collection publishes on save.
-
-That split is the point: marketing copy that is wrong is embarrassing and
-fixable in minutes, while a wrong tax rate is something a reader can act on.
-If you need finer-grained roles than "can publish copy / cannot publish
-figures", the next step up is a separate content repository, which is a
-larger change.
-
-Because tax figures use the editorial workflow, the CMS opens, labels and
-merges pull requests on the editor's behalf. OAuth sign-in with GitHub's
-default `repo` scope already covers that. If anyone signs in with a
-fine-grained personal access token instead, that token needs **Pull requests**
-permission as well as **Contents**, or the workflow fails with a permissions
-error that does not obviously point at the token.
-
-`.github/workflows/validate-content.yml` runs on every pull request, so the
-review is informed: the schemas, types, lint, tests and a full build all run
-before the merge, and the built site is attached to the run as an artifact for
-seven days. Without it a reviewer would be approving a JSON diff blind, since
-the build only runs after the merge.
+- **Website content:** every published and draft version is in git. A clone of
+  the repository is a complete backup; GitHub keeps it redundantly. To restore
+  any file: `git checkout <commit> -- <path>`, commit, push (or use the
+  portal's rollback).
+- **Media:** in `public/brand/`, versioned the same way.
+- **Leads:** Firestore has deletion protection enabled on the database. It has
+  no automatic backup on the free tier. Options, in order of effort: (a) an
+  administrator exports CSV from the portal on a schedule and stores it
+  securely; (b) enable Firestore scheduled backups (requires the Blaze
+  pay-as-you-go plan; cost at this volume is cents per month, but it needs a
+  billing account). Point-in-time recovery also requires Blaze.
+- **Configuration:** `firebase.json`, `firestore.rules` and
+  `admin/public/cms/config.yml` are in the repo; redeploy with the commands in
+  step 3.
+- **Lost administrator:** the repository owner account
+  (`alliancestreetgoa-lang`) and the Firebase project owner
+  (`alliancestreetgoa@gmail.com`) can always recover access. Keep 2FA and
+  recovery codes for both.
 
 ## What protects the site from a bad edit
 
-`npm run prebuild` runs `validate:content`, so every build re-validates the
-content against `src/lib/content/schema.ts`. A malformed or incomplete edit
-fails the build and **never reaches the live site** — the deploy step does not
-run. Verified behaviour, not theory:
+- `tests/content.test.ts` runs in the publish check and again before every
+  build. It covers every page and setting against its schema, core pages
+  present at their addresses, no duplicate or reserved addresses, every
+  internal link pointing at a published page, every media file existing, size
+  limits, sourced tax figures, and only known `{{placeholders}}`.
+- `tests/cms-config.test.ts` keeps the editor's forms in step with the schemas,
+  so a field can't silently fail to save.
+- A failing build never deploys; the live site keeps serving the previous version.
 
+## Tests
+
+```sh
+npm test            # unit + content + CMS-config tests
+npm run test:rules  # Firestore rules in the emulator (needs Java 21)
+npm run test:e2e    # built site in Chromium, desktop + mobile, with fixture pages
+npm run test:portal # staff portal against the Firebase emulators (synthetic data)
 ```
-$ npm run build            # with a tax figure whose sources were deleted
-direct-answers.json → corporate-tax.sources: a figure needs at least one primary source
-build exit: 1
-out/ absent — nothing was emitted
-```
 
-The live site keeps serving the previous version until the content is fixed.
+## What still needs a developer
 
-`tests/cms-config.test.ts` separately keeps `config.yml` honest against the
-content files, because Sveltia reads that config in the browser: a misspelled
-field name would not fail the build, it would just silently fail to save.
-
-## What is deliberately not editable
-
-- **Advisor credentials** (`ADVISORS`, `REGISTRATIONS` in `src/lib/site-config.ts`).
-  An ACCA or ICAEW number is checkable against a public register. These are
-  added in code, with the certificate in hand.
-- **Page layout and design.** The CMS edits content, not structure.
-- **Service URLs** are editable but flagged in the UI: changing one breaks
-  inbound links and search rankings.
+- New **section types** or layout changes: add to `src/lib/content/page-schema.ts`,
+  `src/components/page/page-renderer.tsx` and `admin/public/cms/config.yml`
+  (the tests fail until all three agree).
+- New **service categories** or form fields: also touch `firestore.rules`.
+- Changing a published **page address** or **service URL** safely (redirects).
+- Advisor credentials (`ADVISORS` in `src/lib/site-config.ts`).
+- Moving to a custom domain: see the comments in `.github/workflows/deploy-pages.yml`.
+- The Telegus integration ([telegus-integration.md](telegus-integration.md)).
+- Connecting the newsletter and contact message forms to a real destination.
+  Neither stores anything today; see the client guide.
 
 ## Troubleshooting
 
 | Symptom | Cause |
 | --- | --- |
-| Login loops or "redirect_uri mismatch" | Callback URL in the OAuth app does not exactly match the worker's `/callback`. |
-| "Failed to authenticate" | `ALLOWED_DOMAINS` does not include the site's hostname. |
-| Saves succeed, site does not change | Check the Actions tab — the build likely failed validation. The error names the file and field. |
-| A section shows no fields | `config.yml` path or field name drifted from the content file. `npm test` reports exactly which. |
+| "Sign in with GitHub" loops / redirect_uri mismatch | OAuth app callback isn't exactly `<worker>/callback` |
+| "Failed to authenticate" | `ALLOWED_DOMAINS` lacks `alliance-street-leads.web.app` |
+| Publish button fails "needs approval" | Working as intended — a publisher must approve; see Roles |
+| Draft has no "View Preview" | The preview builds after the publish check (a few minutes). Failing builds show "Preview: failed" with a log link. |
+| Saves succeed, site doesn't change | Draft not published yet, or the publish build failed (Actions tab) |
+| A section shows no fields | `config.yml` drifted from the schema; `npm test` names it |
+| Staff member "not on the staff list" | Their Google email isn't on it, is paused, or differs in spelling |

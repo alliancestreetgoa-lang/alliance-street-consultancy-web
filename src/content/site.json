@@ -1,4 +1,14 @@
 {
+  "seo": {
+    "defaultTitle": "UAE & UK Company Formation, Tax & Accounting | Alliance Street",
+    "titleTemplate": "%s | Alliance Street",
+    "defaultDescription": "Alliance Street Consultancy supports UAE and UK businesses with company formation, VAT, corporate tax, accounting and e-invoicing readiness. Based in Dubai.",
+    "siteName": "Alliance Street Consultancy",
+    "shareImage": {
+      "src": "/brand/about-hero.jpg",
+      "alt": "Alliance Street Consultancy — UAE and UK business advisory"
+    }
+  },
   "company": {
     "name": "Alliance Street Consultancy",
     "email": "info@alliancestreet.ae",
@@ -20,6 +30,15 @@
         "url": "https://www.youtube.com/@Alliancestreetconsultancy22"
       }
     ]
+  },
+  "header": {
+    "brandName": "Alliance Street",
+    "logo": "/brand/logo-mark.png",
+    "servicesMenuLabel": "Services",
+    "button": {
+      "label": "Book Consultation",
+      "href": "/book-consultation"
+    }
   },
   "primaryNav": [
     {
@@ -185,10 +204,63 @@
       ]
     }
   ],
-  "seo": {
-    "defaultTitle": "UAE & UK Company Formation, Tax & Accounting | Alliance Street",
-    "titleTemplate": "%s | Alliance Street",
-    "defaultDescription": "Alliance Street Consultancy supports UAE and UK businesses with company formation, VAT, corporate tax, accounting and e-invoicing readiness. Based in Dubai.",
-    "siteName": "Alliance Street Consultancy"
+  "footer": {
+    "brandName": "Alliance Street",
+    "logo": "/brand/logo-mark-white.png",
+    "heading": "Ready to begin?",
+    "button": {
+      "label": "Book a Consultation",
+      "href": "/book-consultation"
+    },
+    "columns": [
+      {
+        "title": "Company",
+        "links": [
+          {
+            "label": "About us",
+            "href": "/about"
+          },
+          {
+            "label": "Case Studies",
+            "href": "/case-studies"
+          },
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ]
+      },
+      {
+        "title": "Solutions",
+        "links": [
+          {
+            "label": "All Services",
+            "href": "/services"
+          },
+          {
+            "label": "Industries",
+            "href": "/industries"
+          },
+          {
+            "label": "Pricing",
+            "href": "/pricing"
+          }
+        ]
+      },
+      {
+        "title": "Resources",
+        "links": [
+          {
+            "label": "Privacy Policy",
+            "href": "/privacy-policy"
+          },
+          {
+            "label": "Terms & Conditions",
+            "href": "/terms-and-conditions"
+          }
+        ]
+      }
+    ],
+    "copyright": "© {{year}} {{company.name}}. All rights reserved."
   }
 }

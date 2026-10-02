@@ -1,0 +1,95 @@
+{
+  "title": "Industries",
+  "path": "/industries",
+  "status": "published",
+  "layout": "standard",
+  "seo": {
+    "title": "UAE & UK Business Advisory by Industry",
+    "description": "Business setup, tax and accounting support for trading, e-commerce, technology, consulting, real estate and hospitality businesses in the UAE and UK.",
+    "image": {
+      "src": "/brand/industries-hero.jpg",
+      "alt": "Illustrated Dubai waterfront business district with offices, retail, cafe terraces and an international port",
+      "position": "center"
+    },
+    "noindex": false,
+    "lastReviewed": "2026-10-01"
+  },
+  "sections": [
+    {
+      "type": "pageHero",
+      "hidden": false,
+      "anchor": "",
+      "badge": "Industries",
+      "heading": "Different businesses, the same advisory standard.",
+      "subhead": "We work across a handful of industries closely enough to know what actually breaks — not generic advice with your sector name swapped in.",
+      "badgeStyle": "eyebrow",
+      "size": "standard",
+      "image": {
+        "src": "/brand/industries-hero.jpg",
+        "alt": "Illustrated Dubai waterfront business district with offices, retail, cafe terraces and an international port",
+        "position": "center"
+      }
+    },
+    {
+      "type": "statement",
+      "hidden": false,
+      "anchor": "",
+      "eyebrowLead": "Industries",
+      "eyebrowAccent": "we know",
+      "statement": "Every industry below trades in and out of Dubai for a reason.",
+      "body": "Fast-moving free zones, real deadlines, and cross-border founders — the same city that makes these businesses possible is the one that makes the paperwork worth getting right.",
+      "image": {
+        "src": "",
+        "alt": "",
+        "position": "center"
+      },
+      "imageSide": "left"
+    },
+    {
+      "type": "featureList",
+      "hidden": false,
+      "anchor": "",
+      "eyebrow": "",
+      "heading": "",
+      "columns": "3",
+      "items": [
+        {
+          "title": "E-commerce & Online Retail",
+          "description": "Selling across borders needs a structure that doesn't fight your supply chain — free zone setup, VAT registration, and corporate tax planned around how goods and payments actually move."
+        },
+        {
+          "title": "Trading & Import/Export",
+          "description": "Physical goods moving through UAE ports need mainland or free zone structuring matched to how you actually trade, plus the licensing and PRO work that keeps shipments moving."
+        },
+        {
+          "title": "Consulting & Professional Services",
+          "description": "Solo consultants and small advisory firms scaling past a freelance permit into a proper licensed entity, often with a UK arm for cross-border clients."
+        },
+        {
+          "title": "Technology & SaaS",
+          "description": "Distributed teams, recurring revenue, and investors who ask about your cap table — CFO support and dual UAE/UK structuring built for how software businesses actually grow."
+        },
+        {
+          "title": "Real Estate & Holding Companies",
+          "description": "Asset protection and clean ownership structures for property and investment holdings, often through offshore entities built for exactly this purpose."
+        },
+        {
+          "title": "Hospitality & F&B",
+          "description": "Licensing, payroll, and VAT for businesses with real premises and real staff — mainland formation done right the first time, and compliance that doesn't lapse."
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "hidden": false,
+      "anchor": "",
+      "eyebrow": "Get Started",
+      "heading": "Ready to talk it through?",
+      "description": "Book a call with an advisor — no obligation, no sales script, just a clear read on what setup makes sense for your business.",
+      "button": {
+        "label": "Book Consultation",
+        "href": "/book-consultation"
+      }
+    }
+  ]
+}

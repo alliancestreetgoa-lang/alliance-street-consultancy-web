@@ -1,6 +1,5 @@
 import servicesJson from "@/content/services.json";
 import directAnswersJson from "@/content/direct-answers.json";
-import groupImagesJson from "@/content/group-images.json";
 import siteJson from "@/content/site.json";
 
 import type { DirectAnswer, Service as ServiceBase, SiteContent } from "./schema";
@@ -29,21 +28,6 @@ export const DIRECT_ANSWERS: Record<string, DirectAnswer> = Object.fromEntries(
   ])
 );
 
-type GroupImage = { src: string; alt: string; caption: string; aspectClassName: string };
-
-/**
- * Indexed by group for lookup; the file itself is a list.
- *
- * Group names contain spaces and an ampersand, which are not legal CMS field
- * names — and a form cannot add an object key in any case. Every content file
- * keyed by a human-readable string is stored as a list carrying that key.
- */
-export const GROUP_IMAGES: Record<ServiceBase["group"], GroupImage> = Object.fromEntries(
-  (groupImagesJson.images as (GroupImage & { group: ServiceBase["group"] })[]).map(
-    ({ group, ...image }) => [group, image]
-  )
-) as Record<ServiceBase["group"], GroupImage>;
-
 /**
  * Sourced answers are joined on slug rather than nested in services.json, so
  * the CMS can present them as a separate collection with its own stricter
@@ -60,6 +44,8 @@ export const COMPANY = site.company;
 export const PRIMARY_NAV = site.primaryNav;
 export const NAV_GROUPS = site.navGroups;
 export const SEO = site.seo;
+export const HEADER = site.header;
+export const FOOTER = site.footer;
 
 export function getService(category: string, slug: string) {
   return SERVICES.find((service) => service.category === category && service.slug === slug);

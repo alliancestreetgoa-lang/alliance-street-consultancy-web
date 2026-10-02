@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Website content — Alliance Street</title>
+    <script>
+      // The live editor reads its configuration from the main branch, so a
+      // merged config change applies without redeploying this page. Locally
+      // (npm run admin:dev) it reads the working copy instead.
+      (function () {
+        var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+        var link = document.createElement("link");
+        link.rel = "cms-config-url";
+        link.type = "application/yaml";
+        link.href = local
+          ? "/cms/config.yml"
+          : "https://raw.githubusercontent.com/alliancestreetgoa-lang/alliance-street-consultancy-web/main/admin/public/cms/config.yml";
+        document.head.appendChild(link);
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="/" style="position:fixed;right:12px;bottom:12px;z-index:9999;font:13px system-ui,sans-serif;background:#111;color:#fff;padding:8px 12px;border-radius:999px;text-decoration:none">← Staff portal</a>
+    <!-- Pinned major version from the CDN; not an ES module (see Sveltia docs). -->
+    <script src="https://unpkg.com/@sveltia/cms@0.227/dist/sveltia-cms.js"></script>
+  </body>
+</html>

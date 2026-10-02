@@ -1,21 +1,23 @@
 import type { MetadataRoute } from "next";
 import { SERVICES } from "@/lib/services-data";
 import { SITE_URL } from "@/lib/site-url";
+import { getPublishedPages } from "@/lib/content/pages";
 
 export const dynamic = "force-static";
 
-// Editorial dates: update only after a meaningful page change, never on every build.
-const routes = [
-  ["/", "2026-10-01"], ["/about", "2026-10-01"],
-  ["/services", "2026-10-01"], ["/industries", "2026-10-01"],
-  ["/case-studies", "2026-10-01"], ["/pricing", "2026-10-01"],
-  ["/contact", "2026-10-01"], ["/book-appointment", "2026-10-01"], ["/book-consultation", "2026-08-10"],
-  ["/privacy-policy", "2026-07-21"], ["/terms-and-conditions", "2026-07-21"],
-];
-
+/**
+ * Published, indexable pages plus every service page. `lastModified` is the
+ * page's editorial "last reviewed" date from the CMS — never the build time,
+ * which would claim every page changed on every deploy.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    ...routes.map(([path, lastModified]) => ({ url: path === "/" ? SITE_URL : `${SITE_URL}${path}`, lastModified })),
+    ...getPublishedPages()
+      .filter((page) => !page.seo.noindex)
+      .map((page) => ({
+        url: page.path === "/" ? SITE_URL : `${SITE_URL}${page.path}`,
+        lastModified: page.seo.lastReviewed,
+      })),
     ...SERVICES.map((service) => ({
       url: `${SITE_URL}/services/${service.category}/${service.slug}`,
       lastModified: "2026-10-01",

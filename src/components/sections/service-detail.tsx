@@ -11,6 +11,8 @@ import { DisplayHeading } from "@/components/ui/display-heading";
 import { Card } from "@/components/ui/card";
 import { HeroEntrance, Reveal, ScrubRail, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { type Service } from "@/lib/services-data";
+import { SERVICE_PAGE as copy } from "@/lib/content/settings";
+import { SmartLink } from "@/components/ui/smart-link";
 
 type ServiceDetailProps = {
   service: Service;
@@ -37,14 +39,14 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
         <HeroEntrance className="w-full">
           <Container className="flex flex-col items-start gap-6">
             <Link href="/services" data-hero-item className="text-sm text-white/80 underline-offset-4 hover:text-white hover:underline">
-              All services / {service.group}
+              {copy.breadcrumbPrefix} / {service.group}
             </Link>
             <DisplayHeading text={service.search?.title ?? service.title} className="max-w-3xl text-4xl sm:text-5xl lg:text-6xl" />
             <p data-hero-item className="max-w-xl text-lg text-white/85">
               {service.tagline}
             </p>
             <Button data-hero-item size="lg" asChild className="mt-2">
-              <Link href="/book-consultation">Book a Consultation</Link>
+              <SmartLink href={copy.bookButton.href}>{copy.bookButton.label}</SmartLink>
             </Button>
           </Container>
         </HeroEntrance>
@@ -55,7 +57,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
           <Reveal className="flex flex-col gap-6">
             {service.search && (
               <div className="flex flex-col gap-4">
-                <h2 className="text-2xl font-semibold">How we help</h2>
+                <h2 className="text-2xl font-semibold">{copy.howWeHelpHeading}</h2>
                 <p className="leading-relaxed text-foreground/90">{service.search.overview}</p>
               </div>
             )}
@@ -77,7 +79,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                 </h2>
                 <p className="text-base leading-relaxed text-foreground/90">{service.directAnswer.answer}</p>
                 <p className="text-xs text-muted-foreground">
-                  <span className="font-medium">Sources: </span>
+                  <span className="font-medium">{copy.sourcesLabel} </span>
                   {service.directAnswer.sources.map((source, index) => (
                     <span key={source.url}>
                       {index > 0 && " · "}
@@ -93,7 +95,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                   ))}
                   {". "}
                   <span>
-                    Figures verified{" "}
+                    {copy.verifiedLabel}{" "}
                     <time dateTime={service.directAnswer.verifiedOn}>
                       {new Date(`${service.directAnswer.verifiedOn}T00:00:00Z`).toLocaleDateString("en-GB", {
                         day: "numeric",
@@ -102,7 +104,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
                         timeZone: "UTC",
                       })}
                     </time>
-                    . General information, not tax advice — thresholds and deadlines change.
+                    . {copy.disclaimer}
                   </span>
                 </p>
               </div>
@@ -110,7 +112,7 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
             {/* A real heading, not a styled span: this labels the page's main
                 content block, and heading structure is how both crawlers and
                 screen readers find it. Visual treatment is unchanged. */}
-            <h2 className="as-eyebrow as-eyebrow-accent">What&apos;s Included</h2>
+            <h2 className="as-eyebrow as-eyebrow-accent">{copy.includedHeading}</h2>
             {/* The rail draws downward as the list scrolls past, so the
                 checklist reads as being worked through. Scrubbed to the
                 scrollbar; the rail is absolutely positioned so it cannot
@@ -128,11 +130,11 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
             {service.search && (
               <div className="flex flex-col gap-6">
                 <div>
-                  <h2 className="mb-3 text-2xl font-semibold">What to prepare for your consultation</h2>
+                  <h2 className="mb-3 text-2xl font-semibold">{copy.preparationHeading}</h2>
                   <p className="leading-relaxed text-foreground/90">{service.search.preparation}</p>
                 </div>
                 <div>
-                  <h2 className="mb-4 text-2xl font-semibold">Common questions</h2>
+                  <h2 className="mb-4 text-2xl font-semibold">{copy.faqHeading}</h2>
                   {service.search.faqs.map((faq) => (
                     <div key={faq.question} className="mb-5">
                       <h3 className="mb-2 text-lg font-semibold">{faq.question}</h3>
@@ -143,12 +145,12 @@ export function ServiceDetail({ service, related }: ServiceDetailProps) {
               </div>
             )}
             <Card variant="glass" hover={false} className="mt-2 flex flex-col gap-3">
-              <h3 className="text-lg font-semibold text-foreground">Who This Is For</h3>
+              <h3 className="text-lg font-semibold text-foreground">{copy.whoForHeading}</h3>
               <p className="text-sm text-muted-foreground">{service.whoFor}</p>
             </Card>
             {related.length > 0 ? (
               <Card variant="glass" hover={false} className="flex flex-col gap-3">
-                <h3 className="text-lg font-semibold text-foreground">Related Services</h3>
+                <h3 className="text-lg font-semibold text-foreground">{copy.relatedHeading}</h3>
                 <ul className="flex flex-col gap-2">
                   {related.map((item) => (
                     <li key={item.slug}>
