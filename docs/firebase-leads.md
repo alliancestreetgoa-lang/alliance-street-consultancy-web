@@ -2,7 +2,7 @@
 
 Project: `alliance-street-leads` (Alliance Street Leads)
 Console: https://console.firebase.google.com/project/alliance-street-leads/firestore
-Database: `(default)`, Standard edition, London (`europe-west2`), free tier, deletion protection enabled.
+Database: `(default)`, Standard edition, London (`europe-west2`), on the Blaze (pay-as-you-go) plan — usage within the free quotas costs nothing — deletion protection enabled.
 
 ## Flow
 
@@ -47,7 +47,7 @@ Initial verification: 14 live data/access checks passed, browser submission pers
 ## Before public launch and future integration
 
 - Register deployed hosts and enable Firebase App Check for abuse protection. The current setup supports localhost and the GitHub Pages client-review host. Strict rules protect confidentiality, but anonymous authentication alone does not prevent automated spam submissions.
-- Review Firebase usage quotas and arrange staff monitoring of the console. The free tier can reject writes when quotas are exhausted; the form reports save failure.
+- Review Firebase usage quotas and arrange staff monitoring of the console. Set a budget alert in Google Cloud Billing so unexpected usage (for example form spam) is noticed; the form reports save failure.
 - Connect Telegus with server-side credentials and idempotent sync keyed by the Firebase lead ID. Add delivery status, retries and notifications there, updating rules to support any new server-owned fields.
 - Use verified Zoom webhooks and a supported correlation mechanism before marking appointments confirmed. Never infer confirmation from a click or calendar opening.
 - Have the client review the updated factual privacy notice, retention arrangements and database location before public launch.

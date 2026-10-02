@@ -11,8 +11,8 @@ Status: **deferred**. Nothing is sent to Telegus today; the staff portal shows
   visitor who edits and resubmits in the same session updates the same
   document, so sync must upsert by this ID, never insert blindly.
 - **Trigger:** a Cloud Function on `leads/{leadId}` write (`onDocumentWritten`)
-  → upsert the contact in Telegus. Cloud Functions require the Blaze plan
-  (billing account; cost at this volume is negligible). A no-billing
+  → upsert the contact in Telegus. The project is already on the Blaze plan,
+  so Cloud Functions are available (cost at this volume is negligible). A no-billing
   alternative is a scheduled GitHub Action, but that puts a Firebase service
   account and the Telegus key in GitHub secrets. Prefer the function.
 - **Credentials:** the Telegus API key goes into Secret Manager for the

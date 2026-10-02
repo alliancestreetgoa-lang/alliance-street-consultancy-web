@@ -10,9 +10,9 @@ running. The client-facing guide is [client-guide.md](client-guide.md).
 | Public website | GitHub Pages (static export of this repo) | Free | Nothing private |
 | Content | JSON in `src/content/` + media in `public/brand/`, in this repo | Free | Every version, forever (git history) |
 | Content editor | Sveltia CMS at `https://alliance-street-leads.web.app/cms/` | Free | Nothing — it edits the repo through the GitHub API |
-| Staff portal | `https://alliance-street-leads.web.app/` (Firebase Hosting) | Free tier | Nothing — reads GitHub and Firestore as the signed-in person |
+| Staff portal | `https://alliance-street-leads.web.app/` (Firebase Hosting) | Within Blaze free quota | Nothing — reads GitHub and Firestore as the signed-in person |
 | GitHub sign-in helper | Cloudflare Worker (`sveltia-cms-auth`) | Free tier | Only the OAuth client secret |
-| Leads | Firestore `alliance-street-leads` (London) | Free tier | Enquiries + staff follow-up |
+| Leads | Firestore `alliance-street-leads` (London) | Within Blaze free quota | Enquiries + staff follow-up |
 
 ```
 editor saves ──► branch cms/… + pull request ("draft")      live site unchanged
@@ -158,12 +158,16 @@ Done from the staff portal → **Team & access**; the steps below are the manual
   any file: `git checkout <commit> -- <path>`, commit, push (or use the
   portal's rollback).
 - **Media:** in `public/brand/`, versioned the same way.
-- **Leads:** Firestore has deletion protection enabled on the database. It has
-  no automatic backup on the free tier. Options, in order of effort: (a) an
-  administrator exports CSV from the portal on a schedule and stores it
-  securely; (b) enable Firestore scheduled backups (requires the Blaze
-  pay-as-you-go plan; cost at this volume is cents per month, but it needs a
-  billing account). Point-in-time recovery also requires Blaze.
+- **Leads:** the project is on the Blaze (pay-as-you-go) plan with deletion
+  protection on. As of 2026-10-02 there are **no scheduled backups and
+  point-in-time recovery is off**. Both are available on Blaze and cost very
+  little at this volume:
+  ```sh
+  npx firebase-tools firestore:backups:schedules:create --project alliance-street-leads --recurrence DAILY --retention 14d
+  npx firebase-tools firestore:databases:update "(default)" --project alliance-street-leads --enable-pitr
+  ```
+  Restore with `firestore:databases:restore` (backups) or a point-in-time
+  read/export (PITR, last 7 days). Admins can also export CSV from the portal.
 - **Configuration:** `firebase.json`, `firestore.rules` and
   `admin/public/cms/config.yml` are in the repo; redeploy with the commands in
   step 3.
