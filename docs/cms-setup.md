@@ -68,7 +68,18 @@ Creates the "Protect the live site" ruleset on `main` and confirms the workflow
 token is read-only. Re-runnable. Until this has been run, **anyone with write
 access can still merge their own drafts**: the roles are not yet enforced.
 
-### 2. "Sign in with GitHub" (15 minutes)
+### 2. "Sign in with GitHub" — done 2026-10-02
+
+Current setup: OAuth app **Alliance Street CMS** (owned by `alliancestreetgoa-lang`,
+client ID `Ov23lijnV3zCD1IhSiSn`, expiring user tokens: people sign in again after
+about 8 hours), worker `https://alliance-street-cms-auth.alliance-street.workers.dev`
+on the developer's Cloudflare account (shaukinsv@gmail.com, workers.dev subdomain
+`alliance-street`), `ALLOWED_DOMAINS=alliance-street-leads.web.app`. To hand it to the
+client's own Cloudflare account, repeat steps 2–4 there and update the callback URL.
+To rotate the secret: generate a new one in the OAuth app, then
+`npx wrangler secret put GITHUB_CLIENT_SECRET` and delete the old one.
+
+Original steps, for reference or a rebuild:
 
 The GitHub OAuth code exchange needs a client secret, which a static host can't
 keep. A tiny Cloudflare Worker does that one step and stores nothing else.

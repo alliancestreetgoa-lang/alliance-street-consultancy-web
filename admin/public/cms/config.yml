@@ -33,7 +33,7 @@ backend:
   name: github
   repo: alliancestreetgoa-lang/alliance-street-consultancy-web
   branch: main
-  base_url: https://REPLACE-ME.workers.dev
+  base_url: https://alliance-street-cms-auth.alliance-street.workers.dev
   squash_merges: true
   preview_context: Preview
   commit_messages:
