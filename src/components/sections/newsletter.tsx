@@ -12,6 +12,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { cn } from "@/lib/utils";
 import { FORMS } from "@/lib/content/settings";
 import type { SectionOf } from "@/lib/content/page-schema";
+import { useHydrated } from "@/lib/use-hydrated";
 
 const newsletterSchema = z.object({
   email: z.string().email("Enter a valid email address."),
@@ -21,6 +22,7 @@ type NewsletterValues = z.infer<typeof newsletterSchema>;
 
 export function Newsletter({ section }: { section: SectionOf<"newsletter"> }) {
   const copy = FORMS.newsletter;
+  const hydrated = useHydrated();
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -51,6 +53,7 @@ export function Newsletter({ section }: { section: SectionOf<"newsletter"> }) {
             <p className="text-primary">{copy.thanksMessage}</p>
           ) : (
             <form
+              method="post"
               onSubmit={handleSubmit(onSubmit)}
               className="flex w-full max-w-md flex-col gap-3 sm:flex-row sm:items-start"
               noValidate
@@ -81,7 +84,7 @@ export function Newsletter({ section }: { section: SectionOf<"newsletter"> }) {
                   </p>
                 ) : null}
               </div>
-              <Button size="lg" className="shrink-0" onClick={handleSubmit(onSubmit)}>{isSubmitting ? copy.submittingButton : copy.button}</Button>
+              <Button size="lg" className="shrink-0" disabled={!hydrated} onClick={handleSubmit(onSubmit)}>{isSubmitting ? copy.submittingButton : copy.button}</Button>
             </form>
           )}
         </Reveal>

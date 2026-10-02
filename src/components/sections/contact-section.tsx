@@ -15,6 +15,7 @@ import { FORMS } from "@/lib/content/settings";
 import { fill } from "@/lib/content/fill";
 import { SmartLink } from "@/components/ui/smart-link";
 import type { SectionOf } from "@/lib/content/page-schema";
+import { useHydrated } from "@/lib/use-hydrated";
 import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
@@ -27,6 +28,7 @@ type ContactValues = z.infer<typeof contactSchema>;
 
 export function ContactSection({ section }: { section: SectionOf<"contact"> }) {
   const copy = FORMS.contact;
+  const hydrated = useHydrated();
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -79,7 +81,7 @@ export function ContactSection({ section }: { section: SectionOf<"contact"> }) {
           {submitted ? (
             <p className="text-primary">{fill(copy.notConnectedMessage)}</p>
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
+            <form method="post" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
               <div>
                 <label htmlFor="contact-name" className="mb-2 block text-sm text-foreground/90">
                   {copy.labels.name}
@@ -143,7 +145,7 @@ export function ContactSection({ section }: { section: SectionOf<"contact"> }) {
                   </p>
                 ) : null}
               </div>
-              <Button size="lg" className="self-start" onClick={handleSubmit(onSubmit)}>{isSubmitting ? copy.sendingButton : copy.submitButton}</Button>
+              <Button size="lg" className="self-start" disabled={!hydrated} onClick={handleSubmit(onSubmit)}>{isSubmitting ? copy.sendingButton : copy.submitButton}</Button>
             </form>
           )}
         </Card>

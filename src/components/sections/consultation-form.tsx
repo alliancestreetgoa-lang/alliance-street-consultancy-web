@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { CONSULTATION_SERVICES, consultationSchema, type ConsultationValues } from "@/lib/consultation";
 import { FORMS } from "@/lib/content/settings";
+import { useHydrated } from "@/lib/use-hydrated";
 
 const copy = FORMS.consultation;
 
@@ -19,6 +20,7 @@ const fields = [
 ] as const;
 
 export function ConsultationForm() {
+  const hydrated = useHydrated();
   const [bookingDetails, setBookingDetails] = useState<ConsultationValues | null>(null);
   const bookingHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -62,7 +64,7 @@ export function ConsultationForm() {
     defaultValues: { name: "", country: "", email: "", phone: "", address: "", services: [], notes: "" },
   });
   return (
-    <form onSubmit={handleSubmit(prepareAppointment)} onChange={() => { setSaveError(""); setChoiceError(""); }} aria-busy={isSubmitting || choiceSaving} noValidate className="as-neon-card w-full rounded-2xl bg-background p-6 sm:p-10">
+    <form method="post" onSubmit={handleSubmit(prepareAppointment)} onChange={() => { setSaveError(""); setChoiceError(""); }} aria-busy={isSubmitting || choiceSaving} noValidate className="as-neon-card w-full rounded-2xl bg-background p-6 sm:p-10">
       <div hidden={!!bookingDetails}>
       <p className="mb-6 rounded-xl bg-foreground/5 px-4 py-3 text-sm text-muted-foreground">{copy.stepOneNote}</p>
       <fieldset disabled={isSubmitting} className="grid gap-6 sm:grid-cols-2">
@@ -98,7 +100,7 @@ export function ConsultationForm() {
       </fieldset>
       <div className="mt-8 flex flex-col items-start gap-4 border-t border-border pt-6">
         <p className="text-sm text-muted-foreground">{copy.consentText} <Link href="/privacy-policy" className="underline underline-offset-4 hover:text-primary">{copy.privacyLinkLabel}</Link>.</p>
-        <Button type="submit" size="lg" disabled={isSubmitting}>{isSubmitting ? copy.savingButton : copy.continueButton}</Button>
+        <Button type="submit" size="lg" disabled={!hydrated || isSubmitting}>{isSubmitting ? copy.savingButton : copy.continueButton}</Button>
         {saveError && <p role="alert" className="text-sm text-destructive">{saveError}</p>}
       </div>
       </div>

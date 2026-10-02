@@ -113,3 +113,18 @@ test.describe("navigation and forms", () => {
     throw new Error("Book Consultation was not reachable by keyboard in the first 12 tab stops");
   });
 });
+
+test.describe("forms before the page is interactive", () => {
+  // Regression: pressing Continue before hydration used to submit natively,
+  // saving nothing and putting every entered detail into the URL.
+  test("cannot submit details into the URL without JavaScript", async ({ browser, baseURL }) => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const page = await ctx.newPage();
+    for (const [path, button] of [["/book-consultation", "Continue"], ["/book-appointment", "Continue"], ["/contact", "Send Message"]] as const) {
+      await page.goto(`${baseURL}${path}`);
+      await expect(page.locator("main form").first()).toHaveAttribute("method", "post");
+      await expect(page.getByRole("button", { name: button })).toBeDisabled();
+    }
+    await ctx.close();
+  });
+});

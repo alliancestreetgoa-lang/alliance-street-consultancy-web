@@ -54,3 +54,4 @@ firebase-debug.log*
 /test-results/
 /playwright-report/
 /admin/dist/
+.firebase-test-records.json.ids

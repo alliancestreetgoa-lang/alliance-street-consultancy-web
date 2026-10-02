@@ -34,6 +34,10 @@ jobs:
       - name: Content schemas, links and media
         run: npm run validate:content
 
+      # src/lib/image-manifest.json is generated, and the types depend on it.
+      - name: Image variants
+        run: npm run optimize:images
+
       - name: Types
         run: npx tsc --noEmit && npx tsc -p admin/tsconfig.json
 
