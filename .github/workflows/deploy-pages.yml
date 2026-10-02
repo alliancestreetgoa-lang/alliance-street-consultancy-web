@@ -122,10 +122,14 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ env.SITE_ORIGIN }}
           NEXT_PUBLIC_PREVIEW_LABEL: Draft #${{ matrix.draft.number }}
         run: npm run build
+      # Packaged inside its own pr-<n> folder: download-artifact unpacks a
+      # single matching artifact without a sub-folder, so the name has to live
+      # inside the archive.
+      - run: mkdir -p preview-root && mv out "preview-root/pr-${{ matrix.draft.number }}"
       - uses: actions/upload-artifact@v7
         with:
           name: preview-${{ matrix.draft.number }}
-          path: out
+          path: preview-root
           retention-days: 1
 
   deploy:
@@ -146,20 +150,21 @@ jobs:
           name: site-main
           path: out
       - uses: actions/download-artifact@v8
+        if: needs.plan.outputs.drafts != '[]'
         with:
           pattern: preview-*
+          merge-multiple: true
           path: previews
+      # Only folders for drafts this run planned are placed, each into its own
+      # pr-<n> folder; anything else a draft build may have produced is dropped.
       - name: Place previews
+        env:
+          NUMBERS: ${{ join(fromJSON(needs.plan.outputs.drafts).*.number, ' ') }}
         run: |
           mkdir -p out/_preview
-          if [ -d previews ]; then
-            for dir in previews/preview-*; do
-              [ -d "$dir" ] || continue
-              n="${dir##*/preview-}"
-              case "$n" in (*[!0-9]*|'') continue;; esac
-              mv "$dir" "out/_preview/pr-$n"
-            done
-          fi
+          for n in $NUMBERS; do
+            if [ -f "previews/pr-$n/index.html" ]; then mv "previews/pr-$n" "out/_preview/pr-$n"; fi
+          done
           ls out/_preview
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
